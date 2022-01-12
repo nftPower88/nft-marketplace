@@ -20,7 +20,7 @@ async componentDidMount() {
     }
 render() {
         return (
-            <video ref={this.video_reference} id="player" autoPlay style={{"width":'100vw','height':'auto' }}>
+            <video ref={this.video_reference} id="player" autoPlay style={{"width":'auto','height':'100vh' }}>
             </video>
         )
     }
