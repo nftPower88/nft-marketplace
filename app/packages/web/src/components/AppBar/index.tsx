@@ -7,8 +7,6 @@ import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { HowToBuyModal } from '../HowToBuyModal';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
-import { useTheme, Theme } from '../../contexts/themecontext';
-import { Switch } from 'antd';
 
 type P = {
   logo: string;
@@ -160,21 +158,7 @@ export const AppBar = (props: P) => {
         .map(({ key }) => key),
     [locationPath, menuInfo],
   );
-  const { theme, setTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = useState('');
-  function switchTheme() {
-    if (theme === "Dark") {
-      setCurrentTheme(Theme.Light);
-      setTheme(Theme.Light);
 
-      
-    } else {
-      setCurrentTheme(Theme.Dark);
-      setTheme(Theme.Dark);
-
-     
-    }
-  }
   return (
     <>
       <style global jsx>
@@ -204,17 +188,13 @@ export const AppBar = (props: P) => {
               <>
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
-                <Switch
-                  checkedChildren="Dark"
-                  unCheckedChildren="Light"
-                  onChange={switchTheme}
-                />
+      
                 <Cog buttonType="text" />
               </>
             ) : (
               <>
                 <HowToBuyModal buttonType="text" />
-                <Switch checkedChildren="1" unCheckedChildren="0" />
+        
                 <ConnectButton type="text" allowWalletChange={false} />
               </>
             )}
