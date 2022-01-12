@@ -8,6 +8,10 @@ cd ./packages/common || exit
 yarn prepare
 cd ../checkout || exit
 
+#echo "Preparing 'client'..."
+#yarn prepare
+#cd ../client || exit
+
 echo "Preparing 'checkout'..."
 yarn prepare
 cd ../web || exit
