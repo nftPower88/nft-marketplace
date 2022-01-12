@@ -165,15 +165,21 @@ export const AppBar = (props: P) => {
         {`
           .ant-layout-header {
             padding: 0 25px;
+            position:fixed;
+            z-index:50;
+            width:100vw;
+            opacity:80%;
+            height:64px;
           }
           .ant-btn {
             padding: 2.5px 10px;
+            opacity:100%;
           }
         `}
       </style>
-      <Row wrap={false} align="middle">
+      <Row wrap={false} align="middle" >
         <Col flex="0 0 auto">
-          <Link to="/" id="metaplex-header-logo">
+          <Link to="/" id="metaplex-header-logo" >
             Queendom
           </Link>
         </Col>
