@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Modal, Spin , Button, Carousel, Col, List, Row, Skeleton, Space, Typography } from 'antd';
+import {Drawer, Spin , Button, Carousel, Col, List, Row, Skeleton, Space, Typography } from 'antd';
 import {
     AuctionView as Auction,
     useArt,
@@ -103,18 +103,18 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
 
 
     return (
-        <Modal
+        <Drawer
             title="Checkout"
-            centered
-            footer={null}
+            placement="left"
+            closable={true}
+            onClose={hide}
             visible={show}
-            onOk={hide}
-            onCancel={hide}
-            width={1200}
+            key="left"
+            width={450}
         >
             
             <Row justify="center" ref={ref} gutter={[48, 0]}>
-                <Col span={24} md={{ span: 20 }} lg={9}>
+                <Col span={24} md={{ span: 24 }} lg={12}>
                     <Carousel
                         className="metaplex-spacing-bottom-md"
                         autoplay={false}
@@ -133,7 +133,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                     {attributes && (
                         <div>
                             <Text>Attributes</Text>
-                            <List grid={{ column: 4 }}>
+                            <List grid={{ column: 2 }}>
                                 {attributes.map((attribute, index) => (
                                     <List.Item key={`${attribute.value}-${index}`}>
                                         <List.Item.Meta
@@ -147,7 +147,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                     )}
                 </Col>
 
-                <Col span={24} lg={{ offset: 1, span: 13 }}>
+                <Col span={24} lg={{ offset: 1, span: 24 }}>
                     <Row justify="space-between">
                         <h2>{art.title || <Skeleton paragraph={{ rows: 0 }} />}</h2>
                         {wallet.publicKey?.toBase58() === auction?.auctionManager.authority && (
@@ -159,7 +159,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                         )}
                     </Row>
                     <Row className="metaplex-spacing-bottom-lg">
-                        <Col span={12}>
+                        <Col span={24}>
                             <Space direction="horizontal" align="start">
                                 <Space direction="vertical" size="small">
                                     <Text>CREATED BY</Text>
@@ -179,8 +179,8 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                                         )}
                                     </span>
                                 </Space>
-                                <Space direction="vertical" size="small">
-                                    <Text>NFTS</Text>
+                                <Space direction="vertical" size="large">
+                                    <Text style={{padding:"50px"}}>NFTS</Text>
                                     {nftCount === undefined ? (
                                         <Skeleton paragraph={{ rows: 0 }} />
                                     ) : (
@@ -189,7 +189,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                                 </Space>
                             </Space>
                         </Col>
-                        <Col span={12}>
+                        <Col span={24}>
                             <Row justify="end">
                                 <ViewOn art={art} />
                             </Row>
@@ -203,7 +203,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                     {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
                 </Col>
             </Row>
-        </Modal>
+        </Drawer>
     )
 }
 

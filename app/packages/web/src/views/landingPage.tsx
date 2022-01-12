@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import {InstructionsModal} from '../components/InstructionsModal';
 import {useInfiniteScrollAuctions} from '../hooks';
 import {AuctionRenderCard} from '../components/AuctionRenderCard';
+import PixelStreamer from '../components/PixelStreamer';
 export const LandingPageView = () => {
   const router = useRouter();
   const {storefront} = useStore();
@@ -95,13 +96,17 @@ export const LandingPageView = () => {
           }
         `}
       </style>
-      <div className={`landing-page h-100 overflow-scroll`}>
+      <div className={`landing-page overflow-hidden`} style={{'height':'75vh'}}>
         <div
-          className={`landing-page-header mt-5 mt-md-0 d-flex flex-column justify-content-between h-100`}>
+          className={` mt-5 mt-md-0 d-flex flex-column justify-content-between`}>
           <div
-            className ={`d-flex flex-column flex-md-row justify-content-between`}>
+            className ={`d-flex flex-row flex-md-row justify-content-between`}> 
+            <PixelStreamer/>
           </div>
-          <div
+          
+        </div>
+      </div>
+      <div
             className={`d-flex flex-row justify-content-center my-3 flex-wrap text-center`}>
             <button
               onClick={() => router.push('https://discord.gg/vYBcfGSdYr')}
@@ -128,8 +133,6 @@ export const LandingPageView = () => {
               Reddit
             </button>
           </div>
-        </div>
-      </div>
     </>
   );
 };
