@@ -9,7 +9,7 @@ export interface ArtSelectorProps {
   className?: string;
   children?: ReactNode;
   selected: SafetyDepositDraft[];
-  setSelected: (selected: SafetyDepositDraft[]) => void;
+  setSelected: (selected: SafetyDepositDraft[] ) => void;
   allowMultiple: boolean;
   filter?: (i: SafetyDepositDraft) => boolean;
 }

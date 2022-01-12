@@ -20,7 +20,7 @@ import { AuctionCard } from '../../components/AuctionCard';
 
 interface Props {
     show: boolean;
-    hide: (value: boolean) => void;
+    hide: (value: any) => void;
     id: string;
 }
 
@@ -33,6 +33,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
     const { ref, data } = useExtendedArt(auction?.thumbnail.metadata.pubkey);
     const creators = useCreators(auction);
     const wallet = useWallet();
+
     let edition = '';
     if (art.type === ArtType.NFT) {
         edition = 'Unique';
@@ -100,7 +101,6 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             />
         );
     });
-
 
     return (
         <Drawer

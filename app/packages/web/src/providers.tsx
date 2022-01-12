@@ -38,7 +38,7 @@ export const Providers: FC<ProvidersProps> = ({ children, storefront }) => {
                 <LoaderProvider>
                   <ConfettiProvider>
                     <AnalyticsProvider>
-                      <AppLayout storefront={storefront}>{children}</AppLayout>
+                        <AppLayout storefront={storefront}>{children}</AppLayout>
                     </AnalyticsProvider>
                   </ConfettiProvider>
                 </LoaderProvider>

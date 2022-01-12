@@ -12,3 +12,5 @@ export { LandingPageView } from './landingPage';
 export { CheckoutPageView } from './checkout';
 export { ResultPageView } from './checkout';
 export { CartPageView } from './checkout';
+//export { ClientPageView } from './clientPage'
+export { DashboardView } from './clientPage/Dashboard';
