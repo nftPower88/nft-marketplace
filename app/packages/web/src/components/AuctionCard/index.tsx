@@ -887,8 +887,8 @@ export const AuctionCard = ({
           className="metaplex-fullwidth metaplex-space-align-stretch"
           direction="vertical"
         >
-          <Row gutter={8} align="middle">
-            <Col span={12}>
+        
+            <Col span={24}>
               <AuctionNumbers
                 auctionView={auctionView}
                 showAsRow={true}
@@ -897,7 +897,7 @@ export const AuctionCard = ({
               />
             </Col>
             {showPlaceBidUI ? (
-              <Col span={12}>
+              <Col span={24}>
                 <AmountLabel
                   title="in your wallet"
                   displaySOL={true}
@@ -922,7 +922,7 @@ export const AuctionCard = ({
                 )}
               </>
             )}
-          </Row>
+        
 
           {showDefaultNonEndedAction &&
             showPlaceBidUI &&
