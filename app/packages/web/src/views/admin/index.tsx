@@ -52,35 +52,31 @@ import getConfig from 'next/config';
 
 import { ENDPOINTS, useConnectionConfig } from '@oyster/common';
 
-
 const { publicRuntimeConfig } = getConfig();
 
 const { Content } = Layout;
 export const AdminView = () => {
   const { store, whitelistedCreatorsByCreator, isLoading, patchState } =
     useMeta();
-  const connection = useConnection();
-  const wallet = useWallet();
-  const [loadingAdmin, setLoadingAdmin] = useState(true);
-  const { setVisible } = useWalletModal();
-
+    const connection = useConnection();
+    const wallet = useWallet();
+    const [loadingAdmin, setLoadingAdmin] = useState(true);
+    const { setVisible } = useWalletModal();
+    const { connected, publicKey } = useWallet();
+    const { ownerAddress } = useStore();
   const [adminModalOpen, setAdminModalOpen] = useState(false);
+
   if (!wallet.publicKey) {
-    console.log('wallet not connected')
+    console.log('wallet not connected');
     return (
-      <Modal 
-        title="Add New Artist Address"
-        visible={adminModalOpen}
-        >
+      <Modal title="Add New Artist Address" visible={adminModalOpen}>
         <Col xs={24} md={12}>
           <h3>Convert Master Editions</h3>
-          <p>
-            You have
-          </p>
+          <p>You have</p>
         </Col>
       </Modal>
     );
-  };
+  }
 
   const connect = useCallback(
     () => (wallet.wallet ? wallet.connect().catch() : setVisible(true)),
@@ -100,14 +96,10 @@ export const AdminView = () => {
   }, [store, storeAddress, wallet.publicKey]);
 
   useEffect(() => {
-    return subscribeProgramChanges(
-      connection,
-      patchState,
-      {
-        programId: METAPLEX_ID,
-        processAccount: processMetaplexAccounts,
-      },
-    );
+    return subscribeProgramChanges(connection, patchState, {
+      programId: METAPLEX_ID,
+      processAccount: processMetaplexAccounts,
+    });
   }, [connection]);
 
   useEffect(() => {
@@ -128,13 +120,16 @@ export const AdminView = () => {
           connection,
           wallet.publicKey?.toBase58() as string,
         );
-        patchState(creatorsState, auctionManagerState, auctionsState, vaultState);
+        patchState(
+          creatorsState,
+          auctionManagerState,
+          auctionsState,
+          vaultState,
+        );
         setLoadingAdmin(false);
       } catch (error) {
-        console.error(`failed loading error: ${error}`)
+        console.error(`failed loading error: ${error}`);
       }
-
-
     })();
   }, [loadingAdmin, isLoading, storeAddress]);
 
@@ -157,7 +152,7 @@ export const AdminView = () => {
         </p>
       ) : !storeAddress || isLoading ? (
         <Spin indicator={<LoadingOutlined />} />
-      ) : store && wallet ? (
+      ) : store && wallet && (ownerAddress === publicKey?.toBase58()) ? (
         <>
           <InnerAdminView
             store={store}
@@ -275,6 +270,8 @@ function InnerAdminView({
   wallet: WalletSigner;
   connected: boolean;
 }) {
+  const { publicKey } = useWallet();
+  console.log(publicKey?.toBase58());
   const [newStore, setNewStore] = useState(
     store && store.info && new Store(store.info),
   );
@@ -360,7 +357,7 @@ function InnerAdminView({
       ),
     },
   ];
-  
+
   interface DataType {
     key: React.Key;
     attribute: string;
@@ -428,41 +425,33 @@ function InnerAdminView({
     },
   ];
 
-
-  function unCamel( text: string ) {
-    const result = text.replace(/([A-Z])/g, " $1");
+  function unCamel(text: string) {
+    const result = text.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
   }
-  
+
   return (
     <Content>
       <Col>
-      <h2>Metaplex</h2>
-      <Row>
-        {!store.info.public && (
-          <Col xs={24} md={24}>
-            <p>
-              Storefront Values
-            </p>
-            <Table
-            columns={configColumns}
-            dataSource={storeConfigData}
-          />
-            <p>
-              Public Environment Variables
-            </p>
-            <Table
-            columns={configColumns}
-            dataSource={Object.keys(publicRuntimeConfig).map(key => ({
-              key,
-              attribute: unCamel(key),
-              value: publicRuntimeConfig[key],
-            }))}
-          />
-          </Col>
-        )}
-      </Row>
+        <h2>Metaplex</h2>
+        <Row>
+          {!store.info.public && (
+            <Col xs={24} md={24}>
+              <p>Storefront Values</p>
+              <Table columns={configColumns} dataSource={storeConfigData} />
+              <p>Public Environment Variables</p>
+              <Table
+                columns={configColumns}
+                dataSource={Object.keys(publicRuntimeConfig).map(key => ({
+                  key,
+                  attribute: unCamel(key),
+                  value: publicRuntimeConfig[key],
+                }))}
+              />
+            </Col>
+          )}
+        </Row>
         <Row>
           <h2>Whitelisted Creators</h2>
           <Col span={22}>
