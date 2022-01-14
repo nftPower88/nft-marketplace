@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   constants,
   IPartialCreateAuctionArgs,
@@ -48,7 +49,7 @@ import { PriceAuction } from './priceAuction';
 import { ReviewStep } from './reviewStep';
 import { TierTableStep } from './tierTableStep';
 import { WaitingStep } from './waitingStep';
-
+import { useStore } from '@oyster/common';
 const { Step } = Steps;
 const { ZERO } = constants;
 
@@ -135,7 +136,7 @@ export const AuctionCreateView = () => {
   const mint = useMint(QUOTE_MINT);
   const { width } = useWindowDimensions();
   const [percentComplete, setPercentComplete] = useState(0);
-  const [rejection, setRejection] = useState<string>()
+  const [rejection, setRejection] = useState<string>();
   const [step, setStep] = useState<number>(1);
   const [stepsVisible, setStepsVisible] = useState<boolean>(true);
   const [auctionObj, setAuctionObj] = useState<
@@ -155,6 +156,21 @@ export const AuctionCreateView = () => {
     winnersCount: 1,
     startSaleTS: undefined,
     startListTS: undefined,
+  });
+  const { connected, publicKey } = useWallet();
+  const { ownerAddress } = useStore();
+
+  const activatedCreators = Object.values(whitelistedCreatorsByCreator).filter(
+    e => {
+      if (!e.info.activated) {
+        return;
+      }
+      return e.info.address;
+    },
+  );
+  const isActivatedCreator = Object.values(activatedCreators).some(e => {
+    console.log(`${e.info.address} - ${publicKey?.toBase58()}`);
+    return e.info.address === publicKey?.toBase58();
   });
 
   const [tieredAttributes, setTieredAttributes] = useState<TieredAuctionState>({
@@ -176,8 +192,8 @@ export const AuctionCreateView = () => {
       },
       {
         programId: VAULT_ID,
-        processAccount: processVaultData
-      }
+        processAccount: processVaultData,
+      },
     );
   }, [connection]);
 
@@ -193,7 +209,9 @@ export const AuctionCreateView = () => {
 
   const createAuction = async () => {
     let winnerLimit: WinnerLimit;
-    let auctionInfo: { vault: string, auction: string, auctionManager: string } | undefined;
+    let auctionInfo:
+      | { vault: string; auction: string; auctionManager: string }
+      | undefined;
 
     if (
       attributes.category === AuctionCategory.InstantSale &&
@@ -500,7 +518,7 @@ export const AuctionCreateView = () => {
     const participationSafetyDepositDraft = isOpenEdition
       ? attributes.items[0]
       : attributes.participationNFT;
-    
+
     try {
       auctionInfo = await createAuctionManager(
         connection,
@@ -517,11 +535,10 @@ export const AuctionCreateView = () => {
     } catch (e: any) {
       setRejection(e.message);
       Bugsnag.notify(e);
-      return;  
+      return;
     }
 
     try {
-
       track('new_listing', {
         category: 'creation',
         label: isInstantSale ? 'instant sale' : 'auction',
@@ -685,36 +702,45 @@ export const AuctionCreateView = () => {
 
   return (
     <>
-      <Row>
-        {stepsVisible && (
-          <Col span={24} md={4}>
-            <Steps
-              progressDot
-              direction={width < 768 ? 'horizontal' : 'vertical'}
-              current={step}
-            >
-              {stepsByCategory[attributes.category]
-                .filter(_ => !!_[0])
-                .map((step, idx) => (
-                  <Step title={step[0]} key={idx} />
-                ))}
-            </Steps>
-          </Col>
-        )}
-        <Col span={24} {...(stepsVisible ? { md: 20 } : { md: 24 })}>
-          <Space
-            className="metaplex-fullwidth metaplex-space-align-stretch"
-            direction="vertical"
-          >
-            {stepsByCategory[attributes.category][step][1]}
-            {0 < step && stepsVisible && (
-              <Row justify="center">
-                <Button onClick={() => gotoNextStep(step - 1)}>Back</Button>
-              </Row>
+      {isActivatedCreator || publicKey?.toBase58() === ownerAddress ? (
+        <>
+          <Row>
+            {stepsVisible && (
+              <Col span={24} md={4}>
+                <Steps
+                  progressDot
+                  direction={width < 768 ? 'horizontal' : 'vertical'}
+                  current={step}
+                >
+                  {stepsByCategory[attributes.category]
+                    .filter(_ => !!_[0])
+                    .map((step, idx) => (
+                      <Step title={step[0]} key={idx} />
+                    ))}
+                </Steps>
+              </Col>
             )}
-          </Space>
-        </Col>
-      </Row>
+            <Col span={24} {...(stepsVisible ? { md: 20 } : { md: 24 })}>
+              <Space
+                className="metaplex-fullwidth metaplex-space-align-stretch"
+                direction="vertical"
+              >
+                {stepsByCategory[attributes.category][step][1]}
+                {0 < step && stepsVisible && (
+                  <Row justify="center">
+                    <Button onClick={() => gotoNextStep(step - 1)}>Back</Button>
+                  </Row>
+                )}
+              </Space>
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <>
+          <h2>You are unauthorized</h2>
+          <Link to="/">Go to Home</Link>
+        </>
+      )}
     </>
   );
 };
