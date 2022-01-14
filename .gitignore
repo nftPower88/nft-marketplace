@@ -43,6 +43,8 @@ app/yarn.lock
 # log files
 app/lerna-debug.log
 
+# video files
+app/packages/web/public/video/
 
 # map files
 app/packages/common/dist/tsconfig.tsbuildinfo
