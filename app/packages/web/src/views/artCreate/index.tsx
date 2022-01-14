@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   IMetadataExtension,
   MetadataCategory,
@@ -20,6 +21,8 @@ import { LaunchStep } from './launchStep';
 import { RoyaltiesStep } from './royaltiesStep';
 import { UploadStep } from './uploadStep';
 import { WaitingStep } from './waitingStep';
+import { useMeta } from '../../contexts';
+import { useStore } from '@oyster/common';
 
 const { Step } = Steps;
 
@@ -42,6 +45,7 @@ export const ArtCreateView = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [coverFile, setCoverFile] = useState<File>();
   const [mainFile, setMainFile] = useState<File>();
+  const { connected, publicKey } = useWallet();
   const [attributes, setAttributes] = useState<IMetadataExtension>({
     name: '',
     symbol: '',
@@ -57,6 +61,24 @@ export const ArtCreateView = () => {
       category: MetadataCategory.Image,
     },
   });
+  const { ownerAddress } = useStore();
+
+  const { whitelistedCreatorsByCreator} =
+  useMeta();
+
+  const activatedCreators = Object.values(whitelistedCreatorsByCreator).filter(
+    e => {
+      if (!e.info.activated) {
+        return;
+      }
+      return e.info.address;
+    },
+  );
+  const isActivatedCreator = Object.values(activatedCreators).some(e => {
+    console.log(`${e.info.address} - ${publicKey?.toBase58()}`);
+    return e.info.address === publicKey?.toBase58();
+  });
+
 
   const { track } = useAnalytics();
 
@@ -127,10 +149,10 @@ export const ArtCreateView = () => {
       setMinting(false);
     }
   };
-
-  return (
+   return (
+     
     <>
-      <Row>
+    {isActivatedCreator || publicKey?.toBase58() === ownerAddress ? (<> <Row>
         {stepsVisible && (
           <Col span={24} md={4}>
             <Steps
@@ -218,7 +240,11 @@ export const ArtCreateView = () => {
       </Row>
       <MetaplexOverlay visible={step === 6}>
         <Congrats nft={nft} alert={alertMessage} />
-      </MetaplexOverlay>
+      </MetaplexOverlay></>) : (    <>
+          <h2>You are unauthorized</h2>
+          <Link to="/">Go to Home</Link>
+        </>)}
+     
     </>
   );
 };

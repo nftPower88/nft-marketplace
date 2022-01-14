@@ -58,12 +58,12 @@ const { Content } = Layout;
 export const AdminView = () => {
   const { store, whitelistedCreatorsByCreator, isLoading, patchState } =
     useMeta();
-    const connection = useConnection();
-    const wallet = useWallet();
-    const [loadingAdmin, setLoadingAdmin] = useState(true);
-    const { setVisible } = useWalletModal();
-    const { connected, publicKey } = useWallet();
-    const { ownerAddress } = useStore();
+  const connection = useConnection();
+  const wallet = useWallet();
+  const [loadingAdmin, setLoadingAdmin] = useState(true);
+  const { setVisible } = useWalletModal();
+  const { connected, publicKey } = useWallet();
+  const { ownerAddress } = useStore();
   const [adminModalOpen, setAdminModalOpen] = useState(false);
 
   if (!wallet.publicKey) {
@@ -152,7 +152,7 @@ export const AdminView = () => {
         </p>
       ) : !storeAddress || isLoading ? (
         <Spin indicator={<LoadingOutlined />} />
-      ) : store && wallet && (ownerAddress === publicKey?.toBase58()) ? (
+      ) : store && wallet && ownerAddress === publicKey?.toBase58() ? (
         <>
           <InnerAdminView
             store={store}
@@ -176,10 +176,15 @@ export const AdminView = () => {
             </>
           )}
         </>
-      ) : (
+      ) : ownerAddress === publicKey?.toBase58() ? (
         <>
           <p>Store is not initialized</p>
           <Link to="/explore">Go to initialize</Link>
+        </>
+      ) : (
+        <>
+          <h2>You are unauthorized</h2>
+          <Link to="/">Go to Home</Link>
         </>
       )}
     </>
