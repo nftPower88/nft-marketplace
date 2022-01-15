@@ -13,6 +13,7 @@ import {
 } from '../../hooks';
 import {Banner} from '../../components/Banner';
 import CheckOutModal from '../modals/CheckOutModal';
+import DrawerWrapper from '../modals/DrawerWrapper';
 
 export enum LiveAuctionViewState {
   All = '0',
@@ -113,7 +114,7 @@ export const AuctionListView = () => {
         </div>
       )}
       {showModal && (
-        <CheckOutModal show={showModal} id={itemId} hide={()=>setShowModal(false)} />
+        <DrawerWrapper show={showModal} id={itemId} hide={()=>setShowModal(false)} />
       )}
     </>
   );

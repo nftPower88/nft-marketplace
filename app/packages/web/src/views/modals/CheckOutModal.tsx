@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Drawer,
+  Popover,
   Spin,
   Button,
   Carousel,
@@ -39,7 +39,7 @@ import { Link } from 'react-router-dom';
 import { MetaAvatar } from '../../components/MetaAvatar';
 import { ViewOn } from '../../components/ViewOn';
 import { AuctionCard } from '../../components/AuctionCard';
-
+import { NextPageContext, GetServerSideProps } from 'next';
 interface Props {
   show: boolean;
   hide: (value: any) => void;
@@ -121,19 +121,27 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
     );
   });
 
+  function aboutPop() {
+    return (
+      <Popover
+        trigger="click"
+        placement="bottomRight"
+        content={
+          <Space direction="vertical">
+            {hasDescription && <Skeleton paragraph={{ rows: 3 }} />}
+            {description ||
+              (winnerCount !== undefined && <p>No description provided.</p>)}
+          </Space>
+        }
+      ></Popover>
+    );
+  }
+
   return (
-    <Drawer
-      title="Checkout"
-      placement="right"
-      closable={true}
-      onClose={hide}
-      visible={show}
-      key="right"
-      width={350}
-    >
-      <Row justify="center" ref={ref} gutter={[24, 0]}>
-        <Col span={24} md={{ span: 24 }} lg={24}>
-          <div style={{'width':'100px','border':'1px solid','margin':'auto'}}>
+    <Row justify="space-between" ref={ref} gutter={[24, 0]}>
+      <Col span={24} md={{ span: 24 }} lg={24}>
+        <Row justify="center">
+          <div style={{ width: '100px', border: '1px solid' }}>
             <Carousel
               className="metaplex-spacing-bottom-md"
               autoplay={false}
@@ -142,91 +150,103 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
               {items}
             </Carousel>
           </div>
-          <hr/>
-          <Space direction="vertical" size="middle" align='start' >
-            <Text>ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}</Text>
-            <div style={{'textAlign':'center','margin':'auto'}}>
-              {hasDescription && <Skeleton paragraph={{ rows: 3 }} />}
-              {description ||
-                (winnerCount !== undefined && (
-                  <p>No description provided.</p>
-                ))}
-            </div>
-          </Space>
-          {attributes && (
-            <div>
-              <Text>Attributes</Text>
-              <List grid={{ column: 2 }}>
-                {attributes.map((attribute, index) => (
-                  <List.Item key={`${attribute.value}-${index}`}>
-                    <List.Item.Meta
-                      title={attribute.trait_type}
-                      description={attribute.value}
-                    />
-                  </List.Item>
-                ))}
-              </List>
-            </div>
-          )}
-        <hr/>
-        </Col>
-        <Col span={24} lg={{  span: 24 }}>
-          <Row justify="space-between">
-            <h2>{art.title || <Skeleton paragraph={{ rows: 0 }} />}</h2>
-            {wallet.publicKey?.toBase58() ===
-              auction?.auctionManager.authority && (
-              <Link to={`/auction/${id}/billing`}>
-                <Button type="ghost">Billing</Button>
-              </Link>
-            )}
-          </Row>
-          <Row className="metaplex-spacing-bottom-sm" justify='start'>
-           
-              <Space direction="vertical" size='middle'>
-                <Space direction="horizontal" size="large" align='center'>
-                  <Text>CREATED BY</Text>
-                  <MetaAvatar creators={creators} />
-                </Space>
-                <Space direction="horizontal" size="large">
-                  <Text>Edition</Text>
-                  {(auction?.items.length || 0) > 1 ? 'Multiple' : edition}
-                </Space>
-                <Space direction="horizontal" size="large" align='center'>
-                  <Text>Winners</Text>
-                  <span>
-                    {winnerCount === undefined ? (
-                      <Skeleton paragraph={{ rows: 0 }} />
-                    ) : (
-                      winnerCount
-                    )}
-                  </span>
-                </Space>
-                <Space direction="horizontal" size="large" align='start'>
-                  <Text style={{ padding: '10px' }}>NFTS</Text>
-                  {nftCount === undefined ? (
-                    <Skeleton paragraph={{ rows: 0 }} />
-                  ) : (
-                    nftCount
-                  )}
-                </Space>
+        </Row>
+        <hr />
+        <Row justify="center">
+          <Popover
+            style={{'border':'1px solid'}}
+            trigger="click"
+            placement="leftBottom"
+            content={
+              <>
+              <Space direction="vertical">
+                {hasDescription && <Skeleton paragraph={{ rows: 3 }} />}
+                {description ||
+                  (winnerCount !== undefined && (
+                    <p>No description provided.</p>
+                  ))}
               </Space>
-                  
-          </Row>
-          <div style={{"marginTop":'15px'}}></div>
-           <Col span={24}>
-           <Row justify="center">
-                <ViewOn art={art} />
-              </Row></Col>
-        <hr/>
+               <Col span={24} lg={{ span: 24 }}>
+               <Row justify="center">
+                 <h2>{art.title || <Skeleton paragraph={{ rows: 0 }} />}</h2>
+                 {wallet.publicKey?.toBase58() ===
+                   auction?.auctionManager.authority && (
+                   <Link to={`/auction/${id}/billing`}>
+                     <Button type="ghost">Billing</Button>
+                   </Link>
+                 )}
+               </Row>
+               <Row className="metaplex-spacing-bottom-sm" justify="center">
+                 <Space direction="vertical" size="middle">
+                   <Space direction="horizontal" size="large" align="center">
+                     <Text>CREATED BY</Text>
+                     <MetaAvatar creators={creators} />
+                   </Space>
+                   <Space direction="horizontal" size="large">
+                     <Text>Edition</Text>
+                     {(auction?.items.length || 0) > 1 ? 'Multiple' : edition}
+                   </Space>
+                   <Space direction="horizontal" size="large" align="center">
+                     <Text>Winners</Text>
+                     <span>
+                       {winnerCount === undefined ? (
+                         <Skeleton paragraph={{ rows: 0 }} />
+                       ) : (
+                         winnerCount
+                       )}
+                     </span>
+                   </Space>
+                   <Space direction="horizontal" size="large" align="start">
+                     <Text style={{ padding: '10px' }}>NFTS</Text>
+                     {nftCount === undefined ? (
+                       <Skeleton paragraph={{ rows: 0 }} />
+                     ) : (
+                       nftCount
+                     )}
+                   </Space>
+                 </Space>
+               </Row>
+               <hr />
+        <div style={{ marginTop: '15px' }}></div>
+             
+                 <Row justify="center">
+                   <ViewOn art={art} />
+                 </Row>
+            
+               </Col>
+             </>
+            }
+          >
+            <Button>ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}</Button>
+          </Popover>
+        </Row>
+        {attributes && (
+          <div>
+            <Text>Attributes</Text>
+            <List grid={{ column: 2 }}>
+              {attributes.map((attribute, index) => (
+                <List.Item key={`${attribute.value}-${index}`}>
+                  <List.Item.Meta
+                    title={attribute.trait_type}
+                    description={attribute.value}
+                  />
+                </List.Item>
+              ))}
+            </List>
+          </div>
+        )}
 
-          {!auction && <Skeleton paragraph={{ rows: 6 }} />}
-          {auction && (
-            <AuctionCard auctionView={auction} hideDefaultAction={false} />
-          )}
-          {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
-        </Col>
-      </Row>
-    </Drawer>
+               <hr />
+       
+               {!auction && <Skeleton paragraph={{ rows: 6 }} />}
+               {auction && (
+                 <AuctionCard auctionView={auction} hideDefaultAction={false} />
+               )}
+               {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
+             
+      </Col>
+     
+    </Row>
   );
 };
 
