@@ -2,7 +2,7 @@ import React from 'react';
 import { UnrealAdapter } from "./UnrealAdapter"
 import { WebRtcPlayer } from './WebRtcPlayer';
 
-const HOST = "node1-gpu1-home.sys.queendom.io"
+const HOST = "node1.stream.queendom.io"
 const PORT = 443
 
 interface SocketMessage {
@@ -288,7 +288,7 @@ class Mirror extends React.Component<Props, State, UnrealAdapterHook> {
 
     async componentDidMount() {     
       this.load()
-      /*
+      
       if (this.videoReference.current && this.player) {
         //this.player.startPlay();
         //  let videoStream: HTMLVideoElement = await this.player.video;
@@ -297,14 +297,15 @@ class Mirror extends React.Component<Props, State, UnrealAdapterHook> {
         await this.player.startPlay();
         //await this.videoReference.current.play()
       };
-      */
+      
       
       // Load video @TODO: make autoplay back, make bitrate dynamic?
-      
+      /*
       if (this.videoReference.current) {
         this.videoReference.current.src = "/video/demo.mp4";
         await this.videoReference.current.play(); //@TODO make this play a loop
       };
+      */
       
       // Camera Debug Test
       /*

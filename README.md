@@ -4,7 +4,6 @@ Switch to the dev branch:
 
 `git checkout dev`
 
-
 You can clone dev directly via:
 
 `git clone --branch dev git@github.com:QueendomDAO/nft-marketplace.git`

@@ -1,4 +1,4 @@
-name: nft-marketplace_tmp # just to not conflict with my env, don't change yours
+name: nft-marketplace # just to not conflict with my env, don't change yours
 channels:
   - pytorch
   - conda-forge
