@@ -292,7 +292,8 @@ class Mirror extends React.Component<Props, State, UnrealAdapterHook> {
     }
   }
 
-  async componentDidMount() {
+
+  async componentDidUpdate() {
     this.load();
     let newPlayer = await this.player;
     if (!newPlayer) {
