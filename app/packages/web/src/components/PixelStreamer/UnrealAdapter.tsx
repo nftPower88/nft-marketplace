@@ -97,13 +97,17 @@ export class UnrealAdapter extends UnrealAdapterHook {
   }
 
   public load() {
+    console.log('loading UnrealAdapter');
+
     this.ws = new WebSocket(
       this.unrealAdapterOption.useSSL
-        ? 'wss://'
+        ? 'wss://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port
         : 'ws://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port,
     );
     this.ws.onmessage = (event) => {
       const data: SocketMessage = JSON.parse(event.data);
+      console.log(`onmessage: ${data.type}`);
+      
       switch (data.type) {
         case 'answer':
           this.player.handleReceiveAnswer(data);

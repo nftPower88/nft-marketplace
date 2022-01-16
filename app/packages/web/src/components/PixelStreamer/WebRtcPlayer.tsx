@@ -51,6 +51,7 @@ export class WebRtcPlayer extends WebRtcPlayerHook {
   }
 
   public async setupWrbRtcPlayer() {
+    console.log("Starting WebRTC player...");
     this.setUpVideo();
     await this.setupTransceivers();
     this.setupPeerConnection();
