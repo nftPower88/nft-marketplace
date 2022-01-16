@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Starting to deploy 'web', bootstrapping..."
-yarn bootstrap
+echo "Starting to deploy 'web', installing and bootstrapping..."
+yarn&& yarn bootstrap
 
 echo "Preparing 'common'..."
 cd ./packages/common || exit

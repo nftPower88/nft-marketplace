@@ -4,7 +4,6 @@ import { Col, Menu, Row, Space } from 'antd';
 import React, { ReactNode, useMemo, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
-import { HowToBuyModal } from '../HowToBuyModal';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 
@@ -198,9 +197,7 @@ export const AppBar = (props: P) => {
                 <Cog buttonType="text" />
               </>
             ) : (
-              <>
-                <HowToBuyModal buttonType="text" />
-        
+              <>      
                 <ConnectButton type="text" allowWalletChange={false} />
               </>
             )}

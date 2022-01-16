@@ -1,4 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
+import React, {
+  Component,
+  SyntheticEvent,
+} from 'react';
 import { WebRtcPlayer } from './WebRtcPlayer';
 import { UnrealAdapterHook } from './UnrealAdapterHook';
 
@@ -6,6 +9,25 @@ interface SocketMessage {
   type: 'config' | 'playerCount' | 'answer' | 'iceCandidate';
   peerConnectionOptions?: RTCConfiguration;
   candidate?: RTCIceCandidateInit;
+}
+
+type NativeKeyboardEvent = KeyboardEvent;
+interface KeyboardEvent<T = Element> extends SyntheticEvent<T, NativeKeyboardEvent> {
+  altKey: boolean;
+  /** @deprecated */
+  charCode: number;
+  ctrlKey: boolean;
+  getModifierState(key: string): boolean;
+  key: string;
+  /** @deprecated */
+  keyCode: number;
+  locale: string;
+  location: number;
+  metaKey: boolean;
+  repeat: boolean;
+  shiftKey: boolean;
+  /** @deprecated */
+  which: number;
 }
 
 export interface UnrealAdapterOptions {
@@ -80,6 +102,16 @@ const MessageType = {
   /**************************************************************************/
 };
 
+const SpecialKeyCodes = {
+  Backspace: 8,
+  ShiftLeft: 16,
+  ControlLeft: 17,
+  AltLeft: 18,
+  ShiftRight: 253,
+  ControlRight: 254,
+  AltRight: 255,
+};
+
 export enum BusinessMessageType {
   init = '0',
 }
@@ -98,13 +130,17 @@ export class UnrealAdapter extends UnrealAdapterHook {
   }
 
   public load() {
+    console.log('loading UnrealAdapter');
+
     this.ws = new WebSocket(
       this.unrealAdapterOption.useSSL
-        ? 'wss://'
+        ? 'wss://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port
         : 'ws://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port,
     );
     this.ws.onmessage = (event) => {
       const data: SocketMessage = JSON.parse(event.data);
+      console.log(`onmessage: ${data.type}`);
+
       switch (data.type) {
         case 'answer':
           this.player.handleReceiveAnswer(data);
@@ -147,17 +183,6 @@ export class UnrealAdapter extends UnrealAdapterHook {
     }
   }
 
-  const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>) => {
-    // Do something
-  };
-  registerKeyboardEvents() {
-    this.onkeydown = (e) => {
-      this.dc.send(new Uint8Array([SEND.KeyDown, SpecialKeyCodes[e.code] || e.keyCode, e.repeat]));
-      // whether to prevent browser"s default behavior when keyboard/mouse have inputs, like F1~F12 and Tab
-      e.preventDefault();
-      //  e.stopPropagation
-    };
-
   private onOrientationChange() {
     if (this.videoResizeTimeout) {
       clearTimeout(this.videoResizeTimeout);
@@ -190,7 +215,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
       }
     };
     this.player.onVideoInitialised = () => {
-      // console.log('onVideoInitialised');
+      console.log('onVideoInitialised');
     };
     this.player.onDataChannelConnected = () => {
       if (this.ws && this.ws.readyState === WS_OPEN_STATE) {
@@ -214,6 +239,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
     };
     await this.player.setupWrbRtcPlayer();
     if (this.onConfig) {
+//      this.registerKeyboardEvents();
       this.onConfig(peerConnectionOptions);
     }
   }
@@ -246,5 +272,30 @@ export class UnrealAdapter extends UnrealAdapterHook {
     if (this.player) {
       this.player.send(data);
     }
+  }
+
+  registerKeyboardEvents() {
+    onkeydown = (e) => {
+        // @ts-ignore
+      this.sendInputData(new Uint8Array([MessageType.KeyDown, SpecialKeyCodes[e.code] || e.keyCode, e.repeat]));
+      // whether to prevent browser"s default behavior when keyboard/mouse have inputs, like F1~F12 and Tab
+      e.preventDefault();
+      //  e.stopPropagation
+    };
+
+    onkeyup = (e) => {
+      // @ts-ignore
+      this.sendInputData(new Uint8Array([MessageType.KeyUp, SpecialKeyCodes[e.code] || e.keyCode]));
+      e.preventDefault();
+    };
+
+    onkeypress = (e) => {
+      const data = new DataView(new ArrayBuffer(3));
+      data.setUint8(0, MessageType.KeyPress);
+        // @ts-ignore
+      data.setUint16(1, SpecialKeyCodes[e.code] || e.keyCode, true);
+      this.sendInputData(data.buffer);
+      e.preventDefault();
+    };
   }
 }
