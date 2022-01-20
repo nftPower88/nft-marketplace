@@ -32,7 +32,7 @@ export function Routes({storefront}: RoutesProps) {
         html,
         body {
           color: #fff !important;
-          font-family: monospace !important;
+          font-family: 'Helvetica','Helvetica neue' !important;
         }
       `}</style>
       <HashRouter basename='/'>

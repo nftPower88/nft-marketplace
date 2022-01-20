@@ -1,9 +1,9 @@
 Variables
 :root {
-  --body-color: #fcfdfe;
+  --body-color: #0067ce;
   --checkout-color: #8f6ed5;
   --elements-color: #6772e5;
-  --body-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  --body-font-family: Helvetica,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     sans-serif;
   --h1-color: #1a1f36;
   --h2-color: #7b818a;
@@ -225,7 +225,7 @@ button:disabled {
 .card-number {
   display: inline;
   white-space: nowrap;
-  font-family: Menlo, Consolas, monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: #3c4257;
   font-weight: 500;
 }

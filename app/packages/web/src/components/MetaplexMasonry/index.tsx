@@ -3,8 +3,8 @@ import Masonry, { MasonryProps } from 'react-masonry-css';
 
 const COL_BREAKPOINTS = {
   // [ <width> | 'default' ]: <num-cols>
-  default: 4,
-  1100: 3,
+  default: 3,
+  1100: 2,
   700: 2,
   500: 1,
 };
