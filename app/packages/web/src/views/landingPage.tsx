@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {useRouter} from 'next/router';
 import {ConnectButton, metadataByMintUpdater, useStore} from '@oyster/common';
@@ -6,7 +7,12 @@ import {InstructionsModal} from '../components/InstructionsModal';
 import {useInfiniteScrollAuctions} from '../hooks';
 import {AuctionRenderCard} from '../components/AuctionRenderCard';
 import PixelStreamer from '../components/PixelStreamer';
+import Hero from '../components/Hero';
+import CookieConsent, { Cookies } from "react-cookie-consent";
+
+
 export const LandingPageView = () => {
+
   const router = useRouter();
   const {storefront} = useStore();
   const {
@@ -16,6 +22,8 @@ export const LandingPageView = () => {
     hasNextPage,
     loadMore,
   } = useInfiniteScrollAuctions();
+
+
 
   return (
     <>
@@ -97,13 +105,14 @@ export const LandingPageView = () => {
         `}
       </style>
       <div className={`landing-page overflow-hidden`} style={{'height':'75vh'}}>
+      <Hero/>
         <div
           className={` mt-5 mt-md-0 d-flex flex-column justify-content-between`}>
           <div
             className ={`d-flex flex-row flex-md-row justify-content-between`}> 
             <PixelStreamer/>
           </div>
-          
+        
         </div>
       </div>
       <div
@@ -133,6 +142,19 @@ export const LandingPageView = () => {
               Reddit
             </button>
           </div>
+          <CookieConsent
+          onAccept={() => {
+            alert("yay!");
+          }}
+          debug={true}
+          enableDeclineButton
+          declineButtonText="Decline (optional)"
+          onDecline={() => {
+            alert("nay!");
+          }}
+        >
+          This website uses cookies to enhance the user experience.
+        </CookieConsent>
     </>
   );
 };

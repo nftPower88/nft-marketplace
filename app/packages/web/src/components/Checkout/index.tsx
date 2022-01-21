@@ -240,7 +240,7 @@ export class Checkout extends React.Component<
                 <h5
                   style={{
                     marginRight: '7px',
-                    fontFamily: 'monospace',
+                    fontFamily: 'Roboto',
                     paddingTop: '5px',
                   }}
                 >

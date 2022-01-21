@@ -3,12 +3,8 @@ import React, { useState } from 'react';
 import CardIcon from '../svgs/Card';
 import CalendarIcon from '../svgs/calendar';
 import LockIcon from '../svgs/lock';
-import { CustomDonationInput } from './CustomDonationInput';
-import { StripeTestCards } from './StripeTestCards';
-import { PrintObject } from './PrintObject';
-
 import { fetchPostJSON } from '../../utils/stripe';
-import { formatAmountForDisplay } from '../../utils/stripe';
+
 import * as config from '../../config/stripe';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -20,7 +16,6 @@ import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
-  PaymentElement,
 } from '@stripe/react-stripe-js';
 
 const CARD_OPTIONS = {
@@ -30,7 +25,7 @@ const CARD_OPTIONS = {
       iconColor: '#fcfdfe',
       color: '#fcfdfe',
       fontWeight: '500',
-      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+      fontFamily: 'Helvetica ,Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
       ':-webkit-autofill': {
@@ -155,7 +150,7 @@ export const ElementsForm = () => {
         <fieldset className="elements-style  modal_form">
           <div className="modal_header">
             <div style={{'display':'flex','alignItems':'center'}}>
-            <h5 style={{'marginRight':'7px','fontFamily':'monospace','paddingTop':'5px'}}>
+            <h5 style={{'marginRight':'7px','paddingTop':'5px'}}>
               Card &<br /> billing
             </h5>
             <img

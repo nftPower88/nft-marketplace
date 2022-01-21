@@ -38,10 +38,11 @@ export const AmountLabel = (props: IAmountLabel) => {
       <h5>{title}</h5>
       <Space direction="horizontal" align="baseline">
         {PriceNaN === false && (
-          <Statistic
-            value={`${amount}${displaySOL ? ' SOL' : ''}`}
-            prefix={customPrefix || <SolCircle />}
-          />
+          // <Statistic
+          //   value={`${amount}${displaySOL ? ' SOL' : ''}`}
+          //   prefix={customPrefix || <SolCircle />}
+          // />
+          <div> <SolCircle /> {amount}{displaySOL ? ' SOL' : ''} ~ </div>
         )}
         {displayUSD && (
           <div>

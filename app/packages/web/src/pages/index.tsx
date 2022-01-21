@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { NextPageContext } from 'next';
@@ -96,7 +97,6 @@ function AppWrapper({ storefront }: AppProps) {
   }, [hasLogo, hasStylesheet]);
 
   useEffect(() => {
-    console.log()
     if(theme===Theme.Light){
 
       storefront.theme.color=lightColor
@@ -105,7 +105,7 @@ function AppWrapper({ storefront }: AppProps) {
         
        storefront.theme.color=darkColor
       }
-      console.log(storefront.theme.color)
+      
     const doc = document.documentElement;
 
     const cleanup = applyTheme(storefront.theme, doc.style, document.head);

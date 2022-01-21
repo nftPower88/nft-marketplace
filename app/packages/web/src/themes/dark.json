@@ -1,10 +1,10 @@
 {
     "color": {
       "background": "#121111",
-      "primary": "#e4d000"
+      "primary": "#f2f2f2"
     },
     "font": {
-      "title": "Montserrat",
-      "text": "Montserrat"
+      "title": "Helvetica",
+      "text": "Helvetica"
     }
   }
