@@ -96,7 +96,8 @@
     "timeago.js": "^4.0.2",
     "unreal-pixelstreaming-node": "^0.0.22",
     "winston": "^3.3.3",
-    "react-cookie-consent": "^7.2.1"
+    "react-cookie-consent": "^7.2.1",
+    "react-player": "^2.9.0"
   },
   "scripts": {
     "prestart": "npm-link-shared ../common/node_modules/ . react && npm-link-shared ../checkout/node_modules/ . react",
