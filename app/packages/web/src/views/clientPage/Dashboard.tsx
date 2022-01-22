@@ -7,6 +7,7 @@ import "./Dashboard.module.css";
 import ActiveUsersList from "../../components/ActiverUsersList/ActiveUsersList";
 import DirectCall from "../../components/DirectCall/DirectCall";
 import { store } from "../../store/store";
+import PixelStreamer from "../../components/PixelStreamer";
 
 
 export const DashboardView = () => {
@@ -21,7 +22,7 @@ export const DashboardView = () => {
         <div className="dashboard_left_section">
           <div className="dashboard_content_container">
               {/* <DirectCall />*/}
-              <DirectCall />
+              <PixelStreamer />
           </div>
           <div className="dashboard_rooms_container background_secondary_color">
             rooms

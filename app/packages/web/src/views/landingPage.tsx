@@ -9,6 +9,7 @@ import {AuctionRenderCard} from '../components/AuctionRenderCard';
 import PixelStreamer from '../components/PixelStreamer';
 import Hero from '../components/Hero';
 import CookieConsent, { Cookies } from "react-cookie-consent";
+import ReactPlayer from 'react-player'
 
 
 export const LandingPageView = () => {
@@ -110,7 +111,8 @@ export const LandingPageView = () => {
           className={` mt-5 mt-md-0 d-flex flex-column justify-content-between`}>
           <div
             className ={`d-flex flex-row flex-md-row justify-content-between`}> 
-            <PixelStreamer/>
+            {/* <PixelStreamer/> */}
+          <ReactPlayer loop playing muted={true} url='video/demo.mp4' width='100%' height='100%' />
           </div>
         
         </div>
