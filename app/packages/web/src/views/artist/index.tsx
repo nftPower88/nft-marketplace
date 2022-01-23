@@ -18,7 +18,7 @@ export const ArtistView = () => {
   const connection = useConnection();
   const creators = Object.values(whitelistedCreatorsByCreator);
   const [showWarningModal, setShowWarningModal] = useState<boolean>(false);
-
+  console.log(artwork)
   useEffect(() => {
     if (!id) {
       return;
@@ -66,6 +66,7 @@ export const ArtistView = () => {
         <h2>Artists</h2>
         <MetaplexMasonry>
           {creators.map((m, idx) => {
+            
             const address = m.info.address;
             return (
               <Link to={`/artists/${address}`} key={idx}>
@@ -93,6 +94,7 @@ export const ArtistView = () => {
         ) : (
           <MetaplexMasonry>
             {artwork.map((m, idx) => {
+              console.log(m, 'this is m artist')
               const id = m.pubkey;
               return (
                 <Link to={`/artworks/${id}`} key={idx}>
