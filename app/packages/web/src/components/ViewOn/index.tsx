@@ -12,7 +12,7 @@ export const ViewOn = (props: ViewOnProps) => {
   const art = props.art ?? useArt(props.id);
 
   return (
-    <Space direction="vertical" size="small">
+    <Space direction="vertical" size="small" style={{'textAlign':'center'}}>
       <Text>View on</Text>
       <Space direction="horizontal">
         <Button onClick={() => window.open(art.uri || '', '_blank')}>
