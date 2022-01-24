@@ -11,6 +11,7 @@ import {
   Skeleton,
   Space,
   Typography,
+  Divider,
 } from 'antd';
 import {
   AuctionView as Auction,
@@ -31,6 +32,11 @@ import {
   useConnection,
   useMeta,
   VAULT_ID,
+  Identicon,
+  formatAmount,
+  fromLamports,
+  useMint,
+  PriceFloorType,
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { ArtType } from '../../types';
@@ -40,7 +46,8 @@ import { Link } from 'react-router-dom';
 import { MetaAvatar } from '../../components/MetaAvatar';
 import { ViewOn } from '../../components/ViewOn';
 import { AuctionCard } from '../../components/AuctionCard';
-
+import { AmountLabel } from '../../components/AmountLabel';
+import { CameraOutlined, CaretDownOutlined,FundProjectionScreenOutlined,ThunderboltOutlined } from '@ant-design/icons';
 
 interface Props {
   show: boolean;
@@ -75,6 +82,19 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const { Text } = Typography;
   const [showAbout, setShowAbout] = useState(true);
 
+  const mintInfo = useMint(auction?.auction.info.tokenMint);
+
+  const participationFixedPrice =
+    auction?.auctionManager.participationConfig?.fixedPrice || 0;
+  const participationOnly = auction?.auctionManager.numWinners.toNumber() === 0;
+  const priceFloor =
+    auction?.auction.info.priceFloor.type === PriceFloorType.Minimum
+      ? auction.auction.info.priceFloor.minPrice?.toNumber() || 0
+      : 0;
+  const [storyShow, setStoryShow] = useState(false);
+  const [captureShow,setCaptureShow] = useState(true)
+  const [showcaseShow,setShowcaseShow] = useState(true)
+  const [tryShow,setTryShow] = useState(true)
   useEffect(() => {
     return subscribeProgramChanges(
       connection,
@@ -141,109 +161,216 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   }
 
   return (
+    <Row justify="space-between" ref={ref} gutter={[24, 0]}>
+      <Col span={12}>
+        <h4 style={{ fontWeight: 'bold' }}>{art.title}</h4>
 
-      <Row justify="space-between" ref={ref} gutter={[24, 0]}>
-        <Col span={24} md={{ span: 24 }} lg={24}>
-          <Row justify="center">
-            <div style={{ width: '100px', border: '1px solid' }}>
-              <Carousel
-                className="metaplex-spacing-bottom-md"
-                autoplay={false}
-                afterChange={index => setCurrentIndex(index)}
+        <h4 style={{ fontWeight: 'bold', marginTop: '1px' }}>
+          <AmountLabel
+            displaySOL={true}
+            amount={fromLamports(
+              participationOnly ? participationFixedPrice : priceFloor,
+              mintInfo,
+            )}
+          />
+        </h4>
+      </Col>
+      <Col span={12}>
+        <h4 style={{ fontWeight: 'bold', textAlign: 'end' }}>item_id</h4>
+
+        <h4 style={{ fontWeight: 'bold', textAlign: 'end' }}>
+          Supply: {art.supply}/{art.maxSupply}
+        </h4>
+      </Col>
+      <Col span={24} md={{ span: 24 }} lg={24}>
+        <Row justify="center">
+          <div style={{ width: '100px', border: '1px solid' }}>
+            <Carousel
+              className="metaplex-spacing-bottom-md"
+              autoplay={false}
+              afterChange={index => setCurrentIndex(index)}
+            >
+              {items}
+            </Carousel>
+          </div>
+        </Row>
+        {!auction && <Skeleton paragraph={{ rows: 6 }} />}
+        {auction && (
+          <AuctionCard auctionView={auction} hideDefaultAction={false} />
+        )}
+        {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
+        {attributes && (
+          <div>
+            <Text>Attributes</Text>
+            <List grid={{ column: 2 }}>
+              {attributes.map((attribute, index) => (
+                <List.Item key={`${attribute.value}-${index}`}>
+                  <List.Item.Meta
+                    title={attribute.trait_type}
+                    description={attribute.value}
+                  />
+                </List.Item>
+              ))}
+            </List>
+          </div>
+        )}
+        <hr />
+        <Row justify="center">
+          <Col span={24}>
+            <Row justify="center">
+              <Button
+                onClick={() => {
+                  setStoryShow(false);
+                }}
+                style={{ width: '150px' }}
               >
-                {items}
-              </Carousel>
-            </div>
-          </Row>
-          <hr />
-          <Row justify="center">
-            <Button onClick={()=>setShowAbout(!showAbout)}>ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}</Button>
-              <div hidden={showAbout}>
-                <Col span={24} lg={{ span: 24 }}>
-                  <Row justify="center">
-                    <h2>{art.title || <Skeleton paragraph={{ rows: 0 }} />}</h2>
-                    {wallet.publicKey?.toBase58() ===
-                      auction?.auctionManager.authority && (
-                      <Link to={`/auction/${id}/billing`}>
-                        <Button type="ghost">Billing</Button>
-                      </Link>
+                Asset
+              </Button>
+              <Button
+                onClick={() => {
+                  setStoryShow(true);
+                }}
+                style={{ width: '150px' }}
+              >
+                Story
+              </Button>
+            </Row>
+          </Col>
+        </Row>
+        <hr />
+        <Row justify="center">
+          <Col span={24}>
+            <Row justify="center">
+              {storyShow ? (
+                <div>
+                  <h4>Story goes here</h4>
+                  <h5>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Placeat recusandae nemo expedita, nulla enim perspiciatis?
+                  </h5>
+                </div>
+              ) : (
+                <div>
+                  <h4>Asset goes here</h4>
+                  <h5>
+                    ?sitaicipsrep mine allun ,atidepxe omen eadnasucer taecalP
+                    .tile gnicisipida rutetcesnoc tema tis rolod muspi meroL
+                  </h5>
+                </div>
+              )}
+            </Row>
+          </Col>
+          <Col span={24}>
+            <h5>Blockchain : XX </h5>
+            <h5>Creator : {art.creators![0].address} </h5>
+            <h5>Asset : {art.mint} </h5>
+          </Col>
+          {/* <Button onClick={() => setShowAbout(!showAbout)}>
+            ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}
+          </Button>
+          <div hidden={showAbout}>
+            <Col span={24} lg={{ span: 24 }}>
+              <Row justify="center">
+                <h2>{art.title || <Skeleton paragraph={{ rows: 0 }} />}</h2>
+                {wallet.publicKey?.toBase58() ===
+                  auction?.auctionManager.authority && (
+                  <Link to={`/auction/${id}/billing`}>
+                    <Button type="ghost">Billing</Button>
+                  </Link>
+                )}
+              </Row>
+              <Row className="metaplex-spacing-bottom-sm" justify="center">
+                <Space direction="vertical" size="middle">
+                  <Space direction="horizontal" size="large" align="center">
+                    <Text>CREATED BY</Text>
+                    <MetaAvatar creators={creators} />
+                  </Space>
+                  <Space direction="horizontal" size="large">
+                    <Text>Edition</Text>
+                    {(auction?.items.length || 0) > 1 ? 'Multiple' : edition}
+                  </Space>
+                  <Space direction="horizontal" size="large" align="center">
+                    <Text>Winners</Text>
+                    <span>
+                      {winnerCount === undefined ? (
+                        <Skeleton paragraph={{ rows: 0 }} />
+                      ) : (
+                        winnerCount
+                      )}
+                    </span>
+                  </Space>
+                  <Space direction="horizontal" size="large" align="start">
+                    <Text style={{ padding: '10px' }}>NFTS</Text>
+                    {nftCount === undefined ? (
+                      <Skeleton paragraph={{ rows: 0 }} />
+                    ) : (
+                      nftCount
                     )}
-                  </Row>
-                  <Row className="metaplex-spacing-bottom-sm" justify="center">
-                    <Space direction="vertical" size="middle">
-                      <Space direction="horizontal" size="large" align="center">
-                        <Text>CREATED BY</Text>
-                        <MetaAvatar creators={creators} />
-                      </Space>
-                      <Space direction="horizontal" size="large">
-                        <Text>Edition</Text>
-                        {(auction?.items.length || 0) > 1
-                          ? 'Multiple'
-                          : edition}
-                      </Space>
-                      <Space direction="horizontal" size="large" align="center">
-                        <Text>Winners</Text>
-                        <span>
-                          {winnerCount === undefined ? (
-                            <Skeleton paragraph={{ rows: 0 }} />
-                          ) : (
-                            winnerCount
-                          )}
-                        </span>
-                      </Space>
-                      <Space direction="horizontal" size="large" align="start">
-                        <Text style={{ padding: '10px' }}>NFTS</Text>
-                        {nftCount === undefined ? (
-                          <Skeleton paragraph={{ rows: 0 }} />
-                        ) : (
-                          nftCount
-                        )}
-                      </Space>
-                    </Space>
-                  </Row>
-                  <hr />
-                  <div style={{ marginTop: '15px' }}></div>
-
-                  <Row justify="center">
-                    <ViewOn art={art} />
-                  </Row>
-                </Col>
-                <Space direction="vertical" style={{ margin: '1rem' }}>
-                  {hasDescription && <Skeleton paragraph={{ rows: 3 }} />}
-                  {description ||
-                    (winnerCount !== undefined && (
-                      <h4>No description provided.</h4>
-                    ))}
+                  </Space>
                 </Space>
-              </div>
-         
-          </Row>
-          {attributes && (
-            <div>
-              <Text>Attributes</Text>
-              <List grid={{ column: 2 }}>
-                {attributes.map((attribute, index) => (
-                  <List.Item key={`${attribute.value}-${index}`}>
-                    <List.Item.Meta
-                      title={attribute.trait_type}
-                      description={attribute.value}
-                    />
-                  </List.Item>
+              </Row>
+              <hr />
+              <div style={{ marginTop: '15px' }}></div>
+
+              <Row justify="center">
+                <ViewOn art={art} />
+              </Row>
+            </Col>
+            <Space direction="vertical" style={{ margin: '1rem' }}>
+              {hasDescription && <Skeleton paragraph={{ rows: 3 }} />}
+              {description ||
+                (winnerCount !== undefined && (
+                  <h4>No description provided.</h4>
                 ))}
-              </List>
+            </Space>
+          </div> */}
+        </Row>
+        <Divider />
+        <Col span={24}>
+          <h3 style={{ fontWeight: 'bold' }}>How to use</h3>
+          <Row justify="space-between" align="middle" onClick={()=>setCaptureShow(!captureShow)}>
+            <h4>
+              <CameraOutlined />
+            </h4>
+            <h4 style={{marginRight:'250px'}}>Capture it</h4>
+            <div >
+              <h4>
+                <CaretDownOutlined />
+              </h4>
             </div>
-          )}
-
+          </Row>
+          <div hidden={captureShow}><h5>Capture Captions</h5></div>
           <hr />
-
-          {!auction && <Skeleton paragraph={{ rows: 6 }} />}
-          {auction && (
-            <AuctionCard auctionView={auction} hideDefaultAction={false} />
-          )}
-          {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
+          <Row justify="space-between" align="middle" onClick={()=>setShowcaseShow(!showcaseShow)}>
+            <h4>
+              <FundProjectionScreenOutlined />
+            </h4>
+            <h4 style={{marginRight:'240px'}}>Showcase it</h4>
+            <div >
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={showcaseShow}><h5>Showcase Captions</h5></div>
+          <hr />
+          <Row justify="space-between" align="middle" onClick={()=>setTryShow(!tryShow)}>
+            <h4>
+              <ThunderboltOutlined />
+            </h4>
+            <h4 style={{marginRight:'270px'}}>Try it on</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={tryShow}><h5>Try it Captions</h5></div>
+          <hr />
+          
         </Col>
-      </Row>
-
+      </Col>
+    </Row>
   );
 };
 

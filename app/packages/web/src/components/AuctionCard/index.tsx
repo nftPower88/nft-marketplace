@@ -888,7 +888,7 @@ export const AuctionCard = ({
           direction="vertical"
         >
         
-            <Col span={24}>
+            {/* <Col span={24}>
               <AuctionNumbers
                 auctionView={auctionView}
                 showAsRow={true}
@@ -921,7 +921,7 @@ export const AuctionCard = ({
                   </Col>
                 )}
               </>
-            )}
+            )} */}
         
 
           {showDefaultNonEndedAction &&
