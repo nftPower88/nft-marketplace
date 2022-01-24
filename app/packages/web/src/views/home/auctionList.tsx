@@ -5,7 +5,7 @@ import {
   useConnection,
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Alert, Button, Spin, Divider,Select } from 'antd';
+import { Alert, Button, Spin, Divider, Select } from 'antd';
 import React, { useState, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Link, useParams } from 'react-router-dom';
@@ -14,13 +14,9 @@ import { MetaplexMasonry } from '../../components/MetaplexMasonry';
 import {
   useAuctionManagersToCache,
   useInfiniteScrollAuctions,
-  useCreatorArts,
 } from '../../hooks';
 import { Banner } from '../../components/Banner';
-import CheckOutModal from '../modals/CheckOutModal';
 import DrawerWrapper from '../modals/DrawerWrapper';
-
-import { ArtistCard } from '../../components/ArtistCard';
 import { useMeta } from '../../contexts';
 
 export enum LiveAuctionViewState {
@@ -51,6 +47,7 @@ export const AuctionListView = () => {
   const isStoreOwner = ownerAddress === wallet.publicKey?.toBase58();
   const notAllAuctionsCached = auctionManagerTotal !== auctionCacheTotal;
   const showCacheAuctionsAlert = isStoreOwner && notAllAuctionsCached;
+
   const renderModal = (id: string) => {
     console.log(id, 'id');
     setItemId(id);
@@ -62,11 +59,10 @@ export const AuctionListView = () => {
   const creators = Object.values(whitelistedCreatorsByCreator);
   const [loadingArt, setLoadingArt] = useState(true);
   const connection = useConnection();
-  const [globalAdress, setGlobalAdress] = useState<string>('');
-  const [selectedOption,setSelectedOption] = useState<string>('')
-  const handleChange:()=>void = function(value:string){
-    setGlobalAdress(value)
-  }
+  const [globalAdress, setGlobalAdress] = useState<string>('initial');
+  const handleChange = function (value: string) {
+    setGlobalAdress(value);
+  };
   useEffect(() => {
     if (!id) {
       return;
@@ -149,28 +145,12 @@ export const AuctionListView = () => {
         />
       )}
       <h1>Creators: </h1>
-      <Select  onChange={handleChange} defaultValue='Select Artist'>
+      <Select onChange={handleChange} defaultValue="All" style={{width:'30rem'}}>
+        <Option value={'initial'}>All</Option>
         {creators.map((m, idx) => {
           const address = m.info.address;
           return (
-            //  <div onClick={()=>setGlobalAdress(address)} key={idx}>
-            //     {/* <ArtistCard
-            //       key={address}
-            //       active={address === id}
-            //       artist={{
-            //         address,
-            //         name: m.info.name || '',
-            //         image: m.info.image || '',
-            //         link: m.info.twitter || '',
-            //       }}
-            //     /> */}
-
-            // </div>
-            <Option
-             
-              key={idx}
-              value={address}
-            >
+            <Option key={idx} value={address}>
               {address}
             </Option>
           );
@@ -180,6 +160,7 @@ export const AuctionListView = () => {
       <MetaplexMasonry>
         {auctions.map((m, idx) => {
           const auctionId = m.auction.pubkey;
+          
           // const creator = useCreators(m)
           const creatorAdress =
             m.thumbnail.metadata.info.data.creators![0].address;
@@ -190,13 +171,24 @@ export const AuctionListView = () => {
               // <Link to={`/auction/${id}`} key={idx}>
               <div
                 onClick={() => {
-                  renderModal(id);
+                  renderModal(auctionId);
                 }}
                 key={idx}
               >
                 <AuctionRenderCard key={auctionId} auctionView={m} />
               </div>
               // </Link>
+            );
+          else if (globalAdress === 'initial' && m.auction.info.state !== 2)
+            return (
+              <div
+                onClick={() => {
+                  renderModal(auctionId);
+                }}
+                key={idx}
+              >
+                <AuctionRenderCard key={auctionId} auctionView={m} />
+              </div>
             );
         })}
       </MetaplexMasonry>
@@ -207,6 +199,7 @@ export const AuctionListView = () => {
       )}
       {showModal && (
         <DrawerWrapper
+        
           show={showModal}
           id={itemId}
           hide={() => setShowModal(false)}

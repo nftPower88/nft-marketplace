@@ -234,7 +234,7 @@ export class Checkout extends React.Component<
           /> 
            <StripeTestCards />  */}
           <fieldset className="elements-style  modal_form">
-            <hr className="solid_line" />
+            {/* <hr className="solid_line" />
             <div className="modal_header">
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <h5
@@ -255,7 +255,7 @@ export class Checkout extends React.Component<
                 src="/img/solana-sol-logo.png"
                 style={{ width: '40px', height: '40px', marginLeft: '20px' }}
               />
-            </div>
+            </div> */}
             <hr className="solid_line" />
             <hr className="transparent_line" />
             {/*<hr className="transparent_line" />*/}
