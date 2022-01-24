@@ -5,7 +5,7 @@ import {
   useConnection,
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Alert, Button, Spin, Divider,Select } from 'antd';
+import { Alert, Button, Spin, Divider, Select } from 'antd';
 import React, { useState, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Link, useParams } from 'react-router-dom';
@@ -62,11 +62,11 @@ export const AuctionListView = () => {
   const creators = Object.values(whitelistedCreatorsByCreator);
   const [loadingArt, setLoadingArt] = useState(true);
   const connection = useConnection();
-  const [globalAdress, setGlobalAdress] = useState<string>('');
-  const [selectedOption,setSelectedOption] = useState<string>('')
-  const handleChange:()=>void = function(value:string){
-    setGlobalAdress(value)
-  }
+  const [globalAdress, setGlobalAdress] = useState<string>('initial');
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const handleChange: () => void = function (value: string) {
+    setGlobalAdress(value);
+  };
   useEffect(() => {
     if (!id) {
       return;
@@ -149,7 +149,8 @@ export const AuctionListView = () => {
         />
       )}
       <h1>Creators: </h1>
-      <Select  onChange={handleChange} defaultValue='Select Artist'>
+      <Select onChange={handleChange} defaultValue="All" style={{width:'30rem'}}>
+        <Option value={'initial'}>All</Option>
         {creators.map((m, idx) => {
           const address = m.info.address;
           return (
@@ -166,11 +167,7 @@ export const AuctionListView = () => {
             //     /> */}
 
             // </div>
-            <Option
-             
-              key={idx}
-              value={address}
-            >
+            <Option key={idx} value={address}>
               {address}
             </Option>
           );
@@ -197,6 +194,17 @@ export const AuctionListView = () => {
                 <AuctionRenderCard key={auctionId} auctionView={m} />
               </div>
               // </Link>
+            );
+          else if (globalAdress === 'initial' && m.auction.info.state !== 2)
+            return (
+              <div
+                onClick={() => {
+                  renderModal(id);
+                }}
+                key={idx}
+              >
+                <AuctionRenderCard key={auctionId} auctionView={m} />
+              </div>
             );
         })}
       </MetaplexMasonry>
