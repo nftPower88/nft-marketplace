@@ -1,12 +1,12 @@
 import { ConnectButton, useStore } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Col, Menu, Row, Space } from 'antd';
+import { Col, Menu, Row, Space, Button } from 'antd';
 import React, { ReactNode, useMemo, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
-
+import { useTheme, Theme } from '../../contexts/themecontext';
 type P = {
   logo: string;
 };
@@ -16,7 +16,17 @@ export const AppBar = (props: P) => {
   const location = useLocation();
   const locationPath = location.pathname.toLowerCase();
   const { ownerAddress } = useStore();
-
+  const { theme, setTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState('');
+  function switchTheme() {
+    if (theme === 'Dark') {
+      setCurrentTheme(Theme.Light);
+      setTheme(Theme.Light);
+    } else {
+      setCurrentTheme(Theme.Dark);
+      setTheme(Theme.Dark);
+    }
+  }
   const { store, whitelistedCreatorsByCreator, isLoading, patchState } =
     useMeta();
 
@@ -164,21 +174,21 @@ export const AppBar = (props: P) => {
         {`
           .ant-layout-header {
             padding: 0 25px;
-            position:fixed;
-            z-index:50;
-            width:100vw;
-            opacity:80%;
-            height:64px;
+            position: fixed;
+            z-index: 50;
+            width: 100vw;
+            opacity: 80%;
+            height: 64px;
           }
           .ant-btn {
             padding: 2.5px 10px;
-            opacity:100%;
+            opacity: 100%;
           }
         `}
       </style>
-      <Row wrap={false} align="middle" >
+      <Row wrap={false} align="middle">
         <Col flex="0 0 auto">
-          <Link to="/" id="metaplex-header-logo" >
+          <Link to="/" id="metaplex-header-logo">
             Queendom
           </Link>
         </Col>
@@ -193,14 +203,40 @@ export const AppBar = (props: P) => {
               <>
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
-      
+
                 <Cog buttonType="text" />
               </>
             ) : (
-              <>      
-                <ConnectButton type="text" allowWalletChange={false} />
+              <>
+                {/* <ConnectButton type="text" allowWalletChange={false} /> */}
+                <Link to='/signin'>Sign in</Link>
               </>
             )}
+            <Button shape='round' type='primary' style={{ float: 'right',height:'30px',width:'30px' }} onClick={switchTheme}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill={currentTheme === Theme.Dark ? 'black':'white'}
+                stroke={currentTheme === Theme.Dark ? 'black':'white'}
+                style={{height:'20px',width:'20px',transform:'translate(-5.5px,1px)'}}
+              >
+                {currentTheme === Theme.Dark ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                )}
+              </svg>
+            </Button>
           </Space>
         </Col>
         {}
