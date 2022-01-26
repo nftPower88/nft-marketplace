@@ -49,6 +49,10 @@ Or run production deployment:
 You may have to rebuild your package more than one time to secure a
 running environment.
 
+## Quick start
+
+`ENV_FILE=".env" sudo -E docker-compose -f docker-compose.yaml up -d`
+
 ## Config
 
 `./app/packages/web/src/config/userNames.json`
