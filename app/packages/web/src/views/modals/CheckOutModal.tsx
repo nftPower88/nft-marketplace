@@ -48,7 +48,7 @@ import { ViewOn } from '../../components/ViewOn';
 import { AuctionCard } from '../../components/AuctionCard';
 import { AmountLabel } from '../../components/AmountLabel';
 import { CameraOutlined, CaretDownOutlined,FundProjectionScreenOutlined,ThunderboltOutlined } from '@ant-design/icons';
-
+import {useTheme,Theme} from '../../contexts/themecontext'
 interface Props {
   show: boolean;
   hide: (value: any) => void;
@@ -64,6 +64,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const { ref, data } = useExtendedArt(auction?.thumbnail.metadata.pubkey);
   const creators = useCreators(auction);
   const wallet = useWallet();
+  const {theme,setTheme} = useTheme()
 
   let edition = '';
   if (art.type === ArtType.NFT) {
@@ -214,32 +215,38 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             </List>
           </div>
         )}
-        <hr />
+  
         <Row justify="center">
           <Col span={24}>
             <Row justify="center">
-              <Button
+              <div className={theme===Theme.Light ? 'button_blackborder' : 'button_whiteborder'}>
+              <Button type='text'
+                
                 onClick={() => {
                   setStoryShow(false);
+                 
                 }}
-                style={{ width: '150px' }}
+                style={{ width: '179px' }}
               >
-                Asset
+               <span className={!storyShow ? 'underlined_button': ''}>Asset</span>
               </Button>
-              <Button
+              </div>
+              <div className={theme===Theme.Light ? 'button_blackborder' : 'button_whiteborder'}>
+              <Button type='text'
                 onClick={() => {
                   setStoryShow(true);
                 }}
-                style={{ width: '150px' }}
+                style={{ width: '179px' }}
               >
-                Story
+                <span className={storyShow ? 'underlined_button': ''}>Story</span>
               </Button>
+              </div>
             </Row>
           </Col>
         </Row>
-        <hr />
+     <Divider/>
         <Row justify="center">
-          <Col span={24}>
+          <Col span={21}>
             <Row justify="center">
               {storyShow ? (
                 <div>
@@ -260,10 +267,10 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
               )}
             </Row>
           </Col>
-          <Col span={24}>
-            <h5>Blockchain : XX </h5>
-            <h5>Creator : {art.creators![0].address} </h5>
-            <h5>Asset : {art.mint} </h5>
+          <Col span={21}>
+            <h5>Blockchain : <span style={{textDecoration:'underline'}}>XX</span> </h5>
+            <h5>Creator : <span style={{textDecoration:'underline'}}>{art.creators![0].address}</span> </h5>
+            <h5>Asset : <span style={{textDecoration:'underline'}}>{art.mint}</span> </h5>
           </Col>
           {/* <Button onClick={() => setShowAbout(!showAbout)}>
             ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}
@@ -327,7 +334,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
         </Row>
         <Divider />
         <Col span={24}>
-          <h3 style={{ fontWeight: 'bold' }}>How to use</h3>
+          <h3 style={{ fontWeight: 900 }}>How to use</h3>
           <Row justify="space-between" align="middle" onClick={()=>setCaptureShow(!captureShow)}>
             <h4>
               <CameraOutlined />
