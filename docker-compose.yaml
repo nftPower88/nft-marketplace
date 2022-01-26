@@ -7,8 +7,34 @@ networks:
 volumes:
   app_data:
     name: ${COMPOSE_VOLUME}
+  caddy_data: {}
 
-services:    
+services:
+  caddy:
+    container_name: marketplace_proxy
+    image: lucaslorentz/caddy-docker-proxy:${CADDY_PROXY_VERSION?err}
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app_proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+    deploy:
+      labels:
+        caddy.email: ${LETSENCRYPT_EMAIL?err}
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: any # unless-stopped # use any for docker-compose version < 2
+      resources:
+        reservations:
+          cpus: "0.1"
+          memory: 200M
+
   marketplace-app:
     build:
       context: ./app/.
@@ -38,4 +64,11 @@ services:
     working_dir: /app
     env_file:
       - ${ENV_FILE}
+    labels:
+      caddy: ${WEBSITE_HOSTNAME?err}
+      caddy.reverse_proxy: "{{upstreams http ${NEXT_PORT}}}"
+       # caddy.tls: "${CADDY_TLS}"
+      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # "https://acme-v02.api.letsencrypt.org/directory"
+      caddy.@ws.0_header: Connection *Upgrade*
+      caddy.@ws.1_header: Upgrade websocket
 
