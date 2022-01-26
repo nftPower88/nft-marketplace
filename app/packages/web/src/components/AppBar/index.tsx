@@ -18,6 +18,7 @@ export const AppBar = (props: P) => {
   const { ownerAddress } = useStore();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
+  const [isSignIn, setIsSignIn] = useState(false)
   function switchTheme() {
     if (theme === 'Dark') {
       setCurrentTheme(Theme.Light);
@@ -169,13 +170,13 @@ export const AppBar = (props: P) => {
   );
 
   return (
-    <>
+    <div >
       <style global jsx>
         {`
           .ant-layout-header {
             padding: 0 25px;
             position: fixed;
-            z-index: 50;
+            z-index: 2;
             width: 100vw;
             opacity: 80%;
             height: 64px;
@@ -188,16 +189,16 @@ export const AppBar = (props: P) => {
       </style>
       <Row wrap={false} align="middle">
         <Col flex="0 0 auto">
-          <Link to="/" id="metaplex-header-logo">
+          <Link to="/" id="metaplex-header-logo" onClick={()=>setIsSignIn(false)}>
             Queendom
           </Link>
         </Col>
-        <Col flex="1 0 0" style={{ overflow: 'hidden' }}>
+        <Col flex="1 0 0" style={{ overflow: 'hidden' }} hidden={isSignIn}>
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
-        <Col flex="0 1 auto">
+        <Col flex="0 1 auto" hidden={isSignIn}>
           <Space className="metaplex-display-flex" align="center">
             {connected ? (
               <>
@@ -209,7 +210,7 @@ export const AppBar = (props: P) => {
             ) : (
               <>
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
-                <Link to='/signin'>Sign in</Link>
+                <Link onClick={()=>setIsSignIn(true)} to='/signin'>Sign in</Link>
               </>
             )}
             <Button shape='round' type='primary' style={{ float: 'right',height:'30px',width:'30px' }} onClick={switchTheme}>
@@ -241,6 +242,6 @@ export const AppBar = (props: P) => {
         </Col>
         {}
       </Row>
-    </>
+    </div>
   );
 };
