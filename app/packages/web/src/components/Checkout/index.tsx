@@ -256,8 +256,7 @@ export class Checkout extends React.Component<
                 style={{ width: '40px', height: '40px', marginLeft: '20px' }}
               />
             </div> */}
-            <hr className="solid_line" />
-            <hr className="transparent_line" />
+ 
             {/*<hr className="transparent_line" />*/}
             {/* <label htmlFor="cardholderName">First Name: </label> */}
             {/*
@@ -291,7 +290,7 @@ export class Checkout extends React.Component<
               onChange={handleInputChange}
               required
             />
-            {/*<hr className="transparent_line" />*/}
+            <hr className="transparent_line" />
             {/* <label htmlFor="cardholderEmail">Email: </label> */}
             <input
               placeholder="Cardholder Email"
@@ -425,7 +424,7 @@ export class Checkout extends React.Component<
           </fieldset>
           {this.state.payment.status === 'initial' ? (
             <button
-              className="elements-style-background purhcase_button"
+              className="purhcase_button  ant-button-primary metaplex-fullwidth"
               type="submit"
               disabled={
                 !['initial', 'succeeded', 'error'].includes(
@@ -451,7 +450,7 @@ export class Checkout extends React.Component<
           className="metaplex-space-align-stretch modal_container ant-card"
           direction="vertical"
         >
-          <Layout title="Page Title">
+          <Layout >
             <div className="modal_content">
               <Elements stripe={this.stripe!}>
                 <this.doPayment />
