@@ -424,7 +424,7 @@ export class Checkout extends React.Component<
           </fieldset>
           {this.state.payment.status === 'initial' ? (
             <button
-              className="purhcase_button  ant-button-primary metaplex-fullwidth"
+              className="purhcase_button ant-button-primary metaplex-fullwidth"
               type="submit"
               disabled={
                 !['initial', 'succeeded', 'error'].includes(
