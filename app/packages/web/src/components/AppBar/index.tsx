@@ -7,6 +7,7 @@ import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
+import Image from 'next/image'
 type P = {
   logo: string;
 };
@@ -188,30 +189,30 @@ export const AppBar = (props: P) => {
         `}
       </style>
       <Row wrap={false} align="middle">
-        <Col flex="0 0 auto">
+        
           <Link to="/" id="metaplex-header-logo" onClick={()=>setIsSignIn(false)}>
-            Queendom
+           <img style={{width:'100px',paddingBottom:'5px'}} src={currentTheme === Theme.Light ? 'Logo/QueendomDark.png' : 'Logo/QueendomLight.png'}/>
           </Link>
-        </Col>
-        <Col flex="1 0 0" style={{ overflow: 'hidden' }} hidden={isSignIn}>
-          <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
+        
+        <Col flex="1 0 0" style={{ height:'60px'}} hidden={isSignIn}>
+          <Menu theme="dark" mode="horizontal"  selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
         <Col flex="0 1 auto" hidden={isSignIn}>
           <Space className="metaplex-display-flex" align="center">
             {connected ? (
-              <>
+              <div >
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
 
                 <Cog buttonType="text" />
-              </>
+              </div>
             ) : (
-              <>
+              <div className='ant-button me-5'>
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
-                <Link onClick={()=>setIsSignIn(true)} to='/signin'>Sign in</Link>
-              </>
+                <Link className='sign_in_button' onClick={()=>setIsSignIn(true)} to='/signin'>Sign in</Link>
+              </div>
             )}
             <Button shape='round' type='primary' style={{ float: 'right',height:'30px',width:'30px' }} onClick={switchTheme}>
               <svg
@@ -219,7 +220,7 @@ export const AppBar = (props: P) => {
                 viewBox="0 0 24 24"
                 fill={currentTheme === Theme.Dark ? 'black':'white'}
                 stroke={currentTheme === Theme.Dark ? 'black':'white'}
-                style={{height:'20px',width:'20px',transform:'translate(-5.5px,1px)'}}
+                style={{height:'20px',width:'20px',transform:'translate(-6px,1.5px)'}}
               >
                 {currentTheme === Theme.Dark ? (
                   <path
