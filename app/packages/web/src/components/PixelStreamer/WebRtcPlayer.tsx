@@ -1,5 +1,6 @@
 //import React from 'react';
 
+import React from 'react';
 import { WebRtcPlayerHook } from './WebRtcPlayerHook';
 
 interface WebRtcPlayerOptions {
@@ -9,6 +10,7 @@ interface WebRtcPlayerOptions {
   autoPlayAudio?: boolean;
   useMic?: boolean;
   channelLabel?: string;
+  videoRef?: any
 }
 
 interface WebRtcConnectionOption extends RTCConfiguration {
@@ -37,6 +39,7 @@ export class WebRtcPlayer extends WebRtcPlayerHook {
   public video: HTMLVideoElement;
   private audios: HTMLAudioElement[] = [];
   private dataChannelOptions = { ordered: true };
+  private videoRef: React.RefObject<HTMLVideoElement>;
 
   constructor(options: WebRtcPlayerOptions) {
     super();
@@ -48,6 +51,7 @@ export class WebRtcPlayer extends WebRtcPlayerHook {
     this.rtcConnection = new RTCPeerConnection(this.options.peerConnectionOptions);
     this.videoContainer = this.options.videoContainer;
     this.video = document.createElement('video');
+    this.videoRef = this.options.videoRef;
   }
 
   public async setupWrbRtcPlayer() {
@@ -167,12 +171,12 @@ export class WebRtcPlayer extends WebRtcPlayerHook {
     }
   }
 
-  private onTrack(e: RTCTrackEvent) {
+  private async onTrack(e: RTCTrackEvent) {
     const stream = e.streams[0];
     if (e.track.kind === 'audio') {
       if (this.video.srcObject === stream) {
         return;
-      } else if (this.video.srcObject && this.video.srcObject !== stream) {
+      } else if (this.video.srcObject) {
         const audioElem: any = document.createElement('Audio');
         audioElem.srcObject = stream;
         if (this.options.autoPlayAudio) {
@@ -181,10 +185,10 @@ export class WebRtcPlayer extends WebRtcPlayerHook {
         this.audios.push(audioElem);
       }
       return;
-    } else if (e.track.kind === 'video' && this.video.srcObject !== stream) {
-      this.video.srcObject = stream;
-      if (this.options.autoPlayAudio) {
-        this.video.play();
+    } else if (e.track.kind === 'video') {
+      if (this.videoRef.current) {
+        this.videoRef.current.srcObject = stream;
+        await this.videoRef.current.play();
       }
       return;
     }

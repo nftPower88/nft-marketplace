@@ -96,7 +96,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
     this.unrealAdapterOption = options;
   }
 
-  public load() {
+  public load(videoRef?: React.RefObject<HTMLVideoElement>) {
     console.log('loading UnrealAdapter');
 
     this.ws = new WebSocket(
@@ -117,7 +117,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
           break;
         case 'config':
           if (data.peerConnectionOptions) {
-            this.onPlayerConfig(data.peerConnectionOptions);
+            this.onPlayerConfig(data.peerConnectionOptions, videoRef);
           }
           break;
         case 'iceCandidate':
@@ -159,11 +159,12 @@ export class UnrealAdapter extends UnrealAdapterHook {
     }
   }
 
-  private async onPlayerConfig(peerConnectionOptions: RTCConfiguration) {
+  private async onPlayerConfig(peerConnectionOptions: RTCConfiguration, videoRef?: any) {
     this.player = new WebRtcPlayer({
       peerConnectionOptions,
       videoContainer: this.unrealAdapterOption.container,
       useMic: this.unrealAdapterOption.useMic ? this.unrealAdapterOption.useMic : false,
+      videoRef
     });
     this.player.onWebRtcOffer = (o) => {
       if (this.ws && this.ws.readyState === WS_OPEN_STATE) {
