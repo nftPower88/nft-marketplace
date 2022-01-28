@@ -68,7 +68,7 @@ services:
       caddy: ${WEBSITE_HOSTNAME?err}
       caddy.reverse_proxy: "{{upstreams http ${NEXT_PORT}}}"
        # caddy.tls: "${CADDY_TLS}"
-      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # "https://acme-v02.api.letsencrypt.org/directory"
+      caddy.tls.ca: "https://acme-v02.api.letsencrypt.org/directory" #"https://acme-staging-v02.api.letsencrypt.org/directory"
       caddy.@ws.0_header: Connection *Upgrade*
       caddy.@ws.1_header: Upgrade websocket
 
