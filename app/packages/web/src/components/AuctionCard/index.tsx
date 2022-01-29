@@ -944,7 +944,7 @@ export const AuctionCard = ({
             : auctionView.isInstantSale && instantFiatSaleBtn}
           {!hideDefaultAction && !wallet.connected && (
             <Button
-              className="metaplex-fullwidth"
+              className="metaplex-fullwidth rounded-3"
               type="primary"
               size="large"
               onClick={connect}

@@ -1,5 +1,5 @@
 import { StringPublicKey } from '@oyster/common';
-import { Button, Space } from 'antd';
+import { Space } from 'antd';
 import React, { useState } from 'react';
 import { ReactNode, useContext, useEffect, useMemo, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { string } from '@hapi/joi';
 import { fetchGetJSON, fetchPostJSON } from '../../utils/stripe';
 
 import { Component } from 'react';
-
+import { useTheme, Theme } from '../../contexts/themecontext';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   CURRENCY,
@@ -32,7 +32,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import getConfig from 'next/config';
 
 import * as config from '../../config/stripe';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import CardIcon from '../svgs/Card';
@@ -52,7 +52,31 @@ import {
 
 import { PrintObject } from '../Stripe/PrintObject';
 
-const CARD_OPTIONS = {
+const CARD_OPTIONS_BLACK = {
+  iconStyle: 'solid' as const,
+  style: {
+    base: {
+      iconColor: '#030303',
+      color: 'black',
+      fontWeight: '500',
+      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      ':-webkit-autofill': {
+        color: '#030303',
+      },
+      '::placeholder': {
+        color: '#030303',
+      },
+    },
+    invalid: {
+      iconColor: '#ef2961',
+      color: '#ef2961',
+    },
+  },
+};
+
+const CARD_OPTIONS_WHITE = {
   iconStyle: 'solid' as const,
   style: {
     base: {
@@ -141,10 +165,14 @@ export class Checkout extends React.Component<
 
       case 'error':
         return (
-          <>
-            <h2>Error 😭</h2>
-            <p className="error-message">{this.state.errorMessage}</p>
-          </>
+          <Button
+            onClick={() => location.reload()}
+            type="primary"
+            className="justify-content-center metaplex-fullwidth rounded-3"
+          >
+            Error 😭
+            {this.state.errorMessage}
+          </Button>
         );
 
       default:
@@ -153,6 +181,7 @@ export class Checkout extends React.Component<
   };
 
   doPayment = () => {
+    const { theme, setTheme } = useTheme();
     const [input, setInput] = useState({
       customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
       cardholderName: '',
@@ -256,7 +285,7 @@ export class Checkout extends React.Component<
                 style={{ width: '40px', height: '40px', marginLeft: '20px' }}
               />
             </div> */}
- 
+
             {/*<hr className="transparent_line" />*/}
             {/* <label htmlFor="cardholderName">First Name: </label> */}
             {/*
@@ -284,7 +313,11 @@ export class Checkout extends React.Component<
             */}
             <input
               placeholder="Cardholder Name"
-              className="elements-style input_form "
+              className={
+                theme === 'Light'
+                  ? 'elements-style input_form_black'
+                  : ' elements-style input_form_white'
+              }
               type="Text"
               name="cardholderName"
               onChange={handleInputChange}
@@ -294,7 +327,11 @@ export class Checkout extends React.Component<
             {/* <label htmlFor="cardholderEmail">Email: </label> */}
             <input
               placeholder="Cardholder Email"
-              className="elements-style input_form"
+              className={
+                theme === 'Light'
+                  ? 'elements-style input_form_black'
+                  : ' elements-style input_form_white'
+              }
               type="email"
               name="cardholderEmail"
               onChange={handleInputChange}
@@ -332,12 +369,17 @@ export class Checkout extends React.Component<
                   border: '1px solid',
                   display: 'flex',
                   borderRadius: '5px 5px 0 0',
+                  gap: '2px',
                 }}
               >
                 <CardIcon />
                 <div className="card_element">
                   <CardNumberElement
-                    options={CARD_OPTIONS}
+                    options={
+                      theme === 'Light'
+                        ? CARD_OPTIONS_BLACK
+                        : CARD_OPTIONS_WHITE
+                    }
                     onChange={e => {
                       if (e.error) {
                         this.state.payment = { status: 'error' };
@@ -349,7 +391,7 @@ export class Checkout extends React.Component<
                   />
                 </div>
               </div>
-              <div style={{ display: 'flex' }}>
+              <div className="d-flex">
                 <div
                   className="card_items"
                   style={{ borderRadius: '0 0 0 5px' }}
@@ -357,7 +399,11 @@ export class Checkout extends React.Component<
                   <CalendarIcon />
                   <div className="card_element">
                     <CardExpiryElement
-                      options={CARD_OPTIONS}
+                      options={
+                        theme === 'Light'
+                          ? CARD_OPTIONS_BLACK
+                          : CARD_OPTIONS_WHITE
+                      }
                       onChange={e => {
                         if (e.error) {
                           this.state.payment = { status: 'error' };
@@ -369,11 +415,18 @@ export class Checkout extends React.Component<
                     />
                   </div>
                 </div>
-                <div className="card_items" style={{ borderRadius: '0 0 5px 0' }}>
+                <div
+                  className="card_items"
+                  style={{ borderRadius: '0 0 5px 0' }}
+                >
                   <LockIcon />
                   <div className="card_element">
                     <CardCvcElement
-                      options={CARD_OPTIONS}
+                      options={
+                        theme === 'Light'
+                          ? CARD_OPTIONS_BLACK
+                          : CARD_OPTIONS_WHITE
+                      }
                       onChange={e => {
                         if (e.error) {
                           this.state.payment = { status: 'error' };
@@ -392,7 +445,7 @@ export class Checkout extends React.Component<
                 >
                 /*}
                   {/*<LockIcon />*/}
-                  {/*
+                {/*
                   <div className="card_element">
                     <input
                       placeholder="Zipcode"
@@ -423,9 +476,10 @@ export class Checkout extends React.Component<
             */}
           </fieldset>
           {this.state.payment.status === 'initial' ? (
-            <button
-              className="purhcase_button ant-button-primary metaplex-fullwidth"
-              type="submit"
+            <Button
+              htmlType="submit"
+              className="purhcase_button ant-button metaplex-fullwidth"
+              type="primary"
               disabled={
                 !['initial', 'succeeded', 'error'].includes(
                   this.state.payment.status,
@@ -433,7 +487,7 @@ export class Checkout extends React.Component<
               }
             >
               Purchase
-            </button>
+            </Button>
           ) : (
             <this.getPaymentStatus status={this.state.payment.status} />
           )}
@@ -450,7 +504,7 @@ export class Checkout extends React.Component<
           className="metaplex-space-align-stretch modal_container ant-card"
           direction="vertical"
         >
-          <Layout >
+          <Layout>
             <div className="modal_content">
               <Elements stripe={this.stripe!}>
                 <this.doPayment />

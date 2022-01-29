@@ -72,7 +72,6 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const creators = useCreators(auction);
   const wallet = useWallet();
   const { theme, setTheme } = useTheme();
-
   let edition = '';
   if (art.type === ArtType.NFT) {
     edition = 'Unique';
@@ -106,6 +105,12 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const [portShow, setPortShow] = useState(true);
   const [tradeShow, setTradeShow] = useState(true);
   const [showAuction,setShowAuction]=useState(true)
+  const [reloadAuction,setReloadAuction] = useState(false)
+  function refreshAuction(){
+    setTimeout(()=>{setReloadAuction(false)},1)
+    setReloadAuction(true)
+ 
+  }
 
   useEffect(() => {
     return subscribeProgramChanges(
@@ -208,13 +213,14 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
         </Row>
         <Divider/>
         {!auction && <Skeleton paragraph={{ rows: 6 }} />}
-        <Row justify="center" hidden={!showAuction}>
+        <Row justify="center" >
           <Col span={21}>
-            <Button onClick={()=>setShowAuction(false)} style={{borderRadius:'5px'}} type='primary' className="metaplex-fullwidth">Buy Now</Button>
+            <Button hidden={!showAuction} onClick={()=>setShowAuction(false)}  type='primary' className="metaplex-fullwidth rounded-3">Buy Now</Button>
+            <Button hidden={showAuction} onClick={refreshAuction} style={{borderRadius:'5px'}} type='primary' className="metaplex-fullwidth rounded-3">Forgo Purchase</Button>
           </Col>
         </Row>
-        {auction && (
-          <div hidden={showAuction} onMouseLeave={()=>setShowAuction(true)}>
+        {auction && !reloadAuction &&(
+          <div hidden={showAuction} >
             <AuctionCard auctionView={auction} hideDefaultAction={false} />
           </div>
         )}

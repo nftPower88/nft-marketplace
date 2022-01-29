@@ -20,6 +20,7 @@ export const AppBar = (props: P) => {
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
   const [isSignIn, setIsSignIn] = useState(false)
+  console.log(theme)
   function switchTheme() {
     if (theme === 'Dark') {
       setCurrentTheme(Theme.Light);
@@ -191,7 +192,7 @@ export const AppBar = (props: P) => {
       <Row wrap={false} align="middle">
         
           <Link to="/" id="metaplex-header-logo" onClick={()=>setIsSignIn(false)}>
-           <img style={{width:'100px',paddingBottom:'5px'}} src={currentTheme === Theme.Light ? 'Logo/QueendomDark.png' : 'Logo/QueendomLight.png'}/>
+           <img style={{width:'100px',paddingBottom:'5px'}} src={theme === Theme.Light ? 'Logo/QueendomDark.png' : 'Logo/QueendomLight.png'}/>
           </Link>
         
         <Col flex="1 0 0" style={{ height:'60px'}} hidden={isSignIn}>
@@ -202,7 +203,7 @@ export const AppBar = (props: P) => {
         <Col flex="0 1 auto" hidden={isSignIn}>
           <Space className="metaplex-display-flex" align="center">
             {connected ? (
-              <div >
+              <div className='d-flex flex-row' >
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
 
