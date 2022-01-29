@@ -86,7 +86,25 @@ width: max-content;
   text-align: center;
 }
 
-.input_form {
+.input_form_white {
+  width: 100%;
+  float: right;
+  transform: translateY(-3px);
+  border-radius: 5px;
+  background: unset;
+  color: unset;
+  padding-left: 8px;
+  border: 1px solid;
+  ::placeholder{
+    color:white
+  }
+}
+
+.input_form_white::placeholder{
+  color:white
+}
+
+.input_form_black {
   width: 100%;
   float: right;
   transform: translateY(-3px);
@@ -96,6 +114,11 @@ width: max-content;
   padding-left: 8px;
   border: 1px solid;
 }
+
+.input_form_black::placeholder{
+  color:black
+}
+
 
 .input_zipcode {
   float: right;
@@ -116,12 +139,10 @@ width: max-content;
   border: none;
 }
 
-.input_form::placeholder{
- color: white; ;
-}
 
 .card_element {
   width: 80%;
+ margin-left: 5px;
 
 }
 
