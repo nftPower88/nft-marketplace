@@ -1,0 +1,9 @@
+conda activate nft-marketplace
+
+conda env config vars set SOL_NET="${PROJECT_STATUS}" && conda activate nft-marketplace
+echo "SOL_NET: ${SOL_NET}"
+
+conda env config vars set ENV_FILE="./app/packages/web/.env.${SOL_NET}" && conda activate nft-marketplace
+echo "ENV_FILE: ${ENV_FILE}"
+
+sudo --preserve-env docker-compose --env-file ${ENV_FILE} up -d --force-recreate
