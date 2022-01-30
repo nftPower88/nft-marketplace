@@ -210,7 +210,7 @@ export const AppBar = (props: P) => {
                 <Cog buttonType="text" />
               </div>
             ) : (
-              <div className='ant-button me-5'>
+              <div className='ant-button me-2'>
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
                 <Link className='sign_in_button' onClick={()=>setIsSignIn(true)} to='/signin'>Sign in</Link>
               </div>
