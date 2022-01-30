@@ -3,6 +3,7 @@ version: "3"
 networks:
   app_proxy:
     name: ${COMPOSE_NET}
+  
 
 volumes:
   app_data:
@@ -39,3 +40,13 @@ services:
     env_file:
       - ${ENV_FILE}
 
+  mongodatabase:
+   image: mongo:5.0.2
+   restart: unless-stopped
+   # environment:
+   #   - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+   #   - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+   ports:
+     - 27018:27017
+   volumes:
+     - db:/data/db
