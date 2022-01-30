@@ -104,12 +104,13 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const [tryShow, setTryShow] = useState(true);
   const [portShow, setPortShow] = useState(true);
   const [tradeShow, setTradeShow] = useState(true);
-  const [showAuction,setShowAuction]=useState(true)
-  const [reloadAuction,setReloadAuction] = useState(false)
-  function refreshAuction(){
-    setTimeout(()=>{setReloadAuction(false)},1)
-    setReloadAuction(true)
- 
+  const [showAuction, setShowAuction] = useState(true);
+  const [reloadAuction, setReloadAuction] = useState(false);
+  function refreshAuction() {
+    setTimeout(() => {
+      setReloadAuction(false);
+    }, 1);
+    setReloadAuction(true);
   }
 
   useEffect(() => {
@@ -201,7 +202,10 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
       </Col>
       <Col span={24} md={{ span: 24 }} lg={24}>
         <Row justify="center">
-          <div style={{ width: '100px', border: '1px solid' }}>
+          <div
+            style={{ width: '180px' }}
+            className="border-0 align-items-center mt-4"
+          >
             <Carousel
               className="metaplex-spacing-bottom-md"
               autoplay={false}
@@ -211,36 +215,32 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             </Carousel>
           </div>
         </Row>
-        <Divider/>
+        <Divider />
         {!auction && <Skeleton paragraph={{ rows: 6 }} />}
-        <Row justify="center" >
+        <Row justify="center">
           <Col span={21}>
-            <Button hidden={!showAuction} onClick={()=>setShowAuction(false)}  type='primary' className="metaplex-fullwidth rounded-3">Buy Now</Button>
-            <Button hidden={showAuction} onClick={refreshAuction} style={{borderRadius:'5px'}} type='primary' className="metaplex-fullwidth rounded-3">Forgo Purchase</Button>
+            <Button
+              hidden={!showAuction}
+              onClick={() => setShowAuction(false)}
+              type="primary"
+              className="metaplex-fullwidth rounded-3"
+            >
+              Buy Now
+            </Button>
+            {/* <Button hidden={showAuction} onClick={refreshAuction} style={{borderRadius:'5px'}} type='primary' className="metaplex-fullwidth rounded-3">Forgo Purchase</Button> */}
           </Col>
         </Row>
-        {auction && !reloadAuction &&(
-          <div hidden={showAuction} >
+        {auction && !reloadAuction && (
+          <div hidden={showAuction}>
             <AuctionCard auctionView={auction} hideDefaultAction={false} />
           </div>
         )}
         {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
-        {attributes && (
-          <div>
-            <Text>Attributes</Text>
-            <List grid={{ column: 2 }}>
-              {attributes.map((attribute, index) => (
-                <List.Item key={`${attribute.value}-${index}`}>
-                  <List.Item.Meta
-                    title={attribute.trait_type}
-                    description={attribute.value}
-                  />
-                </List.Item>
-              ))}
-            </List>
-          </div>
-        )}
-       <div hidden={!showAuction}> <Divider/></div>
+
+        <div hidden={!showAuction}>
+          {' '}
+          <Divider />
+        </div>
         <Row justify="center">
           <Col span={24}>
             <Row justify="center">
@@ -384,6 +384,21 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             </Space>
           </div> */}
         </Row>
+        <Divider />
+        {attributes && (
+          <Col span={24}>
+            <h3 style={{ fontWeight: 900 }}>Attributes</h3>
+            <List grid={{ column: 4 }}>
+              {attributes.map((attribute, index) => (
+                <List.Item key={`${attribute.value}-${index}`}>
+                  <List.Item.Meta
+                    title={`${attribute.trait_type} ${attribute.value}`}
+                  />
+                </List.Item>
+              ))}
+            </List>
+          </Col>
+        )}
         <Divider />
         <Col span={24}>
           <h3 style={{ fontWeight: 900 }}>How to use</h3>
