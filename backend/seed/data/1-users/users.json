@@ -1,0 +1,38 @@
+[
+    
+    {
+      "name": "Deployer Admin",
+      "image": "https://pbs.twimg.com/profile_images/1393399819213983746/2a8l5muc_400x400.png",
+      "description": "",
+      "background": "",
+      "walletAddress" : "CBr3mDvvj5xEF2bAKhRo3GoBdHAzwc6ojQogTXmDrpMS"
+    },
+    {
+      "name": "Bartosz Lipinski",
+      "image": "https://pbs.twimg.com/profile_images/1393353972371623938/ZMWvvptg_400x400.jpg",
+      "description": "",
+      "walletAddress" : "CduMjFZLBeg3A9wMP3hQCoU1RQzzCpgSvQNXfCi1GCSB"
+    },
+    {
+      "name": "Jordan Prince",
+      "image": "https://pbs.twimg.com/profile_images/1393399819213983746/2a8l5muc_400x400.png",
+      "description": "",
+      "background": "",
+      "walletAddress" : "44kiGWWsSgdqPMvmqYgTS78Mx2BKCWzduATkfY4biU97"
+    },
+    {
+      "name": "James Madison",
+      "image": "https://pbs.twimg.com/profile_images/1393353972371623938/ZMWvvptg_400x400.jpg",
+      "description": "",
+      "background": "",
+      "walletAddress" : "3yp9iTsCgZoBsXhtRLB8cWHNcTDeR6VJniRuDrHNTuxU"
+    },
+    {
+      "name": "Solana",
+      "image": "https://pbs.twimg.com/profile_images/1299400345144049665/sPxnVXa7_400x400.jpg",
+      "description": "Account used by Solana to mint official NFTs",
+      "background": "",
+      "walletAddress" : "SoL351y4uKWtbH14AU1Rhiao96aBM4u57bMi5Vj2XJc"
+
+    }
+]
