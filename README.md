@@ -49,6 +49,10 @@ Or run production deployment:
 You may have to rebuild your package more than one time to secure a
 running environment.
 
+## Quick start
+
+`ENV_FILE=".env" sudo -E docker-compose -f docker-compose.yaml up -d`
+
 ## Config
 
 `./app/packages/web/src/config/userNames.json`
@@ -151,12 +155,3 @@ Any content produced by Solana, or developer resources that Solana provides, are
 ## Acknowledgements
 
 This codebase is derived from [akkoro-client](https://github.com/AKKOROWEB/akkoro-client). Thank you [Warren Gates](https://github.com/Moikapy) for publishing it under Apache 2.0!.
-
-
-## Harry's upwork profile:
-
-Hi, Phillip.
-Here's my upwork account:
-https://www.upwork.com/freelancers/~01b750d089d24083da
-
-you can hire me there by direct hire, or you can post a job then share the link to me. Then I'll apply to that job post.

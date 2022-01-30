@@ -50,11 +50,13 @@ export const WalletModal = () => {
   const phatomWallet = useMemo(() => getPhantomWallet(), []);
 
   return (
-    <MetaplexModal title="Connect Wallet" visible={visible} onCancel={close}>
-      <h4>RECOMMENDED</h4>
 
+    // <MetaplexModal title="Pick a wallet to connect to Queendom" centered visible={visible} onCancel={close} bodyStyle={{borderRadius:'5px',boxShadow:'2px 5px 10px'}}>
+    <MetaplexModal centered visible={visible} onCancel={close} closable={false}>
+      <h4 className='mb-3'>Pick a wallet to conneect to Queendom</h4>
       <Button
-        className="metaplex-button-jumbo"
+      type='link'
+        className="metaplex-button-jumbo d-flex"
         size="large"
         onClick={() => {
           console.log(phatomWallet.name);
@@ -63,7 +65,7 @@ export const WalletModal = () => {
         }}
       >
         <img src={phatomWallet?.icon} />
-        &nbsp;Connect to Phantom
+        <h4 style={{paddingLeft:'2px'}} className='ms-4 pt-1'>Connect to Phantom</h4>
       </Button>
       <Collapse
         ghost
@@ -73,12 +75,12 @@ export const WalletModal = () => {
               width="20"
               height="20"
               viewBox="0 0 20 20"
-              fill="none"
+              fill="gray"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M15 7.5L10 12.5L5 7.5"
-                stroke="white"
+                stroke="gray"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -89,12 +91,12 @@ export const WalletModal = () => {
               width="20"
               height="20"
               viewBox="0 0 20 20"
-              fill="none"
+              fill="gray"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M7.5 5L12.5 10L7.5 15"
-                stroke="white"
+                stroke="gray"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -103,7 +105,7 @@ export const WalletModal = () => {
           )
         }
       >
-        <Panel header={<strong>Other Wallets</strong>} key="1">
+        <Panel header={<strong className='ms-4'>Other Wallet</strong>} key="1">
           <Space wrap>
             {wallets.map((wallet, idx) => {
               if (wallet.name === 'Phantom') return null;
@@ -124,6 +126,7 @@ export const WalletModal = () => {
         </Panel>
       </Collapse>
     </MetaplexModal>
+     
   );
 };
 

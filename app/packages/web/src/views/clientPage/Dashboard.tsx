@@ -25,7 +25,6 @@ export const DashboardView = () => {
               <PixelStreamer />
           </div>
           <div className="dashboard_rooms_container background_secondary_color">
-            rooms
           </div>
         </div>
         <div className="dashboard_right_section background_secondary_color">

@@ -111,8 +111,7 @@ export const LandingPageView = () => {
           className={` mt-5 mt-md-0 d-flex flex-column justify-content-between`}>
           <div
             className ={`d-flex flex-row flex-md-row justify-content-between`}> 
-            {/* <PixelStreamer/> */}
-          <ReactPlayer loop playing muted={true} url='video/demo.mp4' width='100%' height='100%' />
+            <ReactPlayer loop playing muted={true} url='video/demo.mp4' width='100%' height='100%' />
           </div>
         
         </div>

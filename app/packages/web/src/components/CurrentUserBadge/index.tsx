@@ -12,7 +12,7 @@ import {
 } from '@oyster/common';
 import {useWallet} from '@solana/wallet-adapter-react';
 import {LAMPORTS_PER_SOL, PublicKey} from '@solana/web3.js';
-import {Button, ButtonProps, Popover, Select, Space,Switch} from 'antd';
+import {Button, ButtonProps, Popover, Select, Space} from 'antd';
 import React, {
   Dispatch,
   SetStateAction,
@@ -24,7 +24,7 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-import { useTheme, Theme } from '../../contexts/themecontext';
+
 
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
@@ -248,21 +248,7 @@ export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
   const {endpoint, setEndpoint} = useConnectionConfig();
   const {setVisible} = useWalletModal();
   const open = useCallback(() => setVisible(true), [setVisible]);
-  const { theme, setTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = useState('');
-  function switchTheme() {
-    if (theme === "Dark") {
-      setCurrentTheme(Theme.Light);
-      setTheme(Theme.Light);
 
-      
-    } else {
-      setCurrentTheme(Theme.Dark);
-      setTheme(Theme.Dark);
-
-     
-    }
-  }
   return (
     <Popover
       trigger='click'
@@ -279,11 +265,7 @@ export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
           </Select>
 
           <Button onClick={open}>Change wallet</Button>
-          <Switch style={{float:'right'}}
-                  checkedChildren="Dark"
-                  unCheckedChildren="Light"
-                  onChange={switchTheme}
-                />
+    
         </Space>
       }>
       <Button className='metaplex-button-appbar' type={buttonType}>
