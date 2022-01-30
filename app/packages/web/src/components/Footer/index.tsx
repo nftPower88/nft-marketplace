@@ -1,8 +1,13 @@
 import React from 'react';
 import { SendOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Row, Col } from 'antd';
 import { footerConf } from './footerData';
 import { LABELS } from '../../constants';
+import DiscordIcon from '../svgs/discord';
+import TwitterIcon from '../svgs/twitter';
+import InstagramIcon from '../svgs/instagram';
+import RedditIcon from '../svgs/reddit';
+import YoutubeIcon from '../svgs/youtube';
 
 export const Footer = () => {
   const validateMessages = {
@@ -11,7 +16,7 @@ export const Footer = () => {
     },
   };
 
-  const CustomForm = (props: {
+  /* const CustomForm = (props: {
     status?: string;
     message?: string;
     onValidated?: (val: any) => void;
@@ -63,36 +68,55 @@ export const Footer = () => {
     // TODO: remove use of deprecated DOM API
     <CustomForm status={status} />
   );
-
+ */
   return (
-    <div>
-      <div>
-        {footerConf.showShopName ? (
-          <div>
-            <div>{LABELS.STORE_NAME} NFT Marketplace</div>
-            <div>Powered by Metaplex and Solana</div>
-          </div>
-        ) : null}
-        {footerConf.components.map((component, i) => (
-          <div key={i}>
-            <div>{component.title}</div>
-            {component.links.map((link, j) => (
-              <div key={j}>
-                <a href={link.url} target="_blank" rel="noopener noreferrer">
-                  {link.label}
-                </a>
-              </div>
-            ))}
-          </div>
-        ))}
-        {footerConf.showEmailSubscriber ? (
-          <div>
-            <div>{footerConf.emailSubscriberText}</div>
-            <NewsLetterForm />
-          </div>
-        ) : null}
-      </div>
-      <div>2021 {LABELS.STORE_NAME} LLC, All rights reserved</div>
+    <div className="footer_layout position-relative">
+      <Row justify="space-between" align="bottom">
+        <Col
+          xs={8}
+          sm={7}
+          className="d-flex justify-content-center align-items-center"
+        >
+          <h5>&copy; Queendom, All rights reserved</h5>
+        </Col>
+        <div className="position-absolute translate-middle top-50 start-50">
+          <Row justify="space-between" style={{ width: '200px' }}>
+            <Col>
+              <TwitterIcon />
+            </Col>
+            <Col>
+              <InstagramIcon />
+            </Col>
+            <Col>
+              <DiscordIcon />
+            </Col>
+            <Col>
+              <RedditIcon />
+            </Col>
+            <Col>
+              <YoutubeIcon />
+            </Col>
+          </Row>
+        </div>
+        <Col
+          push={5}
+          xs={1}
+          sm={2}
+          className="d-flex justify-content-end align-items-center"
+        >
+          <h5>
+            <strong>Terms</strong>
+          </h5>
+        </Col>
+        <Col
+          span={3}
+          className="d-flex justify-content-center align-items-center"
+        >
+          <h5>
+            <strong>Privacy Policy</strong>
+          </h5>
+        </Col>
+      </Row>
     </div>
   );
 };
