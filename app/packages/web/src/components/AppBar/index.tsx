@@ -7,7 +7,6 @@ import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
-import Image from 'next/image'
 type P = {
   logo: string;
 };
@@ -19,8 +18,8 @@ export const AppBar = (props: P) => {
   const { ownerAddress } = useStore();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
-  const [isSignIn, setIsSignIn] = useState(false)
-  console.log(theme)
+  const [isSignIn, setIsSignIn] = useState(false);
+  console.log(theme);
   function switchTheme() {
     if (theme === 'Dark') {
       setCurrentTheme(Theme.Light);
@@ -172,7 +171,7 @@ export const AppBar = (props: P) => {
   );
 
   return (
-    <div >
+    <div>
       <style global jsx>
         {`
           .ant-layout-header {
@@ -190,40 +189,65 @@ export const AppBar = (props: P) => {
         `}
       </style>
       <Row wrap={false} align="middle">
-        
-          <Link to="/" id="metaplex-header-logo" onClick={()=>setIsSignIn(false)}>
-           <img style={{width:'100px',paddingBottom:'5px'}} src={theme === Theme.Light ? 'Logo/QueendomDark.png' : 'Logo/QueendomLight.png'}/>
-          </Link>
-        
-        <Col flex="1 0 0" style={{ height:'60px'}} hidden={isSignIn}>
-          <Menu theme="dark" mode="horizontal"  selectedKeys={activeItems}>
+        <Link
+          to="/"
+          id="metaplex-header-logo"
+          onClick={() => setIsSignIn(false)}
+        >
+          <img
+            style={{ width: '100px', paddingBottom: '5px' }}
+            src={
+              theme === Theme.Light
+                ? 'Logo/QueendomDark.png'
+                : 'Logo/QueendomLight.png'
+            }
+          />
+        </Link>
+
+        <Col flex="1 0 0" style={{ height: '60px' }} hidden={isSignIn}>
+          <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
         <Col flex="0 1 auto" hidden={isSignIn}>
           <Space className="metaplex-display-flex" align="center">
             {connected ? (
-              <div className='d-flex flex-row' >
+              <div className="d-flex flex-row">
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
 
                 <Cog buttonType="text" />
               </div>
             ) : (
-              <div className='ant-button me-5'>
+              <div className="ant-button me-5">
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
-                <Link className='sign_in_button' onClick={()=>setIsSignIn(true)} to='/signin'>Sign in</Link>
+                <Link
+                  className="sign_in_button"
+                  onClick={() => setIsSignIn(true)}
+                  to="/signin"
+                >
+                  Sign in
+                </Link>
               </div>
             )}
-            <Button shape='round' type='primary' style={{ float: 'right',height:'30px',width:'30px' }} onClick={switchTheme}>
+            <Button
+              shape="round"
+              type="primary"
+              style={{ float: 'right', height: '30px', width: '30px' }}
+              onClick={switchTheme}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill={currentTheme === Theme.Dark ? 'black':'white'}
-                stroke={currentTheme === Theme.Dark ? 'black':'white'}
-                style={{height:'20px',width:'20px',transform:'translate(-6px,1.5px)'}}
+                fill={theme === Theme.Dark ? 'black' : 'white'}
+                stroke={theme === Theme.Dark ? 'black' : 'white'}
+                style={{
+                  height: '20px',
+                  width: '20px',
+                  transform: 'translate(-6px,1.5px)',
+                }}
               >
-                {currentTheme === Theme.Dark ? (
+                {theme === Theme.Dark ? (
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
