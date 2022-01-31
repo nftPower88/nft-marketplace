@@ -15,16 +15,19 @@ const Settings = ({ additionalSettings, }) => {
     const { publicKey } = wallet_adapter_react_1.useWallet();
     return (react_1.default.createElement("div", { className: "metaplex-settings" },
         react_1.default.createElement(antd_1.Space, { direction: "vertical", align: "center" },
-            react_1.default.createElement(Identicon_1.Identicon, { address: publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58(), size: 48 }),
-            publicKey && (react_1.default.createElement(react_1.default.Fragment, null,
-                react_1.default.createElement(antd_1.Tooltip, { title: "Address copied" },
-                    react_1.default.createElement("div", { onClick: () => navigator.clipboard.writeText((publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58()) || '') },
-                        react_1.default.createElement(icons_1.CopyOutlined, null),
-                        "\u00A0",
-                        utils_1.shortenAddress(publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58()))),
-                react_1.default.createElement(react_router_dom_1.Link, { to: `/profile` }, "View Profile")))),
+            // react_1.default.createElement(Identicon_1.Identicon, { address: publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58(), size: 48 }),
+            publicKey && (
+                react_1.default.createElement(react_1.default.Fragment, null,
+                // react_1.default.createElement(antd_1.Tooltip, { title: "Address copied" },
+                //     react_1.default.createElement("div", { onClick: () => navigator.clipboard.writeText((publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58()) || '') },
+                //         react_1.default.createElement(icons_1.CopyOutlined, null),
+                //         "\u00A0",
+                //         utils_1.shortenAddress(publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58()))),
+                react_1.default.createElement(react_router_dom_1.Link, { to: `/profile` }, "View Profile"))
+                )),
         additionalSettings && (react_1.default.createElement(react_1.default.Fragment, null,
-            react_1.default.createElement(antd_1.Divider, null),
+            // react_1.default.createElement(antd_1.Divider, null),
+            react_1.default.createElement("div", {className: "setting-divider"}),
             additionalSettings))));
 };
 exports.Settings = Settings;

@@ -29,3 +29,9 @@
   justify-content: stretch;
   align-items: stretch;
 }
+
+.setting-divider {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}

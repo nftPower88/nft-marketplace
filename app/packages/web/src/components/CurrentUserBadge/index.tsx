@@ -48,31 +48,32 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
               <>
                 <Link to='/artworks/new'>
                   <Button
+                    className='w-100'
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Create
                   </Button>
                 </Link>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             ) : (
               <>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
@@ -81,29 +82,29 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
             {canCreate ? (
               <>
                 <Link to='/artworks/new'>
-                  <Button>Create</Button>
+                  <Button className='w-100'>Create</Button>
                 </Link>
-                &nbsp;&nbsp; &nbsp;
-                <Link to='/auction/create/'>
+                {/* &nbsp;&nbsp; &nbsp; */}
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             ) : (
               <>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
-                &nbsp;&nbsp; &nbsp;
+                </Link> */}
+                {/* &nbsp;&nbsp; &nbsp; */}
               </>
             )}
           </div>
@@ -201,19 +202,19 @@ export const CurrentUserBadge = (props: {
           <Settings
             additionalSettings={
               <Space direction='vertical'>
-                <h5>BALANCE</h5>
+                {/* <h5>BALANCE</h5>
                 <Space direction='horizontal'>
                   <SolCircle />
                   <span>{formatNumber.format(balance)} SOL</span>
                   <span>{formatUSD.format(balanceInUSD)}</span>
-                </Space>
-                <Space direction='horizontal'>
-                  <Button onClick={() => setShowAddFundsModal(true)}>
+                </Space> */}
+                {/* <Space direction='horizontal'> */}
+                  {/* <Button onClick={() => setShowAddFundsModal(true)}>
                     Add Funds
-                  </Button>
+                  </Button> */}
                   <Button onClick={disconnect}>Disconnect</Button>
             
-                </Space>
+                {/* </Space> */}
                 <UserActions />
               </Space>
             }
