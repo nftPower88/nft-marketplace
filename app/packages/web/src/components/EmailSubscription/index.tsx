@@ -1,6 +1,6 @@
 import { SendOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Row, Col } from 'antd';
-import { footerConf } from './footerData';
+// import { footerConf } from './footerData';
 import { LABELS } from '../../constants';
 import { useTheme, Theme } from '../../contexts/themecontext';
 
