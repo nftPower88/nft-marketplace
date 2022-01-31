@@ -101,7 +101,7 @@
   },
   "scripts": {
     "prestart": "npm-link-shared ../common/node_modules/ . react && npm-link-shared ../checkout/node_modules/ . react",
-    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "start": "next dev",
     "build": "next build",
     "export": "next export -o ../../build/web",
