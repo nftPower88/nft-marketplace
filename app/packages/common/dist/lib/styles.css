@@ -20,12 +20,28 @@
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
 }
+
 .metaplex-overlay-content {
   pointer-events: auto;
 }
+
 .metaplex-settings {
   display: flex;
   flex-flow: column nowrap;
   justify-content: stretch;
   align-items: stretch;
+}
+
+.setting-divider {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile-container {
+  width: 150px;
+}
+
+.profile-container span {
+  cursor: pointer;
 }
