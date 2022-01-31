@@ -220,10 +220,12 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
         <Row justify="center">
           <Col span={21}>
             <Button
+              size="large"
               hidden={!showAuction}
               onClick={() => setShowAuction(false)}
               type="primary"
-              className="metaplex-fullwidth rounded-3"
+              className="metaplex-fullwidth rounded-3 mt-4"
+              style={{ height: '40px' }}
             >
               Buy Now
             </Button>
