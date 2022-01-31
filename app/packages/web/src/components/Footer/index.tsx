@@ -78,7 +78,7 @@ export const Footer = () => {
           sm={7}
           className="d-flex justify-content-center align-items-center"
         >
-          <h5>&copy; Queendom, All rights reserved</h5>
+          <h5>&copy; Queendom PBC, All rights reserved</h5>
         </Col>
         <div className="position-absolute translate-middle top-50 start-50">
           <Row justify="space-between" style={{ width: '200px' }}>
