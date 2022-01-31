@@ -199,27 +199,47 @@ export const CurrentUserBadge = (props: {
         trigger='click'
         placement='bottomRight'
         content={
-          <Settings
-            additionalSettings={
-              <Space direction='vertical'>
-                {/* <h5>BALANCE</h5>
-                <Space direction='horizontal'>
-                  <SolCircle />
-                  <span>{formatNumber.format(balance)} SOL</span>
-                  <span>{formatUSD.format(balanceInUSD)}</span>
-                </Space> */}
-                {/* <Space direction='horizontal'> */}
-                  {/* <Button onClick={() => setShowAddFundsModal(true)}>
-                    Add Funds
-                  </Button> */}
-                  <Button onClick={disconnect}>Sign Out</Button>
+          // <Settings
+          //   additionalSettings={
+          //     <Space direction='vertical'>
+          //       <h5>BALANCE</h5>
+          //       <Space direction='horizontal'>
+          //         <SolCircle />
+          //         <span>{formatNumber.format(balance)} SOL</span>
+          //         <span>{formatUSD.format(balanceInUSD)}</span>
+          //       </Space> 
+          //       <Space direction='horizontal'>
+          //         <Button onClick={() => setShowAddFundsModal(true)}>
+          //           Add Funds
+          //         </Button>
+          //         <Button onClick={disconnect}>Sign Out</Button>
             
-                {/* </Space> */}
-                <UserActions />
-              </Space>
-            }
-          />
-        }>
+          //       </Space>
+          //       <UserActions />
+          //       <div className='setting-divider' />
+          //       <Button onClick={disconnect}>Sign Out</Button>
+          //     </Space>
+          //   }
+          // />
+          <div className='profile-container'>
+            <div className='my-2'>
+              <a href="/profile">Profile</a>
+            </div>
+            <div className='my-2'>
+              <a href="/dashboard">Dashboard</a>
+            </div>
+            <div className='my-2'>
+              <a href="/collection">Collection</a>
+            </div>
+            <div className='my-2'>
+              <a href="/setting">Settings</a>
+            </div>
+            <div className='setting-divider' />
+            <span className='mb-2 ' onClick={disconnect}>Sign Out</span>
+            {/* <Button onClick={disconnect}>Sign Out</Button> */}
+          </div>
+        }
+        >
         <Button className='metaplex-button-appbar' type={props.buttonType}>
           <Space direction='horizontal'>
             {props.showBalance && (
