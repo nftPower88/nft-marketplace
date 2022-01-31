@@ -18,10 +18,6 @@ export const AppLayout = React.memo(function AppLayout(props: {
           <AppBar logo={props.storefront?.theme?.logo || ''} />
         </Header>
         <Content id="metaplex-layout-content">{props.children}</Content>
-        <Footer>
-          <EmailSubscription />
-        </Footer>
-        <FooterComp />
       </Layout>
     </>
   );
