@@ -212,7 +212,7 @@ export const CurrentUserBadge = (props: {
                   {/* <Button onClick={() => setShowAddFundsModal(true)}>
                     Add Funds
                   </Button> */}
-                  <Button onClick={disconnect}>Disconnect</Button>
+                  <Button onClick={disconnect}>Sign Out</Button>
             
                 {/* </Space> */}
                 <UserActions />
@@ -331,7 +331,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={disconnect}>Disconnect</Button>
+        <Button onClick={disconnect}>Sign Out</Button>
       </div>
       <div>
         <UserActions
