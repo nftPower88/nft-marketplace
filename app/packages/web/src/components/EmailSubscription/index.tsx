@@ -30,7 +30,7 @@ export const EmailSubscription = () => {
     };
     return (
       <div className="mb-2">
-        <h4 className="text-center">Subscribe to our newsletter</h4>
+        <h4 className="text-center fw-bold">Get the latest Queendom Updates</h4>
         <Form onFinish={submit} validateMessages={validateMessages}>
           <Row justify="center" align="middle">
             <Col
@@ -41,7 +41,7 @@ export const EmailSubscription = () => {
               <Input
                 required
                 type="email"
-                placeholder="Email Address"
+                placeholder="Subscribe to our newsletter"
                 bordered={false}
                 className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
               />

@@ -8,6 +8,7 @@ import TwitterIcon from '../svgs/twitter';
 import InstagramIcon from '../svgs/instagram';
 import RedditIcon from '../svgs/reddit';
 import YoutubeIcon from '../svgs/youtube';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   const validateMessages = {
@@ -82,19 +83,29 @@ export const Footer = () => {
         <div className="position-absolute translate-middle top-50 start-50">
           <Row justify="space-between" style={{ width: '200px' }}>
             <Col>
-              <TwitterIcon />
+              <Link to="https://twitter.com/Queendomverse">
+                <TwitterIcon />
+              </Link>
             </Col>
             <Col>
-              <InstagramIcon />
+              <Link to="https://instagram.com">
+                <InstagramIcon />
+              </Link>
             </Col>
             <Col>
-              <DiscordIcon />
+              <Link to="https://discord.gg/vYBcfGSdYr">
+                <DiscordIcon />
+              </Link>
             </Col>
             <Col>
-              <RedditIcon />
+              <Link to="https://www.reddit.com/r/queendomverse">
+                <RedditIcon />
+              </Link>
             </Col>
             <Col>
-              <YoutubeIcon />
+              <Link to="https://www.youtube.com">
+                <YoutubeIcon />
+              </Link>
             </Col>
           </Row>
         </div>
