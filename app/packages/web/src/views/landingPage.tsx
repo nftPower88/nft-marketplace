@@ -8,19 +8,16 @@ import { useInfiniteScrollAuctions } from '../hooks';
 import { AuctionRenderCard } from '../components/AuctionRenderCard';
 import PixelStreamer from '../components/PixelStreamer';
 import Hero from '../components/Hero';
-import CookieConsent, { Cookies } from 'react-cookie-consent';
 import ReactPlayer from 'react-player';
 import { Footer as FooterComp } from '../components/Footer';
 import { EmailSubscription } from '../components/EmailSubscription';
 import { Layout, Divider } from 'antd';
-
 export const LandingPageView = () => {
   const { Footer } = Layout;
   const router = useRouter();
   const { storefront } = useStore();
   const { auctions, loading, initLoading, hasNextPage, loadMore } =
     useInfiniteScrollAuctions();
-
   return (
     <>
       <Layout>
@@ -160,19 +157,11 @@ export const LandingPageView = () => {
         </Footer>
         <FooterComp />
       </Layout>
-      <CookieConsent
-        onAccept={() => {
-          alert('yay!');
-        }}
-        debug={true}
-        enableDeclineButton
-        declineButtonText="Decline (optional)"
-        onDecline={() => {
-          alert('nay!');
-        }}
-      >
-        This website uses cookies to enhance the user experience.
-      </CookieConsent>
+      {/* {!getCookieConsentValue() && (
+        <CookieConsent>
+          This website uses cookies to enhance the user experience.
+        </CookieConsent>
+      )} */}
     </>
   );
 };
