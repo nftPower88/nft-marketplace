@@ -230,7 +230,7 @@ export const CurrentUserBadge = (props: {
               </span>
             )}
             {image}
-            {name && <span>{name}</span>}
+            {/* {name && <span>{name}</span>} */}
           </Space>
         </Button>
       </Popover>
