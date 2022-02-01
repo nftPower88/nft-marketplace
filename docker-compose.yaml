@@ -16,11 +16,11 @@ services:
   caddy:
     container_name: marketplace_proxy
     image: lucaslorentz/caddy-docker-proxy:${CADDY_PROXY_VERSION?err}
+    networks:
+      - app_proxy
     ports:
       - 80:80
       - 443:443
-    networks:
-      - app_proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - caddy_data:/data
@@ -39,6 +39,7 @@ services:
           memory: 200M
 
   marketplace-app:
+    container_name: ${COMPOSE_HOSTNAME}
     build:
       context: ./app/.
       dockerfile: Dockerfile.${SOL_NET}
@@ -53,10 +54,7 @@ services:
         NEXT_ENABLE_NFT_PACKS: ${NEXT_ENABLE_NFT_PACKS}
         NEXT_SPL_TOKEN_MINTS: ${NEXT_SPL_TOKEN_MINTS}
         NEXT_CG_SPL_TOKEN_IDS: ${NEXT_CG_SPL_TOKEN_IDS}
-
-    container_name: ${COMPOSE_HOSTNAME}
     user: "node:node"
-    restart: unless-stopped
     networks:
       - app_proxy
     ports:
@@ -71,37 +69,55 @@ services:
       caddy: ${WEBSITE_HOSTNAME?err}
       caddy.reverse_proxy: "{{upstreams http ${NEXT_PORT}}}"
        # caddy.tls: "${CADDY_TLS}"
-      caddy.tls.ca: "https://acme-v02.api.letsencrypt.org/directory" #"https://acme-staging-v02.api.letsencrypt.org/directory"
+      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # "https://acme-v02.api.letsencrypt.org/directory"
       caddy.@ws.0_header: Connection *Upgrade*
       caddy.@ws.1_header: Upgrade websocket
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any      
 
   backend-app:
-    depends_on:
-      - mongodatabase
+    container_name: marketplace_backend
     build: 
       context: ./backend/.
       dockerfile: Dockerfile.${SOL_NET}
-    restart: unless-stopped
-    networks:
-      - app_proxy
-    ports:
-      - 8080:8080
-    environment:
-      - DB_HOST=mongodb
-      - DB_USER=${MONGODB_USER}
-      - DB_PASSWORD=${MONGODB_PASSWORD}
-      - DB_NAME=${MONGODB_DATABASE}
-      - DB_PORT=${MONGODB_DOCKER_PORT}
     stdin_open: true
     tty: true
+    networks:
+      - app_proxy
+      - db_net
+    environment:
+      # - MONGODB_CONNSTRING="mongodb://${MONGODB_USER?err}:${MONGODB_PASSWORD?err}@marketplace_db:${MONGODB_DOCKER_PORT?err}/${MONGODB_DATABASE?err}"
+      - MONGODB_CONNSTRING="mongodb://${MONGODB_USER?err}:${MONGODB_PASSWORD?err}@marketplace_db"
+    depends_on:
+      - mongodatabase
+    labels:
+      caddy: ${WEBSITE_HOSTNAME?err}
+      caddy.route: "/api/*"
+      caddy.route.0_uri: "strip_prefix /api"
+      caddy.route.1_rewrite: "* /api{path}"
+      caddy.route.2_reverse_proxy: "{{upstreams http 8080}}"
+      caddy.tls.ca: "https://acme-staging-v02.api.letsencrypt.org/directory" # "https://acme-v02.api.letsencrypt.org/directory"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
 
   mongodatabase:
-   image: mongo:5.0.2
-   restart: unless-stopped
-   environment:
-    - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
-    - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
-#   ports:
-#     - 27018:27017
-   volumes:
-     - db_data:/data/db
+    container_name: marketplace_db
+    image: mongo:5.0.2  
+    networks:
+      - db_net
+    volumes:
+      - db_data:/data/db
+    environment:
+      # Refs: https://hub.docker.com/_/mongo
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER?err}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD?err}
+      # MongoDB is fundamentally designed for "create on first use", so if you do not insert data with your JavaScript files, then no database is created.
+      # - MONGO_INITDB_DATABASE=${MONGODB_DATABASE?err}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any    
