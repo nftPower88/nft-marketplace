@@ -122,13 +122,13 @@ export const AppBar = (props: P) => {
     if (connected) {
       menu = [
         ...menu,
-        {
-          key: 'profile',
-          title: 'Profile',
-          link: '/profile',
-          exact: true,
-          alt: [],
-        },
+        // {
+        //   key: 'profile',
+        //   title: 'Profile',
+        //   link: '/profile',
+        //   exact: true,
+        //   alt: [],
+        // },
       ];
     }
 
