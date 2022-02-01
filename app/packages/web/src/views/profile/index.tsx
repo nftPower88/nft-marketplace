@@ -1,9 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
-import {
-  loadMetadataForUsers,
-  useConnection,
-  useUserAccounts,
-} from '@oyster/common';
 import {
   FileImageOutlined,
   HeartOutlined,
@@ -19,10 +13,8 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useMeta } from '../../contexts';
-import { useUserArts } from '../../hooks';
 import styles from './profile.module.css';
+import { useHistory } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -89,6 +81,7 @@ const Owned = () => {
 
 export const ProfileView = () => {
   const { connected, publicKey } = useWallet();
+  const history = useHistory();
 
   return (
     <div className={styles.profileContainer}>
@@ -107,7 +100,7 @@ export const ProfileView = () => {
           <span className={styles.followSpan}><InfoCircleFilled className={styles.infoIcon}/>followering</span>
         </div>
         <div className={styles.infoButtons}>
-          <Button className={styles.editBtn}>Edit profile</Button>
+          <Button className={styles.editBtn} onClick={() => {history.push('/editProfile')}}>Edit profile</Button>
           <Button className={styles.infoBtn}><UploadOutlined /></Button>
           <Button className={styles.infoBtn}><EllipsisOutlined /></Button>
         </div>

@@ -16,3 +16,5 @@ export { CartPageView } from './checkout';
 export { DashboardView } from './clientPage/Dashboard';
 export { SignInView } from './signIn';
 export { ProfileView } from './profile';
+export { EditProfileView } from './editProfile';
+export { SettingView } from './setting';

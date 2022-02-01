@@ -17,7 +17,9 @@ import {
   LearnPageView,
   DashboardView,
   SignInView,
-  ProfileView
+  ProfileView,
+  EditProfileView,
+  SettingView
 //  ClientPageView,
 } from './views';
 import { AdminView } from './views/admin';
@@ -47,6 +49,8 @@ export function Routes({storefront}: RoutesProps) {
               component={() => <ArtCreateView />}
             />
             <Route exact path='/profile' component={() => <ProfileView />} />
+            <Route exact path='/editProfile' component={() => <EditProfileView />} />
+            {/* <Route exact path='/dashboard' component={() => <Dashboard />} /> */}
             <Route exact path='/artworks/:id' component={() => <ArtView />} />
             <Route path='/artists/:id' component={() => <ArtistView />} />
             <Route
@@ -70,7 +74,8 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/about' component={() => <StaticPageView />} />
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
-            <Route path='/client' component={() => <DashboardView/>} />
+            <Route path='/dashboard' component={() => <DashboardView/>} />
+            <Route path='/setting' component={() => <SettingView/>} />
             {/*<Route path="/dashboard" element = {<DashboardView />} />*/}
             <Route path='/signin' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
