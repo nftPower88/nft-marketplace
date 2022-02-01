@@ -87,6 +87,9 @@ services:
     networks:
       - app_proxy
       - db_net
+    volumes:
+      - "./backend/seed/data:/src/data"
+    # command: "node ./seed/seeder.js"
     environment:
       # - MONGODB_CONNSTRING="mongodb://${MONGODB_USER?err}:${MONGODB_PASSWORD?err}@marketplace_db:${MONGODB_DOCKER_PORT?err}/${MONGODB_DATABASE?err}"
       - MONGODB_CONNSTRING="mongodb://${MONGODB_USER?err}:${MONGODB_PASSWORD?err}@marketplace_db"
