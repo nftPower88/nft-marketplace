@@ -24,11 +24,11 @@ export const SignInView = () => {
                   style={{ width: '100%', height: '50px' }}
                   allowWalletChange={false}
                 />
-                  <div className="bold_text" style={{margin:'10px'}}>
-                <a href={COINBASE}>
+                <div className="bold_text" style={{margin:'10px'}}>
+                  <a href={COINBASE}>
                     First time setting up a wallet?
-                </a>
-                  </div>
+                  </a>
+                </div>
               </Col>
             </Row>
           </div>

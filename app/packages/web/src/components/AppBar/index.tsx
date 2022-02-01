@@ -119,18 +119,18 @@ export const AppBar = (props: P) => {
       ];
     }
 
-    // if (connected) {
-    //   menu = [
-    //     ...menu,
-    //     {
-    //       key: 'profile',
-    //       title: 'Profile',
-    //       link: '/profile',
-    //       exact: true,
-    //       alt: [],
-    //     },
-    //   ];
-    // }
+    if (connected) {
+      menu = [
+        ...menu,
+        // {
+        //   key: 'profile',
+        //   title: 'Profile',
+        //   link: '/profile',
+        //   exact: true,
+        //   alt: [],
+        // },
+      ];
+    }
 
     if (publicKey?.toBase58() === ownerAddress) {
       menu = [
