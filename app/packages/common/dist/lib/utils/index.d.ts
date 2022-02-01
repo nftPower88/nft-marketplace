@@ -10,4 +10,5 @@ export * as shortvec from './shortvec';
 export * from './isValidHttpUrl';
 export * from './borsh';
 export * from './createPipelineExecutor';
+export * from './api-helper';
 //# sourceMappingURL=index.d.ts.map

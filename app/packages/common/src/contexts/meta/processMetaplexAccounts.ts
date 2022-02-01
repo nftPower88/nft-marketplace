@@ -24,7 +24,8 @@ import {
   StoreIndexer,
 } from '../../models';
 import { ProcessAccountsFunc } from './types';
-import { METAPLEX_ID, programIds, pubkeyToString, fetchGetJSON } from '../../utils';
+// import { METAPLEX_ID, programIds, pubkeyToString, fetchGetJSON } from '../../utils';
+import { METAPLEX_ID, programIds, pubkeyToString } from '../../utils';
 import { ParsedAccount } from '../accounts';
 import { cache } from '../accounts';
 import names from '../../config/userNames.json';
@@ -179,12 +180,12 @@ export const processMetaplexAccounts: ProcessAccountsFunc = async (
         );
         // call the api
         /* TODO: use env. variable for different environments */
-        const users = await fetchGetJSON('http://localhost:8080/api/users');
+        // const users = await fetchGetJSON('http://localhost:8080/api/users');
         //  modify  data same as in userNames.json file
-        let names: any = {};
-        for (let user of users) {
-          names[user.walletAddress] = {...user}
-        }
+        // let names: any = {};
+        // for (let user of users) {
+        //   names[user.walletAddress] = {...user}
+        // }
 
         const nameInfo = (names as any)[parsedAccount.info.address];
 

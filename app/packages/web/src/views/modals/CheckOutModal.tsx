@@ -392,9 +392,14 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h3 style={{ fontWeight: 900 }}>Attributes</h3>
             <List grid={{ column: 4 }}>
               {attributes.map((attribute, index) => (
-                <List.Item key={`${attribute.value}-${index}`}>
+                <List.Item
+                  key={`${attribute.value}-${index}`}
+                  className="d-flex"
+                >
+                  <List.Item.Meta title={`${attribute.trait_type}`} />
                   <List.Item.Meta
-                    title={`${attribute.trait_type} ${attribute.value}`}
+                    title={attribute.value}
+                    className="text-end"
                   />
                 </List.Item>
               ))}
