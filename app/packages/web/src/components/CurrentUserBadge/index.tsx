@@ -223,16 +223,16 @@ export const CurrentUserBadge = (props: {
           // />
           <div className='profile-container'>
             <div className='my-2'>
-              <a href="/profile">Profile</a>
+              <a href="/#/profile">Profile</a>
             </div>
             <div className='my-2'>
-              <a href="/dashboard">Dashboard</a>
+              <a href="/#/dashboard">Dashboard</a>
             </div>
             <div className='my-2'>
-              <a href="/collection">Collection</a>
+              <a href="/#/collection">Collection</a>
             </div>
             <div className='my-2'>
-              <a href="/setting">Settings</a>
+              <a href="/#/setting">Settings</a>
             </div>
             <div className='setting-divider' />
             <span className='mb-2 ' onClick={disconnect}>Sign Out</span>
