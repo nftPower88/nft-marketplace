@@ -16,7 +16,8 @@ import {
   CartPageView,
   LearnPageView,
   DashboardView,
-  SignInView
+  SignInView,
+  ProfileView
 //  ClientPageView,
 } from './views';
 import { AdminView } from './views/admin';
@@ -45,7 +46,7 @@ export function Routes({storefront}: RoutesProps) {
               path='/artworks/new/:step_param?'
               component={() => <ArtCreateView />}
             />
-            <Route exact path='/profile' component={() => <ArtworksView />} />
+            <Route exact path='/profile' component={() => <ProfileView />} />
             <Route exact path='/artworks/:id' component={() => <ArtView />} />
             <Route path='/artists/:id' component={() => <ArtistView />} />
             <Route
