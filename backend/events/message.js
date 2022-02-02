@@ -6,8 +6,7 @@ module.exports = {
       socket.on('message-send', async (data) => {
         try {
           const result = await messageController.create(data);
-          console.log(result);
-          io.emit('message-receive', {data: result});
+          io.emit('message-receive', {data: result?.data, type: 'success'});
         } catch (err) {
           // tslint:disable-next-line: no-console
           console.log(err);
