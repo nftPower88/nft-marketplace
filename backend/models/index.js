@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise;
 
 const db = {};
 db.mongoose = mongoose;
-db.url = dbConfig.url;
+db.connString = dbConfig.connString;
 db.users = require("./users.model.js")(mongoose);
 db.message = require("./message.model.js")(mongoose);
 

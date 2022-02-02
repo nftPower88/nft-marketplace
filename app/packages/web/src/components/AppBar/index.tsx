@@ -122,13 +122,13 @@ export const AppBar = (props: P) => {
     if (connected) {
       menu = [
         ...menu,
-        {
-          key: 'profile',
-          title: 'Profile',
-          link: '/profile',
-          exact: true,
-          alt: [],
-        },
+        // {
+        //   key: 'profile',
+        //   title: 'Profile',
+        //   link: '/profile',
+        //   exact: true,
+        //   alt: [],
+        // },
       ];
     }
 
@@ -179,7 +179,7 @@ export const AppBar = (props: P) => {
             position: fixed;
             z-index: 2;
             width: 100vw;
-            opacity: 80%;
+            opacity: 100%;
             height: 64px;
           }
           .ant-btn {
@@ -195,7 +195,7 @@ export const AppBar = (props: P) => {
           onClick={() => setIsSignIn(false)}
         >
           <img
-            style={{ width: '100px', paddingBottom: '5px' }}
+            style={{ width: '200px', paddingBottom: '5px' }}
             src={
               theme === Theme.Light
                 ? 'Logo/QueendomDark.png'
@@ -266,7 +266,6 @@ export const AppBar = (props: P) => {
             </Button>
           </Space>
         </Col>
-        {}
       </Row>
     </div>
   );

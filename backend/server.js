@@ -14,9 +14,9 @@ app.use(express.urlencoded({ extended: true }));   /* bodyParser.urlencoded() is
 
 const db = require("./models");
 const message = require("./events/message");
-console.log(db.url);
+console.log(db.connString);
 db.mongoose
-  .connect(db.url, {
+  .connect(db.connString, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true

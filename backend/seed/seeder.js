@@ -4,9 +4,9 @@ const { Seeder } = require('mongo-seeding');
 const db = require("../models");
 
 const config = {
-  database: db.url,
-  dropDatabase: true,
-};
+    database: db.connString,
+    dropDatabase: true,
+  };
 const seeder = new Seeder(config);
 const collections = seeder.readCollectionsFromPath(
   path.resolve('./data'),
