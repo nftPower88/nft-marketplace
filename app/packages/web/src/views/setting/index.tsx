@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
     QuestionCircleOutlined
 } from '@ant-design/icons';
@@ -5,7 +7,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge, Divider, Switch, InputNumber } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './style.module.css';
+import styles from './Setting.module.css';
 
 export const SettingView = () => {
   return (

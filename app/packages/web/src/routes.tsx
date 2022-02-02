@@ -6,21 +6,21 @@ import {
   ArtCreateView,
   ArtistView,
   ArtView,
-  ArtworksView,
+  // ArtworksView,
   AuctionCreateView,
   AuctionView,
   HomeView,
   StaticPageView,
-  CheckoutPageView,
-  ResultPageView,
-  CartPageView,
+  // CheckoutPageView,
+  // ResultPageView,
+  // CartPageView,
   LearnPageView,
   DashboardView,
   SignInView,
   ProfileView,
   EditProfileView,
-  SettingView
-//  ClientPageView,
+  SettingView,
+  ClientPageView
 } from './views';
 import { AdminView } from './views/admin';
 import { BillingView } from './views/auction/billing';
@@ -76,7 +76,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/learn' component={() => <LearnPageView />} />
             <Route path='/dashboard' component={() => <DashboardView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
-            {/*<Route path="/dashboard" element = {<DashboardView />} />*/}
+            <Route path='/client' component={() => <ClientPageView/>} />
             <Route path='/signin' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>

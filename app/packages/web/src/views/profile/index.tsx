@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   FileImageOutlined,
   HeartOutlined,
@@ -13,7 +15,7 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
-import styles from './profile.module.css';
+import styles from './Profile.module.css';
 import { useHistory } from 'react-router-dom';
 
 const { TabPane } = Tabs;
