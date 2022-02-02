@@ -80,7 +80,10 @@ const WalletModalProvider = ({ children, }) => {
             const keyToDisplay = base58.length > 20
                 ? `${base58.substring(0, 7)}.....${base58.substring(base58.length - 7, base58.length)}`
                 : base58;
-            history.push('/signinconfirm');
+            if (localStorage.getItem('click-signin') === 'yes') {
+                history.push('/signinconfirm');
+                localStorage.removeItem('click-signin');
+            }
             utils_1.notify({
                 message: 'Wallet update',
                 description: 'Connected to wallet ' + keyToDisplay,

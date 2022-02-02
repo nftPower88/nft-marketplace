@@ -31,7 +31,6 @@ interface RoutesProps {
 }
 
 export function Routes({storefront}: RoutesProps) {
-
   return (
     <>
       <style global jsx>{`

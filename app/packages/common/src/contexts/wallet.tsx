@@ -149,8 +149,11 @@ export const WalletModalProvider: FC<{ children: ReactNode }> = ({
               base58.length,
             )}`
           : base58;
-      history.push('/signinconfirm')
-
+      if (localStorage.getItem('click-signin') === 'yes') {
+        history.push('/signinconfirm')
+        localStorage.removeItem('click-signin')
+      }
+      
       notify({
         message: 'Wallet update',
         description: 'Connected to wallet ' + keyToDisplay,
