@@ -3,6 +3,26 @@ const User = db.users;
 
 
 
+
+
+
+// Retrieve all users from the database.
+exports.create = async (req, res) => {
+    const {body} = req;
+    try {
+        body.name = `User_${body.walletAddress}` // temporary solution for the user
+       const result =  await User.create(body);
+       return res.status(201).send(result);
+    } catch (error) {
+        res.status(500).send({
+            message:
+            error.message || "Some error occurred while retrieving Users."
+        });
+    }
+  
+};
+
+
 // Retrieve all users from the database.
 exports.findAll = async (req, res) => {
     const query = req.query;
