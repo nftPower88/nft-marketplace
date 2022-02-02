@@ -14,7 +14,7 @@ import {
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
-import { Badge, Button, ButtonProps, List, Popover } from 'antd';
+import { Badge, Button, ButtonProps, List, Popover, Drawer } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { closePersonalEscrow } from '../../actions/closePersonalEscrow';
@@ -118,7 +118,7 @@ export function useCollapseWrappedSol({
   const [showNotification, setShowNotification] = useState(false);
   const fn = async () => {
     const ata = await getPersonalEscrowAta(wallet);
-    if (ata) {  
+    if (ata) {
       try {
         const balance = await connection.getTokenAccountBalance(
           toPublicKey(ata),
@@ -167,11 +167,19 @@ export function Notifications({
   buttonType?: ButtonProps['type'];
 }) {
   const { metadata, whitelistedCreatorsByCreator, store } = useMeta();
-
+  const [drawerShown, setDrawerShown] = useState(false);
   const connection = useConnection();
   const wallet = useWallet();
   const notifications: NotificationCard[] = [];
   const walletPubkey = wallet.publicKey?.toBase58() || '';
+
+  const showDrawer = () => {
+    setDrawerShown(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerShown(false);
+  };
 
   useCollapseWrappedSol({ connection, wallet, notifications });
 
@@ -197,7 +205,8 @@ export function Notifications({
       title: 'You have a new artwork to approve!',
       description: (
         <span>
-          A whitelisted creator wants you to approve a collaboration. See artwork <Link to={`/artworks/${m.pubkey}`}>here</Link>.
+          A whitelisted creator wants you to approve a collaboration. See
+          artwork <Link to={`/artworks/${m.pubkey}`}>here</Link>.
         </span>
       ),
       action: async () => {
@@ -212,7 +221,15 @@ export function Notifications({
     });
   });
 
-  const activeNotifications = notifications.length > 0 ? notifications.slice(0, 10) : [{ title: "No Notifications", description: "You have no notifications that need attending." }] as NotificationCard[];
+  const activeNotifications =
+    notifications.length > 0
+      ? notifications.slice(0, 10)
+      : ([
+          {
+            title: 'No Notifications',
+            description: 'You have no notifications that need attending.',
+          },
+        ] as NotificationCard[]);
 
   const content = (
     <List
@@ -241,22 +258,43 @@ export function Notifications({
             </>
           }
         >
-          <List.Item.Meta
-            title={item.title}
-            description={item.description}
-          />
+          <List.Item.Meta title={item.title} description={item.description} />
         </List.Item>
       )}
     />
   );
 
-
   const justContent = (
-    <Popover placement="bottomRight" content={content} trigger="click">
-      <Button className="metaplex-button-appbar" type={buttonType}>
-        <BellSvg />
-      </Button>
-    </Popover>
+    <>
+      <div className="d-sm-flex d-none">
+        <Popover placement="bottomRight" content={content} trigger="click">
+          <Button className="metaplex-button-appbar" type={buttonType}>
+            <BellSvg />
+          </Button>
+        </Popover>
+      </div>
+      <div className="d-flex d-sm-none">
+        <Drawer
+          title={<h3 className="fw-bold">Notifications</h3>}
+          visible={drawerShown}
+          placement="bottom"
+          mask={true}
+          maskStyle={{ opacity: '0%' }}
+          onClose={closeDrawer}
+          closable={false}
+        >
+          <div className="d-flex justify-content-center">{content}</div>
+        </Drawer>
+
+        <Button
+          onClick={showDrawer}
+          className="metaplex-button-appbar"
+          type={buttonType}
+        >
+          <BellSvg />
+        </Button>
+      </div>
+    </>
   );
 
   if (notifications.length === 0) return justContent;

@@ -1,12 +1,21 @@
 import { ConnectButton, useStore } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Col, Menu, Row, Space, Button } from 'antd';
+import { Col, Menu, Row, Space, Button, Drawer } from 'antd';
 import React, { ReactNode, useMemo, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
+import {
+  Cog,
+  CogMobile,
+  CurrentUserBadge,
+  CurrentUserBadgeMobile,
+} from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
+import { MenuOutlined } from '@ant-design/icons';
+import { SocialIcon } from '../Footer/social_icon';
+import { EmailSubscription } from '../EmailSubscription';
+
 type P = {
   logo: string;
 };
@@ -19,6 +28,7 @@ export const AppBar = (props: P) => {
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
   const [isSignIn, setIsSignIn] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   console.log(theme);
   function switchTheme() {
     if (theme === 'Dark') {
@@ -175,7 +185,7 @@ export const AppBar = (props: P) => {
       <style global jsx>
         {`
           .ant-layout-header {
-            padding: 0 25px;
+            padding: 0 10px;
             position: fixed;
             z-index: 2;
             width: 100vw;
@@ -188,38 +198,107 @@ export const AppBar = (props: P) => {
           }
         `}
       </style>
-      <Row wrap={false} align="middle">
+      <Row wrap={false} align="middle" className="position-relative">
         <Link
           to="/"
           id="metaplex-header-logo"
           onClick={() => setIsSignIn(false)}
         >
-          <img
-            style={{ width: '200px', paddingBottom: '5px' }}
-            src={
-              theme === Theme.Light
-                ? 'Logo/QueendomDark.png'
-                : 'Logo/QueendomLight.png'
-            }
-          />
+          <div className="logo_image_desktop">
+            <img
+              style={{ width: '200px' }}
+              src={
+                theme === Theme.Light
+                  ? 'Logo/QueendomDark.png'
+                  : 'Logo/QueendomLight.png'
+              }
+            />
+          </div>
+          <div className="logo_image_mobile">
+            <img
+              style={{ width: '100px' }}
+              src={
+                theme === Theme.Light
+                  ? 'Logo/QueendomDark.png'
+                  : 'Logo/QueendomLight.png'
+              }
+            />
+          </div>
         </Link>
-
-        <Col flex="1 0 0" style={{ height: '60px' }} hidden={isSignIn}>
+        <Col
+          className="d-sm-inline d-none"
+          flex="1 0 0"
+          style={{ height: '60px' }}
+          hidden={isSignIn}
+        >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
-        <Col flex="0 1 auto" hidden={isSignIn}>
+
+        <Col flex={2} hidden={isSignIn} className="position-absolute end-0">
           <Space className="metaplex-display-flex" align="center">
+            <div className="d-sm-none d-flex">
+              <Button
+                onClick={() => setShowMenu(true)}
+                size="small"
+                icon={<MenuOutlined />}
+                type="text"
+              ></Button>
+              <Drawer
+                visible={showMenu}
+                placement="bottom"
+                mask={true}
+                maskStyle={{ opacity: '0%' }}
+                onClose={() => setShowMenu(false)}
+                closable={false}
+              >
+                <Menu
+                  onClick={() => setShowMenu(false)}
+                  mode="vertical"
+                  selectedKeys={activeItems}
+                >
+                  {menuItems}
+                  <div className="position-absolute translate-middle-x start-50 mt-3 -bottom-50 ">
+                    <SocialIcon />
+                  </div>
+
+                  <div className="logo_image_mobile_menu">
+                    <Link to="/" onClick={() => setShowMenu(false)}>
+                      <img
+                        style={{ width: '200px' }}
+                        src={
+                          theme === Theme.Light
+                            ? 'Logo/QueendomDark.png'
+                            : 'Logo/QueendomLight.png'
+                        }
+                      />
+                    </Link>
+                  </div>
+                </Menu>
+              </Drawer>
+            </div>
             {connected ? (
               <div className="d-flex flex-row">
-                <CurrentUserBadge showAddress={true} buttonType="text" />
+                <div className=" d-sm-flex d-none">
+                  <CurrentUserBadge showAddress={true} buttonType="text" />
+                </div>
+                <div className="d-sm-none d-flex">
+                  <CurrentUserBadgeMobile
+                    showAddress={true}
+                    buttonType="text"
+                  />
+                </div>
                 <Notifications buttonType="text" />
-
-                <Cog buttonType="text" />
+                <div className=" d-sm-flex d-none">
+                  <Cog buttonType="text" />
+                </div>
+                <div className="d-sm-none d-flex">
+                  <CogMobile buttonType="text" />
+                </div>
               </div>
             ) : (
-              <div className='ant-button me-2'>
+              <div className="ant-button me-2">
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
                 <Link
                   className="sign_in_button"
@@ -230,6 +309,7 @@ export const AppBar = (props: P) => {
                 </Link>
               </div>
             )}
+
             <Button
               shape="round"
               type="primary"

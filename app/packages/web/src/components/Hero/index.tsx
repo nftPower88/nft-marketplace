@@ -4,7 +4,7 @@ import { Popover, Spin, Button, Typography, Space } from 'antd';
 import { MetaplexOverlay } from '@oyster/common';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Hero = function () {
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -17,9 +17,9 @@ const Hero = function () {
       <h3 className="hero_subtitle">
         Real-Time 3D Streaming for Limitless Experiences
       </h3>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="d-flex justify-content-center">
         <Button type="primary">
-          <Link to='/client'>Connect</Link>
+          <Link to="/client">Connect</Link>
         </Button>
         <span style={{ width: '2rem' }} />
         <Button onClick={() => setOverlayVisible(true)}>Watch Video</Button>

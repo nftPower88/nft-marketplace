@@ -29,31 +29,23 @@ export const EmailSubscription = () => {
         });
     };
     return (
-      <div className="mb-2">
+      <div className="mb-4">
         <h4 className="text-center fw-bold">Get the latest Queendom Updates</h4>
         <Form onFinish={submit} validateMessages={validateMessages}>
-          <Row justify="center" align="middle">
-            <Col
-              span={16}
-              className="align-items-center"
-              style={{ height: 'auto' }}
-            >
-              <Input
-                required
-                type="email"
-                placeholder="Subscribe to our newsletter"
-                bordered={false}
-                className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
-              />
-            </Col>
-            <Col span={1}>
-              <Button htmlType="submit" type="primary">
-                Subscribe
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+          <div className="subscribe_input">
+            <Input
+              required
+              type="email"
+              placeholder="Subscribe to our Newletter"
+              bordered={false}
+              className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
+            />
 
+            <Button htmlType="submit" type="primary">
+              Subscribe
+            </Button>
+          </div>
+        </Form>
         {props.status ? (
           <div>
             {props.status === 'sending' && <div>Loading...</div>}

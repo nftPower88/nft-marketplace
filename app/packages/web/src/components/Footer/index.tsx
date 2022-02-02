@@ -1,6 +1,6 @@
 import React from 'react';
 import { SendOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Row, Col } from 'antd';
+import { Button, Form, Input, Row, Col, Divider } from 'antd';
 import { footerConf } from './footerData';
 import { LABELS } from '../../constants';
 import DiscordIcon from '../svgs/discord';
@@ -8,6 +8,7 @@ import TwitterIcon from '../svgs/twitter';
 import InstagramIcon from '../svgs/instagram';
 import RedditIcon from '../svgs/reddit';
 import YoutubeIcon from '../svgs/youtube';
+import { SocialIcon } from './social_icon';
 import { Link } from 'react-router-dom';
 
 export const Footer = () => {
@@ -71,63 +72,36 @@ export const Footer = () => {
   );
  */
   return (
-    <div className="footer_layout position-relative">
-      <Row justify="space-between" align="bottom">
-        <Col
-          xs={8}
-          sm={7}
-          className="d-flex justify-content-center align-items-center"
-        >
-          <h5>&copy; Queendom PBC, All rights reserved</h5>
-        </Col>
-        <div className="position-absolute translate-middle top-50 start-50">
-          <Row justify="space-between" style={{ width: '200px' }}>
-            <Col>
-              <a href="https://twitter.com/Queendomverse">
-                <TwitterIcon />
-              </a>
-            </Col>
-            <Col>
-              <a href="https://instagram.com">
-                <InstagramIcon />
-              </a>
-            </Col>
-            <Col>
-              <a href="https://discord.gg/vYBcfGSdYr">
-                <DiscordIcon />
-              </a>
-            </Col>
-            <Col>
-              <a href="https://www.reddit.com/r/queendomverse">
-                <RedditIcon />
-              </a>
-            </Col>
-            <Col>
-              <a href="https://www.youtube.com">
-                <YoutubeIcon />
-              </a>
-            </Col>
-          </Row>
+    <div>
+      <div className="d-sm-none d-flex m-auto justify-content-center">
+        <h5>&copy; Queendom PBC, All rights reserved</h5>
+      </div>
+      <div className="footer_layout position-relative d-flex justify-content-between">
+        <h5 className="float-left d-sm-flex d-none">
+          &copy; Queendom PBC, All rights reserved
+        </h5>
+
+        <div className="position-absolute translate-middle top-50 start-50 d-none d-sm-flex">
+          <SocialIcon />
         </div>
-        <Col
-          push={5}
-          xs={1}
-          sm={2}
-          className="d-flex justify-content-end align-items-center"
-        >
-          <a href="">
+
+        <div className="sm-position-absolute end-0 d-sm-flex d-none text-center">
+          <a href="" className="me-3">
             <h5 className="fw-bold">Terms</h5>
           </a>
-        </Col>
-        <Col
-          span={3}
-          className="d-flex justify-content-center align-items-center"
-        >
           <a href="">
             <h5 className="fw-bold">Privacy Policy</h5>
           </a>
-        </Col>
-      </Row>
+        </div>
+        <div className="d-sm-none d-flex m-auto justify-content-center">
+          <a href="" className="me-3">
+            <h5 className="fw-bold">Terms</h5>
+          </a>
+          <a href="">
+            <h5 className="fw-bold">Privacy Policy</h5>
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

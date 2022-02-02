@@ -104,7 +104,7 @@ export const LandingPageView = () => {
         >
           <Hero />
           <div
-            className={` mt-5 mt-md-0 d-flex flex-column justify-content-between`}
+            className={` mt-5 mt-md-0 d-flex flex-column justify-content-between video_player_lp`}
           >
             <div
               className={`d-flex flex-row flex-md-row justify-content-between`}
@@ -152,16 +152,10 @@ export const LandingPageView = () => {
             Reddit
           </button>
         </div> */}
-        <Footer>
-          <EmailSubscription />
-        </Footer>
+
+        <EmailSubscription />
         <FooterComp />
       </Layout>
-      {/* {!getCookieConsentValue() && (
-        <CookieConsent>
-          This website uses cookies to enhance the user experience.
-        </CookieConsent>
-      )} */}
     </>
   );
 };
