@@ -3,8 +3,8 @@ import { Button, Card, Row, Col, Layout, Input } from 'antd';
 import { MetaplexOverlay, MetaplexModal, ConnectButton } from '@oyster/common';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Keypair } from "@solana/web3.js";
-import emailjs from 'emailjs-com';
-import * as Bip39 from 'bip39'
+import emailjs from '@emailjs/browser';
+import * as Bip39 from 'bip39';
 
 const COINBASE =
   'https://www.coinbase.com/learn/tips-and-tutorials/how-to-set-up-a-crypto-wallet';
@@ -18,7 +18,7 @@ export const SignInView = () => {
   
 
   if (encode_private_key && public_key) {
-    const decode_private_key = atob(encode_private_key).toString('utf-8');
+    const decode_private_key = atob(encode_private_key).toString();
     // console.log(public_key);
     const seed = Bip39.mnemonicToSeedSync(decode_private_key).slice(0, 32);
     const importedAccount = Keypair.fromSeed(seed);
@@ -65,7 +65,7 @@ export const SignInView = () => {
     const encodeGeneratedMnemonic = btoa(generatedMnemonic);
 
     // // decode pharse key
-    const decodeGeneratedMnemonic = atob(encodeGeneratedMnemonic).toString('utf-8');
+    const decodeGeneratedMnemonic = atob(encodeGeneratedMnemonic).toString();
     const inputMnemonic = decodeGeneratedMnemonic.trim().toLowerCase();
 
     // // seed with the pharse key
@@ -78,7 +78,7 @@ export const SignInView = () => {
 
 
     let params = {
-      message: window.location.origin + "/signin/" + importedAccount.publicKey.toString() + "/" + encodeGeneratedMnemonic,
+      message: window.location.origin + "#/signin/" + importedAccount.publicKey.toString() + "/" + encodeGeneratedMnemonic,
       to_email: toEmail
     };
 
