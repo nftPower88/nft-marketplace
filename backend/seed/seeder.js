@@ -4,7 +4,7 @@ const { Seeder } = require('mongo-seeding');
 const db = require("../models");
 
 const config = {
-    database: db.url,
+    database: db.connString,
     dropDatabase: true,
   };
 const seeder = new Seeder(config);

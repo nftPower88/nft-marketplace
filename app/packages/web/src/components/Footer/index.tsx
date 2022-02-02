@@ -83,29 +83,29 @@ export const Footer = () => {
         <div className="position-absolute translate-middle top-50 start-50">
           <Row justify="space-between" style={{ width: '200px' }}>
             <Col>
-              <Link to="https://twitter.com/Queendomverse">
+              <a href="https://twitter.com/Queendomverse">
                 <TwitterIcon />
-              </Link>
+              </a>
             </Col>
             <Col>
-              <Link to="https://instagram.com">
+              <a href="https://instagram.com">
                 <InstagramIcon />
-              </Link>
+              </a>
             </Col>
             <Col>
-              <Link to="https://discord.gg/vYBcfGSdYr">
+              <a href="https://discord.gg/vYBcfGSdYr">
                 <DiscordIcon />
-              </Link>
+              </a>
             </Col>
             <Col>
-              <Link to="https://www.reddit.com/r/queendomverse">
+              <a href="https://www.reddit.com/r/queendomverse">
                 <RedditIcon />
-              </Link>
+              </a>
             </Col>
             <Col>
-              <Link to="https://www.youtube.com">
+              <a href="https://www.youtube.com">
                 <YoutubeIcon />
-              </Link>
+              </a>
             </Col>
           </Row>
         </div>
@@ -115,17 +115,17 @@ export const Footer = () => {
           sm={2}
           className="d-flex justify-content-end align-items-center"
         >
-          <h5>
-            <strong>Terms</strong>
-          </h5>
+          <a href="">
+            <h5 className="fw-bold">Terms</h5>
+          </a>
         </Col>
         <Col
           span={3}
           className="d-flex justify-content-center align-items-center"
         >
-          <h5>
-            <strong>Privacy Policy</strong>
-          </h5>
+          <a href="">
+            <h5 className="fw-bold">Privacy Policy</h5>
+          </a>
         </Col>
       </Row>
     </div>

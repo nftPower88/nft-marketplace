@@ -1,3 +1,3 @@
 module.exports = {
-    url:  process.env.DB_URL || "mongodb://localhost:27018/backend"
+    connString:  process.env.MONGODB_CONNSTRING || "mongodb://localhost:27018/backend"
 };

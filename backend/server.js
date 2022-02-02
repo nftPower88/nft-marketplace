@@ -13,9 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));   /* bodyParser.urlencoded() is deprecated */
 
 const db = require("./models");
-console.log(db.url);
+console.log(db.connString);
 db.mongoose
-  .connect(db.url, {
+  .connect(db.connString, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

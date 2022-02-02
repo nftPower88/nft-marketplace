@@ -32,6 +32,7 @@
 # local env files
 **.env*
 !/app/packages/web/.env.sample
+!/app/packages/web/.env.dev
 
 # vercel
 .vercel
