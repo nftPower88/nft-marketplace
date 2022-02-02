@@ -223,7 +223,7 @@ export const AppBar = (props: P) => {
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
                 <Link
                   className="sign_in_button"
-                  onClick={() => setIsSignIn(true)}
+                  // onClick={() => setIsSignIn(true)}
                   to="/signin"
                 >
                   Sign in

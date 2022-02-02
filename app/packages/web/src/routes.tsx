@@ -17,6 +17,7 @@ import {
   LearnPageView,
   DashboardView,
   SignInView,
+  SignInConfirmView,
   ProfileView,
   EditProfileView,
   SettingView
@@ -78,6 +79,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/setting' component={() => <SettingView/>} />
             {/*<Route path="/dashboard" element = {<DashboardView />} />*/}
             <Route path='/signin' component={() => <SignInView />} />
+            <Route path='/signinconfirm' component={() => <SignInConfirmView />} />
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>
         </Providers>

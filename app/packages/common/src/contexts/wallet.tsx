@@ -24,7 +24,9 @@ import React, {
 } from 'react';
 import { MetaplexModal } from '../components';
 import { notify } from '../utils';
+import { useHistory } from 'react-router-dom';
 const { Panel } = Collapse;
+
 
 export interface WalletModalContextState {
   visible: boolean;
@@ -59,7 +61,6 @@ export const WalletModal = () => {
         className="metaplex-button-jumbo d-flex"
         size="large"
         onClick={() => {
-          console.log(phatomWallet.name);
           select(phatomWallet.name);
           close();
         }}
@@ -136,6 +137,7 @@ export const WalletModalProvider: FC<{ children: ReactNode }> = ({
   const { publicKey } = useWallet();
   const [connected, setConnected] = useState(!!publicKey);
   const [visible, setVisible] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (publicKey) {
@@ -147,6 +149,7 @@ export const WalletModalProvider: FC<{ children: ReactNode }> = ({
               base58.length,
             )}`
           : base58;
+      history.push('/signinconfirm')
 
       notify({
         message: 'Wallet update',

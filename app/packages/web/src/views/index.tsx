@@ -15,6 +15,7 @@ export { CartPageView } from './checkout';
 //export { ClientPageView } from './clientPage'
 export { DashboardView } from './clientPage/Dashboard';
 export { SignInView } from './signIn';
+export { SignInConfirmView } from './signinConfirm';
 export { ProfileView } from './profile';
 export { EditProfileView } from './editProfile';
 export { SettingView } from './setting';
