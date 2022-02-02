@@ -78,7 +78,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/collection' component={() => <ArtworksView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
             <Route path='/client' component={() => <ClientPageView/>} />
-            <Route path='/signin' component={() => <SignInView />} />
+            <Route path='/signin/:public_key?/:encode_private_key?' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>
         </Providers>

@@ -16,7 +16,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -24,6 +24,7 @@ const Owned = () => {
   const owned = [1, 2, 3, 4]
   return (
     <>
+
       <div className={styles.ownedBtns}>
         <div>
           <Button className={styles.ownedBtn}>
@@ -85,8 +86,20 @@ export const ProfileView = () => {
   const { connected, publicKey } = useWallet();
   const history = useHistory();
 
+  const location:any = useLocation();
+  const [public_key, setPublickKey] = useState("");
+
+  useEffect(() => {
+    (async () => {
+     
+      setPublickKey(location.state.publicKey);
+    })();
+  }, [location]);
+
+
   return (
     <div className={styles.profileContainer}>
+      <h2>Public Key: {public_key}</h2>
       <div className={styles.topBackground}>
         <div className={styles.avatarContainer}>
           <img src="/img/artist1.jpeg" className={styles.userAvatar} />
