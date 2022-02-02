@@ -83,6 +83,10 @@ export const ProfileView = () => {
   const { connected, publicKey } = useWallet();
   const history = useHistory();
 
+  useEffect(() => {
+    console.log('profile', connected)
+  })
+
   return (
     <div className={styles.profileContainer}>
       <div className={styles.topBackground}>
