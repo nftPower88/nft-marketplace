@@ -24,8 +24,7 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-
-
+import styles from './style.module.css'
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -221,7 +220,7 @@ export const CurrentUserBadge = (props: {
           //     </Space>
           //   }
           // />
-          <div className='profile-container'>
+          <div className={styles.profileContainer}>
             <div className='my-2'>
               <a href="#/profile">Profile</a>
             </div>
@@ -234,8 +233,8 @@ export const CurrentUserBadge = (props: {
             <div className='my-2'>
               <a href="#/setting">Settings</a>
             </div>
-            <div className='setting-divider' />
-            <span className='mb-2 ' onClick={disconnect}>Sign Out</span>
+            <div className={styles.settingDivider} />
+            <span className={`mb-2 ${styles.profileContainerSpan}` } onClick={disconnect}>Sign Out</span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
