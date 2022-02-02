@@ -48,8 +48,8 @@ export function Routes({storefront}: RoutesProps) {
               path='/artworks/new/:step_param?'
               component={() => <ArtCreateView />}
             />
-            <Route exact path='/profile' component={() => <ProfileView />} />
-            <Route exact path='/editProfile' component={() => <EditProfileView />} />
+            {/* <Route exact path='/profile' component={() => <ProfileView />} />
+            <Route exact path='/editProfile' component={() => <EditProfileView />} /> */}
             {/* <Route exact path='/dashboard' component={() => <Dashboard />} /> */}
             <Route exact path='/artworks/:id' component={() => <ArtView />} />
             <Route path='/artists/:id' component={() => <ArtistView />} />
@@ -74,6 +74,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/about' component={() => <StaticPageView />} />
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
+            <Route path='/chat' component={() => <MessageView/>} />
             <Route path='/dashboard' component={() => <DashboardView/>} />
             <Route path='/collection' component={() => <ArtworksView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
