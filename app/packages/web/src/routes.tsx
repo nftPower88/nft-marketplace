@@ -6,7 +6,7 @@ import {
   ArtCreateView,
   ArtistView,
   ArtView,
-  // ArtworksView,
+  ArtworksView,
   AuctionCreateView,
   AuctionView,
   HomeView,
@@ -75,6 +75,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
             <Route path='/dashboard' component={() => <DashboardView/>} />
+            <Route path='/collection' component={() => <ArtworksView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
             <Route path='/client' component={() => <ClientPageView/>} />
             <Route path='/signin' component={() => <SignInView />} />
