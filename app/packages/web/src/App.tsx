@@ -7,7 +7,7 @@ interface AppProps {
 }
 
 function App({ storefront }: AppProps) {
-  return <Routes storefront={storefront} />;
+    return <Routes storefront={storefront} />;
 }
 
 export default App;

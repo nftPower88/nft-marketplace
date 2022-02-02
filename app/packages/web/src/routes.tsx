@@ -1,5 +1,5 @@
 import {Storefront} from '@oyster/common';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {Providers} from './providers';
 import {
@@ -31,6 +31,7 @@ interface RoutesProps {
 }
 
 export function Routes({storefront}: RoutesProps) {
+
   return (
     <>
       <style global jsx>{`
@@ -49,8 +50,6 @@ export function Routes({storefront}: RoutesProps) {
               path='/artworks/new/:step_param?'
               component={() => <ArtCreateView />}
             />
-            <Route exact path='/profile' component={() => <ProfileView />} />
-            <Route exact path='/editProfile' component={() => <EditProfileView />} />
             {/* <Route exact path='/dashboard' component={() => <Dashboard />} /> */}
             <Route exact path='/artworks/:id' component={() => <ArtView />} />
             <Route path='/artists/:id' component={() => <ArtistView />} />
@@ -75,11 +74,14 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/about' component={() => <StaticPageView />} />
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
-            <Route path='/dashboard' component={() => <DashboardView/>} />
-            <Route path='/setting' component={() => <SettingView/>} />
-            {/*<Route path="/dashboard" element = {<DashboardView />} />*/}
             <Route path='/signin' component={() => <SignInView />} />
             <Route path='/signinconfirm' component={() => <SignInConfirmView />} />
+
+            <Route path='/dashboard' component={() => <DashboardView/>} />
+            <Route path='/setting' component={() => <SettingView/>} />
+            <Route exact path='/profile' component={() => <ProfileView />} />
+            <Route exact path='/editProfile' component={() => <EditProfileView />} />
+            
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>
         </Providers>

@@ -25,6 +25,7 @@ import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
 import styles from './style.module.css'
+import { useSignIn } from '../../hooks';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -171,6 +172,7 @@ export const CurrentUserBadge = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
+  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
@@ -234,7 +236,7 @@ export const CurrentUserBadge = (props: {
               <a href="#/setting">Settings</a>
             </div>
             <div className={styles.settingDivider} />
-            <span className={`mb-2 ${styles.profileContainerSpan}` } onClick={disconnect}>Sign Out</span>
+            <span className={`mb-2 ${styles.profileContainerSpan}` } onClick={() => {disconnect(); signOut();}}>Sign Out</span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
@@ -304,6 +306,7 @@ export const CurrentUserBadgeMobile = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
+  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
@@ -350,7 +353,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={disconnect}>Sign Out</Button>
+        <Button onClick={() => {disconnect(); signOut();}}>Sign Out</Button>
       </div>
       <div>
         <UserActions

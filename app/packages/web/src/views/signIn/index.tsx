@@ -2,12 +2,19 @@ import React, { useEffect } from 'react';
 import { Button, Card, Row, Col, Layout } from 'antd';
 import { MetaplexOverlay, MetaplexModal, ConnectButton } from '@oyster/common';
 import { Link } from 'react-router-dom';
-
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useHistory } from 'react-router-dom';
 
 const COINBASE =
   'https://www.coinbase.com/learn/tips-and-tutorials/how-to-set-up-a-crypto-wallet';
 
 export const SignInView = () => {
+  const { connected, publicKey } = useWallet();
+  const history = useHistory();
+
+  console.log('sign in = ', connected, publicKey)
+  connected && history.push('/signinconfirm')
+
   return (
     // <MetaplexOverlay visible centered closable width="100vw">
       <Layout>

@@ -15,6 +15,7 @@ import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styles from './profile.module.css';
 import { useHistory } from 'react-router-dom';
+import {useSignIn} from '../../hooks'
 
 const { TabPane } = Tabs;
 
@@ -81,11 +82,10 @@ const Owned = () => {
 
 export const ProfileView = () => {
   const { connected, publicKey } = useWallet();
+  const { signInConfirm } = useSignIn();
   const history = useHistory();
 
-  useEffect(() => {
-    console.log('profile', connected)
-  })
+  !signInConfirm(publicKey?.toBase58()) && history.push('/')
 
   return (
     <div className={styles.profileContainer}>
