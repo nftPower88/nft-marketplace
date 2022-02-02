@@ -1,10 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processMetaplexAccounts = void 0;
 const web3_js_1 = require("@solana/web3.js");
 const models_1 = require("../../models");
+// import { METAPLEX_ID, programIds, pubkeyToString, fetchGetJSON } from '../../utils';
 const utils_1 = require("../../utils");
 const accounts_1 = require("../accounts");
+const userNames_json_1 = __importDefault(require("../../config/userNames.json"));
 const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
     if (!isMetaplexAccount(account))
         return;
@@ -108,13 +113,13 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
                 const isWhitelistedCreator = await models_1.isCreatorPartOfTheStore(parsedAccount.info.address, pubkey);
                 // call the api
                 /* TODO: use env. variable for different environments */
-                const users = await utils_1.fetchGetJSON('http://localhost:8080/api/users');
+                // const users = await fetchGetJSON('http://localhost:8080/api/users');
                 //  modify  data same as in userNames.json file
-                let names = {};
-                for (let user of users) {
-                    names[user.walletAddress] = { ...user };
-                }
-                const nameInfo = names[parsedAccount.info.address];
+                // let names: any = {};
+                // for (let user of users) {
+                //   names[user.walletAddress] = {...user}
+                // }
+                const nameInfo = userNames_json_1.default[parsedAccount.info.address];
                 if (nameInfo) {
                     parsedAccount.info = { ...parsedAccount.info, ...nameInfo };
                 }

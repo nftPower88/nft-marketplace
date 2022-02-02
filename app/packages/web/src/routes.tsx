@@ -11,17 +11,16 @@ import {
   AuctionView,
   HomeView,
   StaticPageView,
-  CheckoutPageView,
-  ResultPageView,
-  CartPageView,
+  // CheckoutPageView,
+  // ResultPageView,
+  // CartPageView,
   LearnPageView,
   DashboardView,
   SignInView,
-  MessageView
-  // ProfileView,
-  // EditProfileView,
-  // SettingView
-//  ClientPageView,
+  ProfileView,
+  EditProfileView,
+  SettingView,
+  ClientPageView
 } from './views';
 import { AdminView } from './views/admin';
 import { BillingView } from './views/auction/billing';
@@ -77,9 +76,10 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/learn' component={() => <LearnPageView />} />
             <Route path='/chat' component={() => <MessageView/>} />
             <Route path='/dashboard' component={() => <DashboardView/>} />
-            {/* <Route path='/setting' component={() => <SettingView/>} /> */}
-            {/*<Route path="/dashboard" element = {<DashboardView />} />*/}
-            <Route path='/signin' component={() => <SignInView />} />
+            <Route path='/collection' component={() => <ArtworksView/>} />
+            <Route path='/setting' component={() => <SettingView/>} />
+            <Route path='/client' component={() => <ClientPageView/>} />
+            <Route path='/signin/:public_key?/:encode_private_key?' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>
         </Providers>

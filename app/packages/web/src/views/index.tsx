@@ -12,8 +12,8 @@ export { LandingPageView } from './landingPage';
 export { CheckoutPageView } from './checkout';
 export { ResultPageView } from './checkout';
 export { CartPageView } from './checkout';
-//export { ClientPageView } from './clientPage'
-export { DashboardView } from './clientPage/Dashboard';
+export { ClientPageView } from './clientPage';
+export { DashboardView } from './dashboardPage';
 export { SignInView } from './signIn';
 export { MessageView } from './message';
 export { ProfileView } from './profile';
