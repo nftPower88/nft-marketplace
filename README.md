@@ -1,12 +1,12 @@
 ## Setup
 
-Switch to the bcgru branch:
+Switch to the dev branch:
 
-`git checkout bcgru`
+`git checkout dev`
 
-You can clone bcgru directly via:
+You can clone dev directly via:
 
-`git clone --branch bcgru git@github.com:QueendomDAO/nft-marketplace.git`
+`git clone --branch dev git@github.com:QueendomDAO/nft-marketplace.git`
 
 Initialize the environment by creating a conda environment:
 
