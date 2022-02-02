@@ -16,7 +16,8 @@ import {
   CartPageView,
   LearnPageView,
   DashboardView,
-  SignInView
+  SignInView,
+  MessageView
 //  ClientPageView,
 } from './views';
 import { AdminView } from './views/admin';
@@ -70,6 +71,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
             <Route path='/client' component={() => <DashboardView/>} />
+            <Route path='/chat' component={() => <MessageView/>} />
             {/*<Route path="/dashboard" element = {<DashboardView />} />*/}
             <Route path='/signin' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
