@@ -3,6 +3,7 @@ version: "3.8"
 services:
   mongodatabase:
     image: mongo:5.0.2
+    container_name: marketplace_db_test
     restart: unless-stopped
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
@@ -10,7 +11,7 @@ services:
     ports:
       - 27018:27017
     volumes:
-      - db:/data/db
+      - "db:/data/db"
 
   # backend-app:
   #   depends_on:
