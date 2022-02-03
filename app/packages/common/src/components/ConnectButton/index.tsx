@@ -36,6 +36,7 @@ export const ConnectButton = ({
         onClick={e => {
           onClick && onClick(e);
           handleClick();
+          localStorage.setItem('click-signin', 'yes')
         }}
         disabled={connected && disabled}
       >

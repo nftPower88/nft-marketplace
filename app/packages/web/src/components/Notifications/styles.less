@@ -1,12 +1,39 @@
+.notification-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--color-border);
+  width: 300px;
+
+  .notification-title-left {
+    font-weight: bold;
+  }
+
+  .notification-title-right {
+    font-size: 12px;
+  }
+}
+
 .metaplex {
   &-notifications {
+
     &.ant-list-vertical {
       .ant-list-item-extra {
         margin-left: 8px;
       }
     }
     .ant-list-items {
-      width: 220px;
+      width: 300px;
+      
+      .ant-list-item-meta {
+        margin-bottom: 2px;
+      }
     }
   }
+}
+
+.no-notification {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 30px;
 }

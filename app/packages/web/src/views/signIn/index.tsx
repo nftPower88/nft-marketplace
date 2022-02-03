@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Row, Col, Layout, Input } from 'antd';
 import { MetaplexOverlay, MetaplexModal, ConnectButton } from '@oyster/common';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Keypair } from "@solana/web3.js";
 import emailjs from '@emailjs/browser';
@@ -10,8 +11,12 @@ const COINBASE =
   'https://www.coinbase.com/learn/tips-and-tutorials/how-to-set-up-a-crypto-wallet';
 
 export const SignInView = () => {
-
+  const { connected, publicKey } = useWallet();
   const history = useHistory();
+
+  console.log('sign in = ', connected, publicKey)
+  connected && history.push('/signinconfirm')
+
   const [toEmail, setToEmail] = useState('');
   const { encode_private_key } = useParams<{ encode_private_key: string }>();
   const { public_key } = useParams<{ public_key: string }>();
