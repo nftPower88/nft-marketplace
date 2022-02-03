@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import { SendOutlined } from '@ant-design/icons';
 import { useWallet } from '@solana/wallet-adapter-react';
 import io from 'socket.io-client';
@@ -13,7 +13,8 @@ const serverHost = 'http://localhost:8080/api'
 export const MessageView = () => {
   const [offset, setOffset] = useState(0);
   const [messages, setMessages]: any[] = useState([]);
-  const [scrollbtn, setScrollbtn] = React.useState(false);
+  const [scrollbtn, setScrollbtn] = useState(false);
+  const [btnStatus, setBtnStatus] = useState(false);
   const [address, setAddress] = useState('');
   const [text, setText] = useState("");
   const router = useRouter()
@@ -40,7 +41,10 @@ export const MessageView = () => {
       setText("");
       setScrollH(0);
     }
-  }, [nmsg])
+  }, [nmsg]);
+  useEffect(() => {
+    text ? setBtnStatus(true) : setBtnStatus(false);
+  }, [text]);
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -94,14 +98,15 @@ export const MessageView = () => {
           <div className='message-send'>
             <input
               type="text"
-              className="form-control message-insert"
-              id="exampleFormControlInput1"
+              className="message-insert"
               placeholder="Type a message"
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyPress={(e) => e.which === 13 && handleMessage()}
             />
-            <button onClick={handleMessage} type="button" className="btn btn-primary btn-send"><SendOutlined style={{ fontSize: 26 }} /></button>
+            {
+              btnStatus && <button onClick={handleMessage} type="button" className="btn-send"><SendOutlined style={{ fontSize: 26 }} /></button>
+            }
           </div>
           {
             scrollbtn &&
@@ -119,7 +124,7 @@ export const MessageView = () => {
                   border: 'none',
                   textAlign: 'center',
                   backgroundColor: '#5d2d9d',
-                  padding: 6
+                  padding: "8px 12px"
                 }}
                 onClick={() => {
                   const scrollHeight = scrollDiv.current.scrollHeight;
