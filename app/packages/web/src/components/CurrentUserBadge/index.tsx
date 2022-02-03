@@ -167,7 +167,8 @@ export const CurrentUserBadge = (props: {
   showAddress?: boolean;
   iconSize?: number;
 }) => {
-
+  const history = useHistory()
+  
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
@@ -185,6 +186,7 @@ export const CurrentUserBadge = (props: {
   if (unknownWallet.name && !props.showAddress) {
     name = unknownWallet.name;
   }
+
 
   const image = unknownWallet.image ? (
     <img src={unknownWallet.image} />

@@ -15,7 +15,6 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
-import styles from './Profile.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 
 const { TabPane } = Tabs;

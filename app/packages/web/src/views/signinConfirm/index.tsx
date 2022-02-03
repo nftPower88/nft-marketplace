@@ -7,6 +7,8 @@ export const SignInConfirmView = () => {
   const { connected, publicKey } = useWallet();
   const history = useHistory();
 
+  !connected && history.push('/signin');
+
   const logIn = () => {
     connected && history.push('/');
   };
