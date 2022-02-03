@@ -107,7 +107,7 @@ export const ProfileView = () => {
       <div className='infoContainer'>
         <div className='address'>
           <img src='/Ethereum-Logo.svg'/>
-          {publicKey?.toBase58().slice(0, 4) + ' ... ' + publicKey?.toBase58().slice(-4)}
+          {publicKey?.toBase58()}
         </div>
         <div className='follow'>
           <span className='followSpan mr20'><InfoCircleFilled className='infoIcon'/>followers</span>
