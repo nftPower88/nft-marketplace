@@ -1,0 +1,45 @@
+.signin-confirm-container {
+    color: var(--color-text, white);
+    font-family: var(--family-title, 'Helvetica', sans-serif);
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+
+    & > p {
+        font-size: 32px;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .signin-confirm-address-container {
+        border-radius: 10px;
+        background: var(--color-base-bold);
+        padding: 20px;
+
+        .address {
+            text-align: left;
+        }
+
+        .signin-button {
+            width: 100%;
+            padding: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-accent);
+            color: var(--color-base);
+            border-radius: 10px;
+        }
+
+        margin-bottom: 20px;
+    }
+
+    .signin-policy-container {
+        span {
+            text-decoration: underline;
+            cursor: pointer;
+            margin-left: 7px;
+            margin-right: 7px;
+        }
+    }
+}

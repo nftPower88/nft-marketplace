@@ -3,17 +3,18 @@ version: "3.8"
 services:
   mongodatabase:
     image: mongo:5.0.2
+    container_name: marketplace_db_test
     restart: unless-stopped
     container_name: mongodatabase
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
     #   - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    networks:
+      - api-network"
     ports:
       - 27018:27017
     volumes:
-      - db:/data/db
-    networks:
-      - api-network
+      - "db:/data/db"
 
   backend-app:
     depends_on:

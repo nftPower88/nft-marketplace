@@ -26,6 +26,7 @@ const antd_1 = require("antd");
 const react_1 = __importStar(require("react"));
 const components_1 = require("../components");
 const utils_1 = require("../utils");
+const react_router_dom_1 = require("react-router-dom");
 const { Panel } = antd_1.Collapse;
 exports.WalletModalContext = react_1.createContext({
     visible: false,
@@ -47,7 +48,6 @@ const WalletModal = () => {
     react_1.default.createElement(components_1.MetaplexModal, { centered: true, visible: visible, onCancel: close, closable: false },
         react_1.default.createElement("h4", { className: 'mb-3' }, "Pick a wallet to conneect to Queendom"),
         react_1.default.createElement(antd_1.Button, { type: 'link', className: "metaplex-button-jumbo d-flex", size: "large", onClick: () => {
-                console.log(phatomWallet.name);
                 select(phatomWallet.name);
                 close();
             } },
@@ -73,12 +73,17 @@ const WalletModalProvider = ({ children, }) => {
     const { publicKey } = wallet_adapter_react_1.useWallet();
     const [connected, setConnected] = react_1.useState(!!publicKey);
     const [visible, setVisible] = react_1.useState(false);
+    const history = react_router_dom_1.useHistory();
     react_1.useEffect(() => {
         if (publicKey) {
             const base58 = publicKey.toBase58();
             const keyToDisplay = base58.length > 20
                 ? `${base58.substring(0, 7)}.....${base58.substring(base58.length - 7, base58.length)}`
                 : base58;
+            if (localStorage.getItem('click-signin') === 'yes') {
+                history.push('/signinconfirm');
+                localStorage.removeItem('click-signin');
+            }
             utils_1.notify({
                 message: 'Wallet update',
                 description: 'Connected to wallet ' + keyToDisplay,

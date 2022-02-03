@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "mongo-seeding": "^3.7.1",
     "mongoose": "^5.8.10",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1"
   }
 }

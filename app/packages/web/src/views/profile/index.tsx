@@ -15,8 +15,9 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
+import {useSignIn} from '../../hooks'
 import styles from './Profile.module.css';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -24,27 +25,27 @@ const Owned = () => {
   const owned = [1, 2, 3, 4]
   return (
     <>
-      <div className={styles.ownedBtns}>
+      <div className='ownedBtns'>
         <div>
-          <Button className={styles.ownedBtn}>
+          <Button className='ownedBtn'>
             <AppstoreOutlined />
             Category
           </Button>
-          <Button className={styles.ownedBtn}>
+          <Button className='ownedBtn'>
             <BlockOutlined />
             Collections
           </Button>
-          <Button className={styles.ownedBtn}>
+          <Button className='ownedBtn'>
             <PartitionOutlined />
             Sale type
           </Button>
-          <Button className={styles.ownedBtn}>
+          <Button className='ownedBtn'>
             <DollarOutlined />
             Price range
           </Button>
         </div>
-        <Button className={styles.ownedBtn}>
-          <span className={styles.ownedBtnSortSpan}>Sort</span>
+        <Button className='ownedBtn'>
+          <span className='ownedBtnSortSpan'>Sort</span>
           <MenuOutlined />
           Recently added
         </Button>
@@ -52,23 +53,23 @@ const Owned = () => {
       <Row>
         {
           owned.map((e, i) => 
-            <Col xs={24} sm={12} md={8} lg={6} key={i} className={styles.ownedCardContainer} >
-              <Card hoverable={true} className={styles.ownedCard} bodyStyle={{padding: '10px'}}>
-                <div className={styles.cardTop}>
-                  <div className={styles.cardImages}>
-                    <img src="/img/artist1.jpeg" className={styles.cardImage} />
-                    <img src="/img/artist2.jpeg" className={`${styles.cardImage} ${styles.mlm10}`} />
-                    <img src="/img/artist3.jpeg" className={`${styles.cardImage} ${styles.mlm10}`} />
+            <Col xs={24} sm={12} md={8} lg={6} key={i} className='ownedCardContainer' >
+              <Card hoverable={true} className='ownedCard' bodyStyle={{padding: '10px'}}>
+                <div className='cardTop'>
+                  <div className='cardImages'>
+                    <img src="/img/artist1.jpeg" className='cardImage' />
+                    <img src="/img/artist2.jpeg" className='cardImage mlm10' />
+                    <img src="/img/artist3.jpeg" className='cardImage mlm10' />
                   </div>
                   <EllipsisOutlined />
                 </div>
-                <div className={styles.cardContent}>
+                <div className='cardContent'>
                   <FileImageOutlined />
                 </div>
-                <div className={styles.cardFooter}>
-                  <div className={styles.cardFooterTitle}>Untitled</div>
-                  <div className={styles.cardFooterLetter}>Not for sale 1/1</div>
-                  <div className={styles.cardFooterBottom}>
+                <div className='cardFooter'>
+                  <div className='cardFooterTitle'>Untitled</div>
+                  <div className='cardFooterLetter'>Not for sale 1/1</div>
+                  <div className='cardFooterBottom'>
                     <span>No bids yet</span>
                     <HeartOutlined />
                   </div>
@@ -83,31 +84,46 @@ const Owned = () => {
 
 export const ProfileView = () => {
   const { connected, publicKey } = useWallet();
+  const { signInConfirm } = useSignIn();
   const history = useHistory();
+
+  !signInConfirm(publicKey?.toBase58()) && history.push('/')
+
+  const location:any = useLocation();
+  const [public_key, setPublickKey] = useState("");
+
+  useEffect(() => {
+    (async () => {
+     
+      setPublickKey(location.state.publicKey);
+    })();
+  }, [location]);
+
 
   return (
     <div className={styles.profileContainer}>
+      <h2>Public Key: {public_key}</h2>
       <div className={styles.topBackground}>
         <div className={styles.avatarContainer}>
           <img src="/img/artist1.jpeg" className={styles.userAvatar} />
         </div>
       </div>
-      <div className={styles.infoContainer}>
-        <div className={styles.address}>
+      <div className='infoContainer'>
+        <div className='address'>
           <img src='/Ethereum-Logo.svg'/>
           {publicKey?.toBase58().slice(0, 4) + ' ... ' + publicKey?.toBase58().slice(-4)}
         </div>
-        <div className={styles.follow}>
-          <span className={`${styles.followSpan}, ${styles.mr20}`}><InfoCircleFilled className={styles.infoIcon}/>followers</span>
-          <span className={styles.followSpan}><InfoCircleFilled className={styles.infoIcon}/>followering</span>
+        <div className='follow'>
+          <span className='followSpan mr20'><InfoCircleFilled className='infoIcon'/>followers</span>
+          <span className='followSpan'><InfoCircleFilled className='infoIcon'/>followering</span>
         </div>
-        <div className={styles.infoButtons}>
-          <Button className={styles.editBtn} onClick={() => {history.push('/editProfile')}}>Edit profile</Button>
-          <Button className={styles.infoBtn}><UploadOutlined /></Button>
-          <Button className={styles.infoBtn}><EllipsisOutlined /></Button>
+        <div className='infoButtons'>
+          <Button className='editBtn' onClick={() => {history.push('/editProfile')}}>Edit profile</Button>
+          <Button className='infoBtn'><UploadOutlined /></Button>
+          <Button className='infoBtn'><EllipsisOutlined /></Button>
         </div>
       </div>
-      <div className={styles.tabContainer}>
+      <div className='tabContainer'>
         <Tabs defaultActiveKey="2" centered>
           <TabPane tab="On sale" key="1">
             On sale
@@ -115,7 +131,7 @@ export const ProfileView = () => {
           <TabPane tab={
                     <>
                       <span>Owned</span>
-                      <span className={styles.ownedBadge}>4</span>
+                      <span className='ownedBadge'>4</span>
                     </>
                   } key="2">
            <Owned></Owned>             

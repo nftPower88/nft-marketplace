@@ -24,8 +24,7 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-
-
+import { useSignIn } from '../../hooks';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -172,6 +171,7 @@ export const CurrentUserBadge = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
+  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
@@ -221,7 +221,7 @@ export const CurrentUserBadge = (props: {
           //     </Space>
           //   }
           // />
-          <div className='profile-container'>
+          <div className='signin-dropdown'>
             <div className='my-2'>
               <a href="#/profile">Profile</a>
             </div>
@@ -234,8 +234,8 @@ export const CurrentUserBadge = (props: {
             <div className='my-2'>
               <a href="#/setting">Settings</a>
             </div>
-            <div className='setting-divider' />
-            <span className='mb-2 ' onClick={disconnect}>Sign Out</span>
+            <div className='settingDivider' />
+            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); signOut();}}>Sign Out</span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
@@ -305,6 +305,7 @@ export const CurrentUserBadgeMobile = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
+  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
@@ -351,7 +352,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={disconnect}>Sign Out</Button>
+        <Button onClick={() => {disconnect(); signOut();}}>Sign Out</Button>
       </div>
       <div>
         <UserActions
