@@ -4,32 +4,39 @@ services:
   mongodatabase:
     image: mongo:5.0.2
     restart: unless-stopped
+    container_name: mongodatabase
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
     #   - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    networks:
+      - api-network
     ports:
       - 27018:27017
     volumes:
-      - db:/data/db
+      - "db:/data/db"
 
-  # backend-app:
-  #   depends_on:
-  #     - mongodatabase
-  #   build: .
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8080:8080
-  #   # environment:
-  #   #   - DB_HOST=mongodb
-  #   #   - DB_USER=$MONGODB_USER
-  #   #   - DB_PASSWORD=$MONGODB_PASSWORD
-  #   #   - DB_NAME=$MONGODB_DATABASE
-  #   #   - DB_PORT=$MONGODB_DOCKER_PORT
-  #   stdin_open: true
-  #   tty: true
+  backend-app:
+    depends_on:
+      - mongodatabase
+    build: .
+    container_name: backend-app
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    # environment:
+    #   - DB_HOST=mongodb
+    #   - DB_USER=$MONGODB_USER
+    #   - DB_PASSWORD=$MONGODB_PASSWORD
+    #   - DB_NAME=$MONGODB_DATABASE
+    #   - DB_PORT=$MONGODB_DOCKER_PORT
+    tty: true
+    networks:
+      - api-network
 
 volumes:
   db:
 
 networks:
     api-network:
+      driver: bridge
+      

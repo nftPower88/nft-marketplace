@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
     QuestionCircleOutlined
 } from '@ant-design/icons';

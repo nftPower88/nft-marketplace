@@ -37,6 +37,7 @@ export async function sendPlaceBid(
 ) {
   const signers: Keypair[][] = [];
   const instructions: TransactionInstruction[][] = [];
+  console.log(`PreBid instructions: ${instructions}`);
   const bid = await setupPlaceBid(
     connection,
     wallet,
@@ -47,6 +48,7 @@ export async function sendPlaceBid(
     instructions,
     signers,
   );
+  console.log(`PostBid instructions: ${instructions}`);
 
   const { txid } = await sendTransactionWithRetry(
     connection,
@@ -74,7 +76,10 @@ export async function setupPlaceBid(
   overallInstructions: TransactionInstruction[][],
   overallSigners: Keypair[][],
 ): Promise<BN> {
-  if (!wallet.publicKey) throw new WalletNotConnectedError();
+  if (!wallet.publicKey) {
+    console.error('Wallet not connected!');
+    throw new WalletNotConnectedError();
+  }
 
   let signers: Keypair[] = [];
   let instructions: TransactionInstruction[] = [];

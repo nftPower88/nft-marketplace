@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   FileImageOutlined,
   HeartOutlined,
@@ -13,8 +15,9 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import {useSignIn} from '../../hooks'
+import styles from './Profile.module.css';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -85,6 +88,17 @@ export const ProfileView = () => {
   const history = useHistory();
 
   !signInConfirm(publicKey?.toBase58()) && history.push('/')
+
+  const location:any = useLocation();
+  const [public_key, setPublickKey] = useState("");
+
+  useEffect(() => {
+    (async () => {
+     
+      setPublickKey(location.state.publicKey);
+    })();
+  }, [location]);
+
 
   return (
     <div className='profile-page-container'>

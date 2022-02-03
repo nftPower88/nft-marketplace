@@ -1,0 +1,87 @@
+.message {
+    // background-image: url('https://719910039-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2Fhb1FKJUNOuKHzTVClYy6%2Fuploads%2FIhOzFIH5GagNVKtZh62T%2FCollection%20dedicated%20page%20banner.png?alt=media&token=4b552907-5c37-4cb9-b014-001e5a34380c');
+    // background-position: center;
+    height: calc(100vh - 64px);
+}
+.message_content {
+    margin: auto;
+    position: relative;
+    height: 100%;
+}
+.background-stream {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+}
+.message-body {
+    padding-left: 8rem;
+    padding-right: 8rem;
+    height: calc(100vh - 130px);
+    overflow-y: auto;
+    position: relative;
+}
+.message-body::-webkit-scrollbar {
+    width: 6px;
+    // opacity: 1;
+    // background-color: white;
+    // color: black;
+}
+
+.message-body::-webkit-scrollbar-thumb {
+    background: #5d2d9d; 
+    border-radius: 6px;
+
+}
+.message-send {
+    display: flex;
+    margin: auto;
+    padding-left: 8rem;
+    padding-right: 8rem;
+    position: relative;
+}
+.message-insert {
+    background-color: transparent!important;
+    border-radius: 10px;
+    margin-right: 10px;
+    width: 100%;
+    border-color: white;
+    outline: auto!important;
+    color: white!important;
+    padding: 6px 12px;
+    height: 50px;
+}
+.message-insert:focus {
+    transition: .4s;
+    color: #212529;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+.message-insert::placeholder {
+    color: white;
+}
+.btn-send {
+    width: 50px;
+    height: 50px;
+    padding: 11px 14px;
+    background-color: #5d2d9d;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .4s;
+}
+.btn-send:active {
+    color: #fff;
+    background-color: #0a58ca;
+    border-color: #0a53be;
+}
+.messages {
+    display: flex;
+    max-width: 60%;
+    word-break: break-word;
+    font-family: 'Montserrat';
+    font-size: 18px;
+    color: white;
+}
