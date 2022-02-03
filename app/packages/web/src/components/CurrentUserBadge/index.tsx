@@ -25,6 +25,7 @@ import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
 import { useSignIn } from '../../hooks';
+import { useHistory } from 'react-router-dom';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -269,30 +270,34 @@ export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
   const {endpoint, setEndpoint} = useConnectionConfig();
   const {setVisible} = useWalletModal();
   const open = useCallback(() => setVisible(true), [setVisible]);
+  const history = useHistory()
 
   return (
-    <Popover
-      trigger='click'
-      placement='bottomRight'
-      content={
-        <Space direction='vertical'>
-          <h5>NETWORK</h5>
-          <Select onSelect={setEndpoint} value={endpoint} bordered={false}>
-            {ENDPOINTS.map(({name, endpoint}) => (
-              <Select.Option value={endpoint} key={endpoint}>
-                {name}
-              </Select.Option>
-            ))}
-          </Select>
+    // <Popover
+    //   trigger='click'
+    //   placement='bottomRight'
+    //   content={
+    //     <Space direction='vertical'>
+    //       <h5>NETWORK</h5>
+    //       <Select onSelect={setEndpoint} value={endpoint} bordered={false}>
+    //         {ENDPOINTS.map(({name, endpoint}) => (
+    //           <Select.Option value={endpoint} key={endpoint}>
+    //             {name}
+    //           </Select.Option>
+    //         ))}
+    //       </Select>
 
-          <Button onClick={open}>Change wallet</Button>
+    //       <Button onClick={open}>Change wallet</Button>
     
-        </Space>
-      }>
-      <Button className='metaplex-button-appbar' type={buttonType}>
-        <CogSvg />
-      </Button>
-    </Popover>
+    //     </Space>
+    //   }>
+    //   <Button className='metaplex-button-appbar' type={buttonType}>
+    //     <CogSvg />
+    //   </Button>
+    // </Popover>
+    <Button className='metaplex-button-appbar' type={buttonType} onClick={() => {history.push('setting')}}>
+      <CogSvg />
+    </Button>
   );
 };
 
