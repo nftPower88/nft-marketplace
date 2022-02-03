@@ -11,6 +11,7 @@ import {
   AuctionView,
   HomeView,
   StaticPageView,
+  MessageView,
   // CheckoutPageView,
   // ResultPageView,
   // CartPageView,
@@ -74,7 +75,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/about' component={() => <StaticPageView />} />
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
-            {/* <Route path='/chat' component={() => <MessageView/>} /> */}
+            <Route path='/chat' component={() => <MessageView/>} />
             <Route path='/dashboard' component={() => <DashboardView/>} />
             <Route path='/collection' component={() => <ArtworksView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
