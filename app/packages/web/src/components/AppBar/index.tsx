@@ -7,18 +7,22 @@ import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
+import { useSignIn } from '../../hooks';
 type P = {
   logo: string;
 };
 
 export const AppBar = (props: P) => {
-  const { connected, publicKey } = useWallet();
+  const { publicKey } = useWallet();
+  const { signInConfirm } = useSignIn()
   const location = useLocation();
   const locationPath = location.pathname.toLowerCase();
   const { ownerAddress } = useStore();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
-  const [isSignIn, setIsSignIn] = useState(false);
+
+  const isSignIn = signInConfirm(publicKey?.toBase58())
+
   console.log(theme);
   function switchTheme() {
     if (theme === 'Dark') {
@@ -119,7 +123,7 @@ export const AppBar = (props: P) => {
       ];
     }
 
-    if (connected) {
+    if (isSignIn) {
       menu = [
         ...menu,
         // {
@@ -146,7 +150,7 @@ export const AppBar = (props: P) => {
     }
 
     return menu;
-  }, [connected]);
+  }, [isSignIn]);
 
   const menuItems = useMemo(
     () =>
@@ -192,7 +196,7 @@ export const AppBar = (props: P) => {
         <Link
           to="/"
           id="metaplex-header-logo"
-          onClick={() => setIsSignIn(false)}
+          // onClick={() => setIsSignIn(false)}
         >
           <img
             style={{ width: '200px', paddingBottom: '5px' }}
@@ -204,14 +208,18 @@ export const AppBar = (props: P) => {
           />
         </Link>
 
-        <Col flex="1 0 0" style={{ height: '60px' }} hidden={isSignIn}>
+        <Col flex="1 0 0" style={{ height: '60px' }} 
+        // hidden={isSignIn}
+        >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
-        <Col flex="0 1 auto" hidden={isSignIn}>
+        <Col flex="0 1 auto" 
+        // hidden={isSignIn}
+        >
           <Space className="metaplex-display-flex" align="center">
-            {connected ? (
+            {isSignIn ? (
               <div className="d-flex flex-row">
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
@@ -223,7 +231,7 @@ export const AppBar = (props: P) => {
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
                 <Link
                   className="sign_in_button"
-                  onClick={() => setIsSignIn(true)}
+                  // onClick={() => setIsSignIn(true)}
                   to="/signin"
                 >
                   Sign in

@@ -1,5 +1,5 @@
 import {Storefront} from '@oyster/common';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {Providers} from './providers';
 import {
@@ -17,6 +17,7 @@ import {
   LearnPageView,
   DashboardView,
   SignInView,
+  SignInConfirmView,
   ProfileView,
   EditProfileView,
   MessageView,
@@ -75,12 +76,18 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/about' component={() => <StaticPageView />} />
             <Route path='/explore' component={() => <HomeView />} />
             <Route path='/learn' component={() => <LearnPageView />} />
+
             <Route path='/chat' component={() => <MessageView/>} />
             <Route path='/dashboard' component={() => <DashboardView/>} />
             <Route path='/collection' component={() => <ArtworksView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
+            <Route exact path='/profile' component={() => <ProfileView />} />
+            <Route exact path='/editProfile' component={() => <EditProfileView />} />
+            
             <Route path='/client' component={() => <ClientPageView/>} />
             <Route path='/signin/:public_key?/:encode_private_key?' component={() => <SignInView />} />
+            <Route path='/signinconfirm' component={() => <SignInConfirmView />} />
+            
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>
         </Providers>

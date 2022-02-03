@@ -212,42 +212,51 @@ export function Notifications({
     });
   });
 
-  const activeNotifications = notifications.length > 0 ? notifications.slice(0, 10) : [{ title: "No Notifications", description: "You have no notifications that need attending." }] as NotificationCard[];
+  // const activeNotifications = notifications.length > 0 ? notifications.slice(0, 10) : [{ title: "", description: "No notifications yet." }] as NotificationCard[];
 
   const content = (
-    <List
-      itemLayout="vertical"
-      size="small"
-      className="metaplex-notifications"
-      dataSource={activeNotifications}
-      renderItem={(item: NotificationCard) => (
-        <List.Item
-          extra={
-            <>
-              {item.action && (
-                <RunAction
-                  id={item.id}
-                  action={item.action}
-                  icon={<PlayCircleOutlined />}
-                />
-              )}
-              {item.dismiss && (
-                <RunAction
-                  id={item.id}
-                  action={item.dismiss}
-                  icon={<PlayCircleOutlined />}
-                />
-              )}
-            </>
-          }
-        >
-          <List.Item.Meta
-            title={item.title}
-            description={item.description}
-          />
-        </List.Item>
-      )}
-    />
+    <>
+      <div className='notification-title'>
+        <div className='notification-title-left'>Notifications</div>
+        <div className='notification-title-right'>Mark all as read</div>
+      </div>
+      {notifications.length > 0 && <List
+        itemLayout="vertical"
+        size="small"
+        className="metaplex-notifications"
+        dataSource={notifications.slice(0, 10)}
+        renderItem={(item: NotificationCard) => (
+          <List.Item
+            extra={
+              <>
+                {item.action && (
+                  <RunAction
+                    id={item.id}
+                    action={item.action}
+                    icon={<PlayCircleOutlined />}
+                  />
+                )}
+                {item.dismiss && (
+                  <RunAction
+                    id={item.id}
+                    action={item.dismiss}
+                    icon={<PlayCircleOutlined />}
+                  />
+                )}
+              </>
+            }
+          >
+            <List.Item.Meta
+              title={item.title}
+              description={item.description}
+            />
+          </List.Item>
+        )}
+      />}
+      {
+        notifications.length < 1 && <div className='no-notification'>No notifications yet.</div>
+      }
+    </>
   );
 
 

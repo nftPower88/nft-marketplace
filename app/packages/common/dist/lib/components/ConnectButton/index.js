@@ -34,6 +34,7 @@ const ConnectButton = ({ onClick, children, disabled, allowWalletChange, popover
         return (react_1.default.createElement(antd_1.Button, { ...rest, onClick: e => {
                 onClick && onClick(e);
                 handleClick();
+                localStorage.setItem('click-signin', 'yes');
             }, disabled: connected && disabled }, connected ? children : 'Select A Wallet'));
     }
     return (react_1.default.createElement(antd_1.Popover, { trigger: "click", placement: popoverPlacement, content: react_1.default.createElement(antd_1.Space, { direction: "vertical" },
