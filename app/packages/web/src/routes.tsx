@@ -21,7 +21,6 @@ import {
   SignInConfirmView,
   ProfileView,
   EditProfileView,
-  MessageView,
   SettingView,
   ClientPageView
 } from './views';
