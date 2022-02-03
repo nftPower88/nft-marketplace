@@ -146,9 +146,9 @@ export const AuctionListView = () => {
       )}
       <h1>Creators: </h1>
       <Select
+        className="creator_select"
         onChange={handleChange}
         defaultValue="All"
-        style={{ width: '30rem' }}
       >
         <Option value={'initial'}>All</Option>
         {creators.map((m, idx) => {
