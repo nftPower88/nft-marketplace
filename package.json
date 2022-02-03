@@ -1,5 +1,5 @@
 {
-    "dependencies": {
-      "dotenv-webpack": "^7.1.0"
-    }
+  "dependencies": {
+    "dotenv-webpack": "^7.1.0"
   }
+}

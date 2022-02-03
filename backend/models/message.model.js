@@ -1,4 +1,3 @@
-
 const { SchemaTypes } = require("mongoose")
 
 module.exports = mongoose => {
@@ -12,4 +11,4 @@ module.exports = mongoose => {
 
   const Message = mongoose.model("Message", schema);  
   return Message;
-} 
+}

@@ -20,6 +20,7 @@ import {
   SignInView,
   ProfileView,
   EditProfileView,
+  MessageView,
   SettingView,
   ClientPageView
 } from './views';
@@ -49,8 +50,8 @@ export function Routes({storefront}: RoutesProps) {
               path='/artworks/new/:step_param?'
               component={() => <ArtCreateView />}
             />
-            <Route exact path='/profile' component={() => <ProfileView />} />
-            <Route exact path='/editProfile' component={() => <EditProfileView />} />
+            {/* <Route exact path='/profile' component={() => <ProfileView />} />
+            <Route exact path='/editProfile' component={() => <EditProfileView />} /> */}
             {/* <Route exact path='/dashboard' component={() => <Dashboard />} /> */}
             <Route exact path='/artworks/:id' component={() => <ArtView />} />
             <Route path='/artists/:id' component={() => <ArtistView />} />

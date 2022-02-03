@@ -19,7 +19,8 @@ const Hero = function () {
       </h3>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button type="primary">
-          <Link to='/client'>Connect</Link>
+          {/* <Link to='/client'>Connect</Link> */}
+          <Link to='/chat'>Connect</Link>
         </Button>
         <span style={{ width: '2rem' }} />
         <Button onClick={() => setOverlayVisible(true)}>Watch Video</Button>
