@@ -6,8 +6,8 @@ const PORT = 443;
 
 const PixelStreamer: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="App" style={{ height: '100%' }}>
+      <header className="App-header" style={{ height: '100%' }}>
         <Mirror></Mirror>
       </header>
     </div>

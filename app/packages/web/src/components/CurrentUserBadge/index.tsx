@@ -24,8 +24,7 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-
-
+import { useSignIn } from '../../hooks';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -48,31 +47,32 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
               <>
                 <Link to='/artworks/new'>
                   <Button
+                    className='w-100'
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Create
                   </Button>
                 </Link>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             ) : (
               <>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
@@ -81,29 +81,29 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
             {canCreate ? (
               <>
                 <Link to='/artworks/new'>
-                  <Button>Create</Button>
+                  <Button className='w-100'>Create</Button>
                 </Link>
-                &nbsp;&nbsp; &nbsp;
-                <Link to='/auction/create/'>
+                {/* &nbsp;&nbsp; &nbsp; */}
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             ) : (
               <>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
-                &nbsp;&nbsp; &nbsp;
+                </Link> */}
+                {/* &nbsp;&nbsp; &nbsp; */}
               </>
             )}
           </div>
@@ -171,6 +171,7 @@ export const CurrentUserBadge = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
+  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
@@ -198,27 +199,47 @@ export const CurrentUserBadge = (props: {
         trigger='click'
         placement='bottomRight'
         content={
-          <Settings
-            additionalSettings={
-              <Space direction='vertical'>
-                <h5>BALANCE</h5>
-                <Space direction='horizontal'>
-                  <SolCircle />
-                  <span>{formatNumber.format(balance)} SOL</span>
-                  <span>{formatUSD.format(balanceInUSD)}</span>
-                </Space>
-                <Space direction='horizontal'>
-                  <Button onClick={() => setShowAddFundsModal(true)}>
-                    Add Funds
-                  </Button>
-                  <Button onClick={disconnect}>Disconnect</Button>
+          // <Settings
+          //   additionalSettings={
+          //     <Space direction='vertical'>
+          //       <h5>BALANCE</h5>
+          //       <Space direction='horizontal'>
+          //         <SolCircle />
+          //         <span>{formatNumber.format(balance)} SOL</span>
+          //         <span>{formatUSD.format(balanceInUSD)}</span>
+          //       </Space> 
+          //       <Space direction='horizontal'>
+          //         <Button onClick={() => setShowAddFundsModal(true)}>
+          //           Add Funds
+          //         </Button>
+          //         <Button onClick={disconnect}>Sign Out</Button>
             
-                </Space>
-                <UserActions />
-              </Space>
-            }
-          />
-        }>
+          //       </Space>
+          //       <UserActions />
+          //       <div className='setting-divider' />
+          //       <Button onClick={disconnect}>Sign Out</Button>
+          //     </Space>
+          //   }
+          // />
+          <div className='signin-dropdown'>
+            <div className='my-2'>
+              <a href="#/profile">Profile</a>
+            </div>
+            <div className='my-2'>
+              <a href="#/dashboard">Dashboard</a>
+            </div>
+            <div className='my-2'>
+              <a href="#/collection">Collection</a>
+            </div>
+            <div className='my-2'>
+              <a href="#/setting">Settings</a>
+            </div>
+            <div className='settingDivider' />
+            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); signOut();}}>Sign Out</span>
+            {/* <Button onClick={disconnect}>Sign Out</Button> */}
+          </div>
+        }
+        >
         <Button className='metaplex-button-appbar' type={props.buttonType}>
           <Space direction='horizontal'>
             {props.showBalance && (
@@ -230,7 +251,7 @@ export const CurrentUserBadge = (props: {
               </span>
             )}
             {image}
-            {name && <span>{name}</span>}
+            {/* {name && <span>{name}</span>} */}
           </Space>
         </Button>
       </Popover>
@@ -284,6 +305,7 @@ export const CurrentUserBadgeMobile = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
+  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
@@ -330,7 +352,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={disconnect}>Disconnect</Button>
+        <Button onClick={() => {disconnect(); signOut();}}>Sign Out</Button>
       </div>
       <div>
         <UserActions

@@ -276,7 +276,7 @@ function InnerAdminView({
   connected: boolean;
 }) {
   const { publicKey } = useWallet();
-  console.log(publicKey?.toBase58());
+  // console.log(publicKey?.toBase58());
   const [newStore, setNewStore] = useState(
     store && store.info && new Store(store.info),
   );

@@ -227,6 +227,7 @@ export const ElementsForm = () => {
               <CardIcon />
               <div className="card_element">
                 <CardNumberElement
+                  
                   options={CARD_OPTIONS}
                   onChange={e => {
                     if (e.error) {

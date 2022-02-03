@@ -52,40 +52,59 @@
 }
 
 .modal_container {
-
-  border-radius: 15px;
-  border: 0.5px solid ;
-  border-color: #535353
+  width: max-content;
 }
 
 .modal_content {
-  padding: 50px 20px 50px 20px;
-  width: 450px;
+  width: 360px;
 }
 
-.modal_form{
+.cardnumber_element {
+  color: black;
+  font-size: 10rem;
+}
+
+.modal_form {
   display: flex;
   flex-direction: column;
 }
-.hero_title{
+.hero_title {
   font-size: 5rem;
   font-weight: bolder;
   line-height: 4.5rem;
 }
 
-.hero_subtitle{
+.hero_subtitle {
   margin-top: -1rem;
-  font-weight:100;
+  font-weight: 100;
   font-size: 1.5rem;
 }
 
-.hero_element{
+.hero_element {
   position: absolute;
   z-index: 100;
   text-align: center;
 }
 
-.input_form {
+.input_form_white {
+  width: 100%;
+  float: right;
+  transform: translateY(-3px);
+  border-radius: 5px;
+  background: unset;
+  color: unset;
+  padding-left: 8px;
+  border: 1px solid;
+  ::placeholder {
+    color: white;
+  }
+}
+
+.input_form_white::placeholder {
+  color: white;
+}
+
+.input_form_black {
   width: 100%;
   float: right;
   transform: translateY(-3px);
@@ -96,35 +115,34 @@
   border: 1px solid;
 }
 
+.input_form_black::placeholder {
+  color: black;
+}
+
 .input_zipcode {
   float: right;
   border-radius: 5px;
   background: #323232ff;
   color: white;
   padding-left: 8px;
- border: none;
- width: 150px;
- 
+  border: none;
+  width: 150px;
 }
 
-.input_zipcode::placeholder{
+.input_zipcode::placeholder {
   color: white;
 }
 
-.input_zipcode:focus{
+.input_zipcode:focus {
   border: none;
-}
-
-.input_form::placeholder{
- color: white; ;
 }
 
 .card_element {
   width: 80%;
-
+  margin-left: 5px;
 }
 
-.availability_card{
+.availability_card {
   border: 1px solid;
   padding: 10px;
   margin: auto;
@@ -134,7 +152,6 @@
   position: relative;
 }
 
-
 .transparent_line {
   border-color: transparent;
 }
@@ -142,10 +159,10 @@
 .solid_line {
   border: 1px ridge rgba(255, 255, 255, 0.172);
   width: 100%;
-//  border-radius: 15px;
-//  border: 0.5px solid ;
-//  border-color: white;
-//  border-color: #535353
+  //  border-radius: 15px;
+  //  border: 0.5px solid ;
+  //  border-color: white;
+  //  border-color: #535353
 }
 
 .payment_process {
@@ -167,16 +184,25 @@
 }
 
 .purhcase_button {
-  display: flex;
   color: #323232ff;
   margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  height: 40px;
 }
 
-.close_button{
- position: absolute;
- right: 35px;
- top: 10px;
- border-radius: 100%;
+.sign_in_button {
+  border: 1px solid #999999;
+  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.close_button {
+  position: absolute;
+  right: 35px;
+  top: 10px;
+  border-radius: 100%;
 }
 .card_items {
   display: flex;
@@ -210,6 +236,9 @@
 .metaplex-square-h,
 .metaplex-auto-height {
   height: auto;
+}
+.ant-modal-content {
+  border-radius: 10px;
 }
 
 .ant-space.metaplex-space-justify-end {
@@ -250,38 +279,53 @@ h6 {
   font-family: @theme-family-title;
 }
 
-
 //Modal
 
-.underlined_button{
+.underlined_button {
   text-decoration: underline;
 }
 
-.button_blackborder{
+.button_blackborder {
   border: 1px solid black;
 }
 
-.button_whiteborder{
+.button_whiteborder {
   border: 1px solid white;
 }
 
 //SigninModal
 
-.bold_text{
+.bold_text {
   font-weight: bold;
 }
 
-.title_text{
+.title_text {
   font-size: 3rem;
 }
 
-.title_container{
-  margin:auto;
-  display:flex;
-  width:40vw;
+.title_container {
+  margin: auto;
+  display: flex;
+  width: 40vw;
   text-align: center;
 }
 
-.wallet_modal{
- border-radius:10px;
+.wallet_modal {
+  border-radius: 10px;
 }
+
+//Footer
+
+.footer_layout {
+  margin: 0 1rem 1rem 1rem;
+}
+
+.inputBlack {
+  background-color: #211f1fff;
+}
+
+.inputWhite {
+  background-color: #e7e7e7ff;
+}
+
+//Cookie consent

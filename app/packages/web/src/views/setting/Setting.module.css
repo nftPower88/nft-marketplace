@@ -1,0 +1,39 @@
+.setting {
+    color: var(--color-text, white);
+    font-family: var(--family-title, 'Helvetica', sans-serif);
+}
+
+.switch {
+    margin-right: 10px;
+}
+
+.swichContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.switchSpan {
+    font-size: 12px;
+}
+
+.questionIcon {
+    margin-left: 10px;
+}
+
+.inputNumber {
+    width: 60px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.download {
+    font-size: 12px;
+    color: #1890ff;
+    text-decoration: underline;
+}
+
+.saveButton {
+    border-radius: 10px;
+    width: 80px;
+}

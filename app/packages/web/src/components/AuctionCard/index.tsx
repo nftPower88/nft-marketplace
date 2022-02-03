@@ -1,3 +1,5 @@
+/* eslint-disable no-constant-condition */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { LoadingOutlined } from '@ant-design/icons';
 import {
   AuctionDataExtended,
@@ -445,7 +447,7 @@ export const AuctionCard = ({
 
               const patch = await loadMultipleAccounts(
                 connection,
-                keys.map((k: { toBase58: () => any; }) => k.toBase58()),
+                keys.map((k: { toBase58: () => any }) => k.toBase58()),
                 'confirmed',
               );
 
@@ -553,12 +555,16 @@ export const AuctionCard = ({
               }
             });
             */
-            console.log(`Payment Status: ${currentCheckout.state.payment.status}`);
+            console.log(
+              `Payment Status: ${currentCheckout.state.payment.status}`,
+            );
           } catch (e) {
-              console.error(`testStripe error: ${e}`);
-              if ( typeof e === 'string' ) { setErrorMessage(e) } ;
+            console.error(`testStripe error: ${e}`);
+            if (typeof e === 'string') {
+              setErrorMessage(e);
+            }
           } finally {
-              setFiatLoading(false);
+            setFiatLoading(false);
           }
           console.log('testStripe - done');
           setShowCheckoutResult(false);
@@ -768,6 +774,7 @@ export const AuctionCard = ({
   // Conduct an instant sale
   const instantSolSaleBtn = (
     <Button
+      style={{ borderRadius: '5px' }}
       className="metaplex-fullwidth"
       type="primary"
       size="large"
@@ -787,22 +794,20 @@ export const AuctionCard = ({
 
   // Conduct an instant sale
   const instantFiatSaleBtn = (
-    <Button
-      className="metaplex-fullwidth"
-      type="primary"
-      size="large"
-      block
-      loading={fiatLoading}
-      onClick={canEndInstantSale ? endInstantSale : instantFiatSale}
+    <Space
+    align='center'
+      onLoad={canEndInstantSale ? endInstantSale : instantFiatSale}
     >
       {!isAuctionManagerAuthorityNotWalletOwner
         ? canEndInstantSale
-          ? 'End Sale & Claim Item'
-          : 'Claim Item'
+          ? <Button onClick={endInstantSale}>End Sale & Claim Item</Button>
+          : <Button onClick={endInstantSale}>Claim Item</Button>
         : auctionView.myBidderPot
-        ? 'Claim Purchase'
-        : 'Buy Now with Fiat'}
-    </Button>
+        ? <Button onClick={instantFiatSale}>Claim Purchase</Button>
+        : <currentCheckout.processPayment />}
+    </Space>
+    
+    // <currentCheckout.processPayment />
   );
 
   // Components for inputting bid amount and placing a bid
@@ -887,8 +892,7 @@ export const AuctionCard = ({
           className="metaplex-fullwidth metaplex-space-align-stretch"
           direction="vertical"
         >
-        
-            {/* <Col span={24}>
+          {/* <Col span={24}>
               <AuctionNumbers
                 auctionView={auctionView}
                 showAsRow={true}
@@ -922,22 +926,25 @@ export const AuctionCard = ({
                 )}
               </>
             )} */}
-        
 
           {showDefaultNonEndedAction &&
             showPlaceBidUI &&
             !auctionView.isInstantSale &&
             placeBidUI}
-          {showStartAuctionBtn
-            ? startAuctionBtn
-            : auctionView.isInstantSale && instantFiatSaleBtn}
           {showDefaultNonEndedAction &&
             (showStartAuctionBtn
               ? startAuctionBtn
               : auctionView.isInstantSale && instantSolSaleBtn)}
+          <hr />
+          <Space className='ant-card' style={{ position: 'absolute', top: 68, left: 140,padding:'0 10px 0 10px' }}>
+            <Text>Or pay with card</Text>
+          </Space>
+          {showStartAuctionBtn
+            ? startAuctionBtn
+            : auctionView.isInstantSale && instantFiatSaleBtn}
           {!hideDefaultAction && !wallet.connected && (
             <Button
-              className="metaplex-fullwidth"
+              className="metaplex-fullwidth rounded-3"
               type="primary"
               size="large"
               onClick={connect}
@@ -1056,30 +1063,27 @@ export const AuctionCard = ({
         </h3>
       </MetaplexModal>
 
-  
       <MetaplexOverlay
-        
         visible={showCheckoutModal}
         onCancel={() => setShowCheckoutResult(false)}
-        
       >
-        
-          <Space
-            className="metaplex-fullwidth "
-            direction="vertical"
-            align="center"
+        <Space
+          className="metaplex-fullwidth "
+          direction="vertical"
+          align="center"
+        >
+          {/* <currentCheckout.processPayment /> */}
+          <Button
+            className="close_button"
+            type="primary"
+            onClick={() => {
+              setShowCheckoutModal(false), setShowCheckoutResult(true);
+            }}
           >
-            <currentCheckout.processPayment />
-            <Button className='close_button' type="primary" onClick={() => {
-            setShowCheckoutModal(false),
-            setShowCheckoutResult(true) 
-            }
-          }>
-          X
+            X
           </Button>
-          </Space>
+        </Space>
       </MetaplexOverlay>
-      </div>
-   
+    </div>
   );
 };
