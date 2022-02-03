@@ -18,3 +18,4 @@ export { SignInView } from './signIn';
 export { ProfileView } from './profile';
 export { EditProfileView } from './editProfile';
 export { SettingView } from './setting';
+export { WalletView } from './wallet';

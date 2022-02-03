@@ -83,23 +83,10 @@ const Owned = () => {
 }
 
 export const ProfileView = () => {
-  const { connected, publicKey } = useWallet();
   const history = useHistory();
-
-  const location:any = useLocation();
-  const [public_key, setPublickKey] = useState("");
-
-  useEffect(() => {
-    (async () => {
-     
-      setPublickKey(location.state.publicKey);
-    })();
-  }, [location]);
-
 
   return (
     <div className={styles.profileContainer}>
-      <h2>Public Key: {public_key}</h2>
       <div className={styles.topBackground}>
         <div className={styles.avatarContainer}>
           <img src="/img/artist1.jpeg" className={styles.userAvatar} />

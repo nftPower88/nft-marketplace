@@ -20,7 +20,9 @@ import {
   ProfileView,
   EditProfileView,
   SettingView,
-  ClientPageView
+  ClientPageView,
+
+  WalletView
 } from './views';
 import { AdminView } from './views/admin';
 import { BillingView } from './views/auction/billing';
@@ -80,6 +82,8 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/client' component={() => <ClientPageView/>} />
             <Route path='/signin/:public_key?/:encode_private_key?' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
+
+            <Route path='/wallet' component={() => <WalletView/>} />
           </Switch>
         </Providers>
       </HashRouter>
