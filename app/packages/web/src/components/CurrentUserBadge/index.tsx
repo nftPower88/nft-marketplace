@@ -24,7 +24,6 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-import styles from './style.module.css'
 import { useSignIn } from '../../hooks';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
@@ -222,7 +221,7 @@ export const CurrentUserBadge = (props: {
           //     </Space>
           //   }
           // />
-          <div className={styles.profileContainer}>
+          <div className='signin-dropdown'>
             <div className='my-2'>
               <a href="#/profile">Profile</a>
             </div>
@@ -235,8 +234,8 @@ export const CurrentUserBadge = (props: {
             <div className='my-2'>
               <a href="#/setting">Settings</a>
             </div>
-            <div className={styles.settingDivider} />
-            <span className={`mb-2 ${styles.profileContainerSpan}` } onClick={() => {disconnect(); signOut();}}>Sign Out</span>
+            <div className='settingDivider' />
+            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); signOut();}}>Sign Out</span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
