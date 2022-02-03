@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css'; // messed up the GUI
 import { SendOutlined } from '@ant-design/icons';
 import { useWallet } from '@solana/wallet-adapter-react';
 import io from 'socket.io-client';
