@@ -47,6 +47,7 @@ class Mirror extends React.Component<Props, State> {
 
   async componentDidMount() {
     this.unrealAdapter.load(this.videoReference);
+    this.registerListeners();
   }
 
   async componentWillUnmount() {
@@ -85,15 +86,43 @@ class Mirror extends React.Component<Props, State> {
       */
   }
 
+  registerListeners() {
+    if (this.videoReference.current) {
+      this.videoReference.current.onkeydown = e => {
+        switch (e.code) {
+          case 'ArrowUp':
+            this.unrealAdapter.emitUIInteraction({ ConsoleCommand: '' }, 'ArrorUp');
+            break;
+          case 'ArrowDown':
+            this.unrealAdapter.emitUIInteraction({ ConsoleCommand: '' }, 'ArrorDown');
+            break;
+          case 'ArrowLeft':
+            this.unrealAdapter.emitUIInteraction({ ConsoleCommand: '' }, 'ArrorLeft');
+            break;
+          case 'ArrowRight':
+            this.unrealAdapter.emitUIInteraction({ ConsoleCommand: '' }, 'ArrorRight');
+            break;
+        }
+        console.log('onkeydown', e);
+      };
+      this.videoReference.current.onmousedown = async e => {
+        console.log('onmousedown', e);
+        // await this.videoReference.current?.requestFullscreen();
+      };
+    }
+  }
+
   render() {
     return (
-      <video
-        ref={this.videoReference}
-        id="player"
-        autoPlay
-        muted
-        style={{ width: '100%', height: '100%' }}
-      ></video>
+      <>
+        <video
+          ref={this.videoReference}
+          id="player"
+          autoPlay
+          muted
+          style={{ width: '100%', height: 'auto' }}
+        ></video>
+      </>
     );
   }
 }
