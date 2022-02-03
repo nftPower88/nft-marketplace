@@ -24,7 +24,6 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-import { useSignIn } from '../../hooks';
 import { useHistory } from 'react-router-dom';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
@@ -172,8 +171,7 @@ export const CurrentUserBadge = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
-  const {signOut} = useSignIn();
-
+  
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
   if (!wallet || !publicKey || !solPrice) {
@@ -236,7 +234,7 @@ export const CurrentUserBadge = (props: {
               <a href="#/setting">Settings</a>
             </div>
             <div className='settingDivider' />
-            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); signOut();}}>Sign Out</span>
+            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); history.push('/');}}>Sign Out</span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
@@ -310,9 +308,10 @@ export const CurrentUserBadgeMobile = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
-  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
+
+  const history = useHistory()
 
   if (!wallet || !publicKey || !solPrice) {
     return null;
@@ -357,7 +356,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={() => {disconnect(); signOut();}}>Sign Out</Button>
+        <Button onClick={() => {disconnect(); history.push('/');}}>Sign Out</Button>
       </div>
       <div>
         <UserActions
