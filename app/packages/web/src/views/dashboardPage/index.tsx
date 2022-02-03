@@ -1,23 +1,23 @@
+// @ts-nocheck
+
 import React, { useEffect } from 'react';
 import { DownloadOutlined, UploadOutlined, InfoCircleFilled, MenuOutlined } from '@ant-design/icons';
 // import { Provider } from "react-redux"
 // import * as webRTCHandler from "../../utils/webRTC/webRTCHandler";
+import styles from './Dashboard.module.css';
 import { Button, Col, Row, Spin, Card, Tabs } from 'antd';
-// import ActiveUsersList from "../../components/ActiverUsersList/ActiveUsersList";
+import ActiveUsersList from "../../components/ActiverUsersList/ActiveUsersList";
 // import DirectCall from "../../components/DirectCall/DirectCall";
 // import { store } from "../../store/store";
 // import PixelStreamer from "../../components/PixelStreamer";
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useHistory } from 'react-router-dom';
 import {useSignIn} from '../../hooks'
+import { store } from "../../store/store";
 
 const { TabPane } = Tabs;
 
 export const DashboardView = () => {
-  // useEffect(() => {
-  // //  webRTCHandler.getLocalStream();
-  //   webRTCHandler.getRemoteStream();
-  // }, []);
 
   const { connected, publicKey } = useWallet();
   const { signInConfirm } = useSignIn();

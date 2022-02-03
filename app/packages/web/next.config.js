@@ -2,7 +2,7 @@ require('dotenv').config();
 const withPlugins = require('next-compose-plugins');
 const withLess = require('next-with-less');
 const camelCase = require('camelcase');
-
+console.log(process.env);
 const assetPrefix = process.env.ASSET_PREFIX || '';
 const DEFAULT_SOLANA_NETWORK = 'devnet';
 const DEFAULT_SOLANA_RPC_HOST = 'https://explorer-api.devnet.solana.com';

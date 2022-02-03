@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Button, Col, Row, Spin, Tabs, Card, Badge, Input } from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
