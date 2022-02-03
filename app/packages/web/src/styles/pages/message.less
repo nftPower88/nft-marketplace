@@ -44,7 +44,19 @@
     background-color: transparent!important;
     border-radius: 10px;
     margin-right: 10px;
-    // color: white!important;
+    width: 100%;
+    border-color: white;
+    outline: auto!important;
+    color: white!important;
+    padding: 6px 12px;
+    height: 50px;
+}
+.message-insert:focus {
+    transition: .4s;
+    color: #212529;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }
 .message-insert::placeholder {
     color: white;
@@ -53,6 +65,16 @@
     width: 50px;
     height: 50px;
     padding: 11px 14px;
+    background-color: #5d2d9d;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .4s;
+}
+.btn-send:active {
+    color: #fff;
+    background-color: #0a58ca;
+    border-color: #0a53be;
 }
 .messages {
     display: flex;
@@ -60,5 +82,5 @@
     word-break: break-word;
     font-family: 'Montserrat';
     font-size: 18px;
-    color: black;
+    color: white;
 }
