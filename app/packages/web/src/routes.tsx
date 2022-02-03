@@ -22,7 +22,7 @@ import {
   ProfileView,
   EditProfileView,
   SettingView,
-  // ClientPageView
+  ClientPageView,
 } from './views';
 import { AdminView } from './views/admin';
 import { BillingView } from './views/auction/billing';
