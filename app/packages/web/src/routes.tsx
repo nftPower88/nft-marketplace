@@ -22,7 +22,7 @@ import {
   EditProfileView,
   MessageView,
   SettingView,
-  ClientPageView
+  // ClientPageView
 } from './views';
 import { AdminView } from './views/admin';
 import { BillingView } from './views/auction/billing';
@@ -80,7 +80,7 @@ export function Routes({storefront}: RoutesProps) {
             <Route path='/dashboard' component={() => <DashboardView/>} />
             <Route path='/collection' component={() => <ArtworksView/>} />
             <Route path='/setting' component={() => <SettingView/>} />
-            <Route path='/client' component={() => <ClientPageView/>} />
+            {/* <Route path='/client' component={() => <ClientPageView/>} /> */}
             <Route path='/signin/:public_key?/:encode_private_key?' component={() => <SignInView />} />
             <Route path='/' component={() => <LandingPageView />} />
           </Switch>
