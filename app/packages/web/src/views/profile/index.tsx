@@ -87,7 +87,7 @@ export const ProfileView = () => {
   !signInConfirm(publicKey?.toBase58()) && history.push('/')
 
   return (
-    <div className='profileContainer'>
+    <div className='profile-page-container'>
       <div className='topBackground'>
         <div className='avatarContainer'>
           <img src="/img/artist1.jpeg" className='userAvatar' />
