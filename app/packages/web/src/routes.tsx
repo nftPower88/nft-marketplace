@@ -11,6 +11,7 @@ import {
   AuctionView,
   HomeView,
   StaticPageView,
+  MessageView,
   // CheckoutPageView,
   // ResultPageView,
   // CartPageView,
