@@ -12,7 +12,6 @@ import ActiveUsersList from "../../components/ActiverUsersList/ActiveUsersList";
 // import PixelStreamer from "../../components/PixelStreamer";
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useHistory } from 'react-router-dom';
-import {useSignIn} from '../../hooks'
 import { store } from "../../store/store";
 
 const { TabPane } = Tabs;
@@ -20,10 +19,9 @@ const { TabPane } = Tabs;
 export const DashboardView = () => {
 
   const { connected, publicKey } = useWallet();
-  const { signInConfirm } = useSignIn();
   const history = useHistory();
 
-  !signInConfirm(publicKey?.toBase58()) && history.push('/')
+  !connected && history.push('/')
 
   return (
     // <Provider store={store}>

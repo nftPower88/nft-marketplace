@@ -3,14 +3,12 @@
 import { Button, Col, Row, Spin, Tabs, Card, Badge, Input } from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSignIn } from '../../hooks';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 export const EditProfileView = () => {
   const { connected, publicKey } = useWallet();
-  const { signInConfirm } = useSignIn();
   const history = useHistory();
-  !signInConfirm(publicKey?.toBase58()) && history.push('/');
+  !connected && history.push('/');
 
   const [file, setFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');

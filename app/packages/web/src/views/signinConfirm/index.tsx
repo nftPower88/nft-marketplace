@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { Button, Card, Row, Col, Layout } from 'antd';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useHistory } from 'react-router-dom';
-import { useSignIn } from '../../hooks';
 
 export const SignInConfirmView = () => {
-  const { publicKey } = useWallet();
-  const { signIn } = useSignIn();
+  const { connected, publicKey } = useWallet();
   const history = useHistory();
 
+  !connected && history.push('/signin');
+
   const logIn = () => {
-    signIn(publicKey?.toBase58()) && history.push('/');
+    connected && history.push('/');
   };
 
   return (

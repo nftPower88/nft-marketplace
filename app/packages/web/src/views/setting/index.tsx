@@ -7,14 +7,12 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin, Tabs, Card, Badge, Divider, Switch, InputNumber } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import {useSignIn} from '../../hooks'
 
 export const SettingView = () => {
     const { connected, publicKey } = useWallet();
-    const { signInConfirm } = useSignIn();
     const history = useHistory();
   
-    !signInConfirm(publicKey?.toBase58()) && history.push('/')
+    !connected && history.push('/')
     
     return (
         <div className='setting-container'>
