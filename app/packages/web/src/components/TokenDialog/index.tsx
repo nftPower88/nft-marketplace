@@ -6,6 +6,8 @@ import { DownOutlined } from '@ant-design/icons';
 import { TokenInfo } from "@solana/spl-token-registry";
 import { SolCircle } from "../Custom";
 import { MetaplexModal, shortenAddress, toPublicKey } from "@oyster/common";
+import getConfig from 'next/config';
+
 
 const { Search } = Input;
 
@@ -24,7 +26,7 @@ export function TokenButton({
   mint: PublicKey;
   onClick: () => void;
 }) {
-  const tokenMap = useTokenList().mainnetTokens;
+  const tokenMap = useTokenList().solanaNetChainTokens;
   let tokenInfo = tokenMap.filter(t => t.address == mint.toBase58())[0];
 
   return (
