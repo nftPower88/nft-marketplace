@@ -6,6 +6,7 @@
 .message_content {
     margin: auto;
     position: relative;
+    height: 100%;
 }
 .background-stream {
     position: absolute;
@@ -13,13 +14,13 @@
     height: 100%;
     left: 0px;
     top: 0px;
-    z-index: -1;
 }
 .message-body {
     padding-left: 8rem;
     padding-right: 8rem;
     height: calc(100vh - 130px);
     overflow-y: auto;
+    position: relative;
 }
 .message-body::-webkit-scrollbar {
     width: 6px;
@@ -34,11 +35,11 @@
 
 }
 .message-send {
-    z-index: 1;
     display: flex;
     margin: auto;
     padding-left: 8rem;
     padding-right: 8rem;
+    position: relative;
 }
 .message-insert {
     background-color: transparent!important;
