@@ -71,17 +71,18 @@ export const Footer = () => {
   );
  */
   return (
-    <div className="footer_layout position-relative">
-      <Row justify="space-between" align="bottom">
+    <div className="footer_layout">
+      <Row className='align-items-center'>
         <Col
-          xs={8}
-          sm={7}
-          className="d-flex justify-content-center align-items-center"
+          xs={24}
+          sm={24}
+          md={8}
+          className='d-flex layout-left'
         >
           <h5>&copy; Queendom PBC, All rights reserved</h5>
         </Col>
-        <div className="position-absolute translate-middle top-50 start-50">
-          <Row justify="space-between" style={{ width: '200px' }}>
+        <Col md={8} className='desktop-show'>
+          <Row justify="space-between" style={{maxWidth: '200px', margin: '0 auto'}}>
             <Col>
               <a href="https://twitter.com/Queendomverse">
                 <TwitterIcon />
@@ -108,21 +109,11 @@ export const Footer = () => {
               </a>
             </Col>
           </Row>
-        </div>
-        <Col
-          push={5}
-          xs={1}
-          sm={2}
-          className="d-flex justify-content-end align-items-center"
-        >
-          <a href="">
+        </Col>
+        <Col xs={24} sm={24} md={8} className='d-flex layout-right'>
+          <a href="" className="me-4">
             <h5 className="fw-bold">Terms</h5>
           </a>
-        </Col>
-        <Col
-          span={3}
-          className="d-flex justify-content-center align-items-center"
-        >
           <a href="">
             <h5 className="fw-bold">Privacy Policy</h5>
           </a>

@@ -32,26 +32,18 @@ export const EmailSubscription = () => {
       <div className="mb-2">
         <h4 className="text-center fw-bold">Get the latest Queendom Updates</h4>
         <Form onFinish={submit} validateMessages={validateMessages}>
-          <Row justify="center" align="middle">
-            <Col
-              span={16}
-              className="align-items-center"
-              style={{ height: 'auto' }}
-            >
-              <Input
-                required
-                type="email"
-                placeholder="Subscribe to our newsletter"
-                bordered={false}
-                className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
-              />
-            </Col>
-            <Col span={1}>
-              <Button htmlType="submit" type="primary">
-                Subscribe
-              </Button>
-            </Col>
-          </Row>
+          <div className='d-flex mx-auto subscribe-container'>
+            <Input
+              required
+              type="email"
+              placeholder="Subscribe to our newsletter"
+              bordered={false}
+              className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
+            />
+            <Button htmlType="submit" type="primary">
+              Subscribe
+            </Button>
+          </div>
         </Form>
 
         {props.status ? (
