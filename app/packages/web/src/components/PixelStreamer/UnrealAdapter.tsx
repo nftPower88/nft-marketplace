@@ -87,6 +87,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
   private unrealAdapterOption: UnrealAdapterOptions;
   // @ts-ignore
   public player: WebRtcPlayer;
+  public state: boolean;
   // @ts-ignore
   private ws: WebSocket;
   private videoResizeTimeout: any;
@@ -94,6 +95,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
   constructor(options: UnrealAdapterOptions) {
     super();
     this.unrealAdapterOption = options;
+    this.state = false;
   }
 
   public load(videoRef?: React.RefObject<HTMLVideoElement>) {
@@ -118,6 +120,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
         case 'config':
           if (data.peerConnectionOptions) {
             this.onPlayerConfig(data.peerConnectionOptions, videoRef);
+            this.state = true;
           }
           break;
         case 'iceCandidate':
@@ -206,11 +209,11 @@ export class UnrealAdapter extends UnrealAdapterHook {
       }
     };
     await this.player.setupWrbRtcPlayer();
+    console.log(111);
     if (this.onConfig) {
       this.onConfig(peerConnectionOptions);
     }
   }
-
   emitUIInteraction(descriptor: any, type: string) {
     Object.assign(descriptor, { _message: 'true', _type: type });
     console.log(descriptor);

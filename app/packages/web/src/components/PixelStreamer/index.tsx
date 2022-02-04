@@ -70,12 +70,12 @@ class Mirror extends React.Component<Props, State> {
 
     // }
     // Load video @TODO: make autoplay back, make bitrate dynamic?
-    // /*
-    //   if (this.videoReference.current) {
-    //     this.videoReference.current.src = "/video/demo.mp4";
-    //     await this.videoReference.current.play(); //@TODO make this play a loop
-    //   };
-    //   */
+    /*
+      if (this.videoReference.current) {
+        this.videoReference.current.src = "/video/demo.mp4";
+        await this.videoReference.current.play(); //@TODO make this play a loop
+      };
+      */
 
     // Camera Debug Test
     /*
