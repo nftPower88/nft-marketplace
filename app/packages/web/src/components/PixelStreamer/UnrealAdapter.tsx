@@ -79,6 +79,64 @@ const MessageType = {
   /**************************************************************************/
 };
 
+// Must be kept in sync with JavaScriptKeyCodeToFKey C++ array. The index of the
+// entry in the array is the special key code given below.
+const SpecialKeyCodes = {
+  BackSpace: 8,
+  Shift: 16,
+  Control: 17,
+  Alt: 18,
+  RightShift: 253,
+  RightControl: 254,
+  RightAlt: 255
+};
+
+const ControlSchemeType = {
+  // A mouse can lock inside the WebRTC player so the user can simply move the
+  // mouse to control the orientation of the camera. The user presses the
+  // Escape key to unlock the mouse.
+  LockedMouse: 0,
+
+  // A mouse can hover over the WebRTC player so the user needs to click and
+  // drag to control the orientation of the camera.
+  HoveringMouse: 1
+};
+
+let inputOptions = {
+  // The control scheme controls the behaviour of the mouse when it interacts
+  // with the WebRTC player.
+  controlScheme: ControlSchemeType.LockedMouse,
+
+  // Browser keys are those which are typically used by the browser UI. We
+  // usually want to suppress these to allow, for example, UE4 to show shader
+  // complexity with the F5 key without the web page refreshing.
+  suppressBrowserKeys: true,
+
+  // UE4 has a faketouches option which fakes a single finger touch when the
+  // user drags with their mouse. We may perform the reverse; a single finger
+  // touch may be converted into a mouse drag UE4 side. This allows a
+  // non-touch application to be controlled partially via a touch device.
+  fakeMouseWithTouches: false
+};
+
+// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+const MouseButton = {
+  MainButton: 0, // Left button.
+  AuxiliaryButton: 1, // Wheel button.
+  SecondaryButton: 2, // Right button.
+  FourthButton: 3, // Browser Back button.
+  FifthButton: 4 // Browser Forward button.
+};
+
+// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
+const MouseButtonsMask = {
+  PrimaryButton: 1, // Left button.
+  SecondaryButton: 2, // Right button.
+  AuxiliaryButton: 4, // Wheel button.
+  FourthButton: 8, // Browser Back button.
+  FifthButton: 16 // Browser Forward button.
+};
+
 export enum BusinessMessageType {
   init = '0',
 }
@@ -90,6 +148,8 @@ export class UnrealAdapter extends UnrealAdapterHook {
   // @ts-ignore
   private ws: WebSocket;
   private videoResizeTimeout: any;
+  private normalizeAndQuantizeUnsigned: any;
+  private normalizeAndQuantizeSigned: any;
 
   constructor(options: UnrealAdapterOptions) {
     super();
@@ -107,7 +167,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
     this.ws.onmessage = (event) => {
       const data: SocketMessage = JSON.parse(event.data);
       console.log(`onmessage: ${data.type}`);
-      
+
       switch (data.type) {
         case 'answer':
           this.player.handleReceiveAnswer(data);
@@ -135,6 +195,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
     window.addEventListener('orientationchange', () => {
       this.onOrientationChange();
     });
+    this.registerKeyboardEvents();
   }
 
   resizeVideo() {
@@ -186,11 +247,13 @@ export class UnrealAdapter extends UnrealAdapterHook {
       console.log('onVideoInitialised');
     };
     this.player.onDataChannelConnected = () => {
+      console.log('datachannel connected');
       if (this.ws && this.ws.readyState === WS_OPEN_STATE) {
         if (this.player.video && this.player.video.srcObject && this.player.onVideoInitialised) {
           this.player.onVideoInitialised();
         }
       }
+      this.registerInputs(videoRef.current);
     };
     this.player.onDataChannelMessage = (o) => {
       const view = new Uint8Array(o);
@@ -239,5 +302,238 @@ export class UnrealAdapter extends UnrealAdapterHook {
     if (this.player) {
       this.player.send(data);
     }
+  }
+
+  registerInputs(playerElement: any) {
+    if (!playerElement)
+      return;
+
+    // this.registerMouseEnterAndLeaveEvents(playerElement);
+    // registerTouchEvents(playerElement);
+  }
+
+  private registerMouseEnterAndLeaveEvents(playerElement: any) {
+    playerElement.onmouseenter = (e: any) => {
+      // if (print_inputs) {
+      console.log('mouse enter');
+      // }
+      let Data = new DataView(new ArrayBuffer(1));
+      Data.setUint8(0, MessageType.MouseEnter);
+      this.sendInputData(Data.buffer);
+      playerElement.pressMouseButtons(e);
+    };
+
+    playerElement.onmouseleave = (e: any) => {
+      // if (print_inputs) {
+      console.log('mouse leave');
+      // }
+      let Data = new DataView(new ArrayBuffer(1));
+      Data.setUint8(0, MessageType.MouseLeave);
+      this.sendInputData(Data.buffer);
+      playerElement.releaseMouseButtons(e);
+    };
+  }
+
+  private getKeyCode(e: any) {
+    if (e.keyCode === SpecialKeyCodes.Shift && e.code === 'ShiftRight') return SpecialKeyCodes.RightShift;
+    else if (e.keyCode === SpecialKeyCodes.Control && e.code === 'ControlRight') return SpecialKeyCodes.RightControl;
+    else if (e.keyCode === SpecialKeyCodes.Alt && e.code === 'AltRight') return SpecialKeyCodes.RightAlt;
+    else return e.keyCode;
+  }
+
+  // Browser keys do not have a charCode so we only need to test keyCode.
+  private isKeyCodeBrowserKey(keyCode: number) {
+    // Function keys or tab key.
+    return keyCode >= 112 && keyCode <= 123 || keyCode === 9;
+  }
+
+  public registerKeyboardEvents() {
+    document.onkeydown = (e) => {
+      console.log(`key down ${e.keyCode}, repeat = ${e.repeat}`);
+      this.sendInputData(new Uint8Array([MessageType.KeyDown, this.getKeyCode(e), e.repeat]).buffer);
+      // Backspace is not considered a keypress in JavaScript but we need it
+      // to be so characters may be deleted in a UE4 text entry field.
+      if (inputOptions.suppressBrowserKeys && this.isKeyCodeBrowserKey(e.keyCode)) {
+        e.preventDefault();
+      }
+    };
+
+    document.onkeyup = (e) => {
+      console.log(`key up ${e.keyCode}`);
+      this.sendInputData(new Uint8Array([MessageType.KeyUp, this.getKeyCode(e)]).buffer);
+      if (inputOptions.suppressBrowserKeys && this.isKeyCodeBrowserKey(e.keyCode)) {
+        e.preventDefault();
+      }
+    };
+
+    document.onkeypress = (e) => {
+      console.log(`key press ${e.charCode}`);
+      let data = new DataView(new ArrayBuffer(3));
+      data.setUint8(0, MessageType.KeyPress);
+      data.setUint16(1, e.charCode, true);
+      this.sendInputData(data.buffer);
+    };
+  }
+
+  // If the user has any mouse buttons pressed then press them again.
+  pressMouseButtons(buttons: any, x: any, y: any) {
+    if (buttons & MouseButtonsMask.PrimaryButton) {
+      this.emitMouseDown(MouseButton.MainButton, x, y);
+    }
+    if (buttons & MouseButtonsMask.SecondaryButton) {
+      this.emitMouseDown(MouseButton.SecondaryButton, x, y);
+    }
+    if (buttons & MouseButtonsMask.AuxiliaryButton) {
+      this.emitMouseDown(MouseButton.AuxiliaryButton, x, y);
+    }
+    if (buttons & MouseButtonsMask.FourthButton) {
+      this.emitMouseDown(MouseButton.FourthButton, x, y);
+    }
+    if (buttons & MouseButtonsMask.FifthButton) {
+      this.emitMouseDown(MouseButton.FifthButton, x, y);
+    }
+  }
+
+  setupNormalizeAndQuantize() {
+    return;
+    // let playerElement = document.getElementById('player');
+    // let videoElement = playerElement.getElementsByTagName("video");
+
+    // if (playerElement && videoElement.length > 0) {
+    //   let playerAspectRatio = playerElement.clientHeight / playerElement.clientWidth;
+    //   let videoAspectRatio = videoElement[0].videoHeight / videoElement[0].videoWidth;
+
+    //   // Unsigned XY positions are the ratio (0.0..1.0) along a viewport axis,
+    //   // quantized into an uint16 (0..65536).
+    //   // Signed XY deltas are the ratio (-1.0..1.0) along a viewport axis,
+    //   // quantized into an int16 (-32767..32767).
+    //   // This allows the browser viewport and client viewport to have a different
+    //   // size.
+    //   // Hack: Currently we set an out-of-range position to an extreme (65535)
+    //   // as we can't yet accurately detect mouse enter and leave events
+    //   // precisely inside a video with an aspect ratio which causes mattes.
+    //   if (playerAspectRatio > videoAspectRatio) {
+    //     // if (print_inputs) {
+    //     console.log('Setup Normalize and Quantize for playerAspectRatio > videoAspectRatio');
+    //     // }
+    //     let ratio = playerAspectRatio / videoAspectRatio;
+    //     // Unsigned.
+    //     this.normalizeAndQuantizeUnsigned = (x: number, y: number) => {
+    //       let normalizedX = x / playerElement.clientWidth;
+    //       let normalizedY = ratio * (y / playerElement.clientHeight - 0.5) + 0.5;
+    //       if (normalizedX < 0.0 || normalizedX > 1.0 || normalizedY < 0.0 || normalizedY > 1.0) {
+    //         return {
+    //           inRange: false,
+    //           x: 65535,
+    //           y: 65535
+    //         };
+    //       } else {
+    //         return {
+    //           inRange: true,
+    //           x: normalizedX * 65536,
+    //           y: normalizedY * 65536
+    //         };
+    //       }
+    //     };
+    //     const unquantizeAndDenormalizeUnsigned = (x: number, y: number) => {
+    //       let normalizedX = x / 65536;
+    //       let normalizedY = (y / 65536 - 0.5) / ratio + 0.5;
+    //       return {
+    //         x: normalizedX * playerElement.clientWidth,
+    //         y: normalizedY * playerElement.clientHeight
+    //       };
+    //     };
+    //     // Signed.
+    //     this.normalizeAndQuantizeSigned = (x: number, y: number) => {
+    //       let normalizedX = x / (0.5 * playerElement.clientWidth);
+    //       let normalizedY = (ratio * y) / (0.5 * playerElement.clientHeight);
+    //       return {
+    //         x: normalizedX * 32767,
+    //         y: normalizedY * 32767
+    //       };
+    //     };
+    //   } else {
+    //     // if (print_inputs) {
+    //       console.log('Setup Normalize and Quantize for playerAspectRatio <= videoAspectRatio');
+    //     // }
+    //     let ratio = videoAspectRatio / playerAspectRatio;
+    //     // Unsigned.
+    //     this.normalizeAndQuantizeUnsigned = (x: number, y: number) => {
+    //       let normalizedX = ratio * (x / playerElement.clientWidth - 0.5) + 0.5;
+    //       let normalizedY = y / playerElement.clientHeight;
+    //       if (normalizedX < 0.0 || normalizedX > 1.0 || normalizedY < 0.0 || normalizedY > 1.0) {
+    //         return {
+    //           inRange: false,
+    //           x: 65535,
+    //           y: 65535
+    //         };
+    //       } else {
+    //         return {
+    //           inRange: true,
+    //           x: normalizedX * 65536,
+    //           y: normalizedY * 65536
+    //         };
+    //       }
+    //     };
+    //     const unquantizeAndDenormalizeUnsigned = (x: number, y: number) => {
+    //       let normalizedX = (x / 65536 - 0.5) / ratio + 0.5;
+    //       let normalizedY = y / 65536;
+    //       return {
+    //         x: normalizedX * playerElement.clientWidth,
+    //         y: normalizedY * playerElement.clientHeight
+    //       };
+    //     };
+    //     // Signed.
+    //     this.normalizeAndQuantizeSigned = (x: number, y: number) => {
+    //       let normalizedX = (ratio * x) / (0.5 * playerElement.clientWidth);
+    //       let normalizedY = y / (0.5 * playerElement.clientHeight);
+    //       return {
+    //         x: normalizedX * 32767,
+    //         y: normalizedY * 32767
+    //       };
+    //     };
+    //   }
+    // }
+  }
+
+  emitMouseMove(x: number, y: number, deltaX: number, deltaY: number) {
+    // if (print_inputs) {
+    console.log(`x: ${x}, y:${y}, dX: ${deltaX}, dY: ${deltaY}`);
+    // }
+    let coord = this.normalizeAndQuantizeUnsigned(x, y);
+    let delta = this.normalizeAndQuantizeSigned(deltaX, deltaY);
+    let Data = new DataView(new ArrayBuffer(9));
+    Data.setUint8(0, MessageType.MouseMove);
+    Data.setUint16(1, coord.x, true);
+    Data.setUint16(3, coord.y, true);
+    Data.setInt16(5, delta.x, true);
+    Data.setInt16(7, delta.y, true);
+    this.sendInputData(Data.buffer);
+  }
+
+  emitMouseDown(button: any, x: number, y: number) {
+    // if (print_inputs) {
+      console.log(`mouse button ${button} down at (${x}, ${y})`);
+    // }
+    let coord = this.normalizeAndQuantizeUnsigned(x, y);
+    let Data = new DataView(new ArrayBuffer(6));
+    Data.setUint8(0, MessageType.MouseDown);
+    Data.setUint8(1, button);
+    Data.setUint16(2, coord.x, true);
+    Data.setUint16(4, coord.y, true);
+    this.sendInputData(Data.buffer);
+  }
+
+  emitMouseUp(button: any, x: number, y: number) {
+    // if (print_inputs) {
+      console.log(`mouse button ${button} up at (${x}, ${y})`);
+    // }
+    let coord = this.normalizeAndQuantizeUnsigned(x, y);
+    let Data = new DataView(new ArrayBuffer(6));
+    Data.setUint8(0, MessageType.MouseUp);
+    Data.setUint8(1, button);
+    Data.setUint16(2, coord.x, true);
+    Data.setUint16(4, coord.y, true);
+    this.sendInputData(Data.buffer);
   }
 }
