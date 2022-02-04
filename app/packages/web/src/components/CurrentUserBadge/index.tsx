@@ -24,7 +24,7 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-import { useSignIn } from '../../hooks';
+import { useHistory } from 'react-router-dom';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -167,12 +167,12 @@ export const CurrentUserBadge = (props: {
   showAddress?: boolean;
   iconSize?: number;
 }) => {
-
+  const history = useHistory()
+  
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
-  const {signOut} = useSignIn();
-
+  
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
   if (!wallet || !publicKey || !solPrice) {
@@ -186,6 +186,7 @@ export const CurrentUserBadge = (props: {
   if (unknownWallet.name && !props.showAddress) {
     name = unknownWallet.name;
   }
+
 
   const image = unknownWallet.image ? (
     <img src={unknownWallet.image} />
@@ -235,7 +236,7 @@ export const CurrentUserBadge = (props: {
               <a href="#/setting">Settings</a>
             </div>
             <div className='settingDivider' />
-            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); signOut();}}>Sign Out</span>
+            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); history.push('/');}}>Sign Out</span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
@@ -269,30 +270,34 @@ export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
   const {endpoint, setEndpoint} = useConnectionConfig();
   const {setVisible} = useWalletModal();
   const open = useCallback(() => setVisible(true), [setVisible]);
+  const history = useHistory()
 
   return (
-    <Popover
-      trigger='click'
-      placement='bottomRight'
-      content={
-        <Space direction='vertical'>
-          <h5>NETWORK</h5>
-          <Select onSelect={setEndpoint} value={endpoint} bordered={false}>
-            {ENDPOINTS.map(({name, endpoint}) => (
-              <Select.Option value={endpoint} key={endpoint}>
-                {name}
-              </Select.Option>
-            ))}
-          </Select>
+    // <Popover
+    //   trigger='click'
+    //   placement='bottomRight'
+    //   content={
+    //     <Space direction='vertical'>
+    //       <h5>NETWORK</h5>
+    //       <Select onSelect={setEndpoint} value={endpoint} bordered={false}>
+    //         {ENDPOINTS.map(({name, endpoint}) => (
+    //           <Select.Option value={endpoint} key={endpoint}>
+    //             {name}
+    //           </Select.Option>
+    //         ))}
+    //       </Select>
 
-          <Button onClick={open}>Change wallet</Button>
+    //       <Button onClick={open}>Change wallet</Button>
     
-        </Space>
-      }>
-      <Button className='metaplex-button-appbar' type={buttonType}>
-        <CogSvg />
-      </Button>
-    </Popover>
+    //     </Space>
+    //   }>
+    //   <Button className='metaplex-button-appbar' type={buttonType}>
+    //     <CogSvg />
+    //   </Button>
+    // </Popover>
+    <Button className='metaplex-button-appbar' type={buttonType} onClick={() => {history.push('setting')}}>
+      <CogSvg />
+    </Button>
   );
 };
 
@@ -305,9 +310,10 @@ export const CurrentUserBadgeMobile = (props: {
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
-  const {signOut} = useSignIn();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
+
+  const history = useHistory()
 
   if (!wallet || !publicKey || !solPrice) {
     return null;
@@ -352,7 +358,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={() => {disconnect(); signOut();}}>Sign Out</Button>
+        <Button onClick={() => {disconnect(); history.push('/');}}>Sign Out</Button>
       </div>
       <div>
         <UserActions

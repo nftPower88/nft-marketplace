@@ -7,22 +7,22 @@ import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
-import { useSignIn } from '../../hooks';
 type P = {
   logo: string;
 };
 
 export const AppBar = (props: P) => {
-  const { publicKey } = useWallet();
-  const { signInConfirm } = useSignIn()
+  const { connected, publicKey } = useWallet();
   const location = useLocation();
   const locationPath = location.pathname.toLowerCase();
   const { ownerAddress } = useStore();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
+  const [isSignIn, setIsSignIn] = useState(false);
+  let hide = false
+  locationPath == '/signinconfirm' && (hide = true)
 
-  const isSignIn = signInConfirm(publicKey?.toBase58())
-
+  console.log('hidden  =  ', hide)
   console.log(theme);
   function switchTheme() {
     if (theme === 'Dark') {
@@ -123,7 +123,7 @@ export const AppBar = (props: P) => {
       ];
     }
 
-    if (isSignIn) {
+    if (connected) {
       menu = [
         ...menu,
         // {
@@ -150,7 +150,7 @@ export const AppBar = (props: P) => {
     }
 
     return menu;
-  }, [isSignIn]);
+  }, [connected]);
 
   const menuItems = useMemo(
     () =>
@@ -175,7 +175,7 @@ export const AppBar = (props: P) => {
   );
 
   return (
-    <div>
+    <div className='header-container'>
       <style global jsx>
         {`
           .ant-layout-header {
@@ -196,7 +196,7 @@ export const AppBar = (props: P) => {
         <Link
           to="/"
           id="metaplex-header-logo"
-          // onClick={() => setIsSignIn(false)}
+          onClick={() => setIsSignIn(false)}
         >
           <img
             style={{ width: '200px', paddingBottom: '5px' }}
@@ -208,19 +208,15 @@ export const AppBar = (props: P) => {
           />
         </Link>
 
-        <Col flex="1 0 0" style={{ height: '60px' }} 
-        // hidden={isSignIn}
-        >
+        <Col flex="1 0 0" className={`left-header ${hide ? ' hidden' : ''}`} >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
-        <Col flex="0 1 auto" 
-        // hidden={isSignIn}
-        >
+        <Col flex="0 1 auto" className='right-header'>
           <Space className="metaplex-display-flex" align="center">
-            {isSignIn ? (
-              <div className="d-flex flex-row">
+            {connected ? (
+              <div className={`d-flex flex-row ${hide ? ' hidden' : ''}`} >
                 <CurrentUserBadge showAddress={true} buttonType="text" />
                 <Notifications buttonType="text" />
 

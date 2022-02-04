@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const {userController} = require('../controller');
 
+
+// Retrieve all Users
+router.post('/', userController.create);
+
 // Retrieve all Users
 router.get('/', userController.findAll);
 

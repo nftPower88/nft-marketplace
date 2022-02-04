@@ -128,7 +128,8 @@ export function useCollapseWrappedSol({
           setShowNotification(true);
         }
       } catch (e) {
-        console.error(e);
+        const walletPubkey = wallet.publicKey?.toBase58() || '';
+        console.error(`pub_key: ${walletPubkey} ata_key: ${toPublicKey(ata)}: ${e}`);
       }
     }
     setTimeout(fn, 60000);
