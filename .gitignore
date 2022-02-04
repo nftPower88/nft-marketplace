@@ -64,3 +64,5 @@ app/packages/common/dist/lib/models/metaplex/setStoreIndex.js.map
 app/packages/checkout/dist/tsconfig.tsbuildinfo
 app/packages/checkout/dist/lib/**/*.map
 
+# env exeptions
+!backend/.env
