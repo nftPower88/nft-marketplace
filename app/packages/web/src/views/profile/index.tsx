@@ -91,8 +91,7 @@ export const ProfileView = () => {
 
   useEffect(() => {
     (async () => {
-     
-      setPublickKey(location.state.publicKey);
+      location.state && location.state.publicKey && setPublickKey(location.state.publicKey);
     })();
   }, [location]);
 
