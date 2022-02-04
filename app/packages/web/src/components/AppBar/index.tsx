@@ -1,12 +1,16 @@
 import { ConnectButton, useStore } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Col, Menu, Row, Space, Button } from 'antd';
+import { Col, Menu, Row, Space, Button, Drawer } from 'antd';
 import React, { ReactNode, useMemo, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
+import {
+  MenuOutlined
+} from '@ant-design/icons';
+import { SocialIcon } from '../Footer/social_icon';
 type P = {
   logo: string;
 };
@@ -18,12 +22,12 @@ export const AppBar = (props: P) => {
   const { ownerAddress } = useStore();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false);
+
   let hide = false
   locationPath == '/signinconfirm' && (hide = true)
 
-  console.log('hidden  =  ', hide)
-  console.log(theme);
   function switchTheme() {
     if (theme === 'Dark') {
       setCurrentTheme(Theme.Light);
@@ -192,7 +196,7 @@ export const AppBar = (props: P) => {
           }
         `}
       </style>
-      <Row wrap={false} align="middle">
+      <Row wrap={false} align="middle" className='justify-content-between'>
         <Link
           to="/"
           id="metaplex-header-logo"
@@ -200,6 +204,16 @@ export const AppBar = (props: P) => {
         >
           <img
             style={{ width: '200px', paddingBottom: '5px' }}
+            className='desktop-show'
+            src={
+              theme === Theme.Light
+                ? 'Logo/QueendomDark.png'
+                : 'Logo/QueendomLight.png'
+            }
+          />
+          <img
+            style={{ width: '100px', paddingBottom: '5px' }}
+            className='mobile-show'
             src={
               theme === Theme.Light
                 ? 'Logo/QueendomDark.png'
@@ -208,25 +222,55 @@ export const AppBar = (props: P) => {
           />
         </Link>
 
-        <Col flex="1 0 0" className={`left-header ${hide ? ' hidden' : ''}`} >
+        <Col flex="1 0 0" className={`left-header ${hide ? ' hidden' : ''} desktop-show ms-4`} >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
+
         <Col flex="0 1 auto" className='right-header'>
           <Space className="metaplex-display-flex" align="center">
+            <div className={`mobile-show ${hide ? ' hidden' : ''}`}>
+              <Button
+                onClick={() => setShowMenu(true)}
+                size="small"
+                icon={<MenuOutlined />}
+                type="text"
+              ></Button>
+              <Drawer
+                visible={showMenu}
+                placement="bottom"
+                mask={true}
+                maskStyle={{ opacity: '0%' }}
+                onClose={() => setShowMenu(false)}
+                closable={false}
+              >
+                <Menu
+                  onClick={() => setShowMenu(false)}
+                  mode="vertical"
+                  selectedKeys={activeItems}
+                >
+                  {menuItems}
+                  <div style={{marginTop: '50px'}}>
+                    <SocialIcon />
+                  </div>
+                </Menu>
+              </Drawer>
+            </div>
+
             {connected ? (
               <div className={`d-flex flex-row ${hide ? ' hidden' : ''}`} >
                 <CurrentUserBadge showAddress={true} buttonType="text" />
-                <Notifications buttonType="text" />
 
+                <Notifications buttonType="text" />
+                
                 <Cog buttonType="text" />
               </div>
             ) : (
-              <div className='ant-button me-2'>
+              <div className='ant-button'>
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
                 <Link
-                  className="sign_in_button"
+                  className="sign_in_button me-1"
                   // onClick={() => setIsSignIn(true)}
                   to="/signin"
                 >
