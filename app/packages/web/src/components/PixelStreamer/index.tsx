@@ -88,13 +88,15 @@ class Mirror extends React.Component<Props, State> {
   render() {
     return (
       <>
-        <video
-          ref={this.videoReference}
-          id="player"
-          autoPlay
-          muted
-          style={{ width: '100%', height: 'auto' }}
-        ></video>
+        <div id='player-container'>
+          <video
+            ref={this.videoReference}
+            id="player"
+            autoPlay
+            muted
+            style={{ width: '100%', height: 'auto' }}
+          ></video>
+        </div>
       </>
     );
   }

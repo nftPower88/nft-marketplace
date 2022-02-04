@@ -150,6 +150,12 @@ export class UnrealAdapter extends UnrealAdapterHook {
   private videoResizeTimeout: any;
   private normalizeAndQuantizeUnsigned: any;
   private normalizeAndQuantizeSigned: any;
+  private styleWidth: any;
+  private styleHeight: any;
+  private styleTop: any;
+  private styleLeft: any;
+  private styleCursor = 'default';
+  private styleAdditional: any;
 
   constructor(options: UnrealAdapterOptions) {
     super();
@@ -253,7 +259,22 @@ export class UnrealAdapter extends UnrealAdapterHook {
           this.player.onVideoInitialised();
         }
       }
+
+      // this.resizePlayerStyle()
+      this.setupNormalizeAndQuantize();
       this.registerInputs(videoRef.current);
+      switch (inputOptions.controlScheme) {
+        case ControlSchemeType.HoveringMouse:
+          this.registerHoveringMouseEvents(videoRef.current);
+          break;
+        case ControlSchemeType.LockedMouse:
+          this.registerLockedMouseEvents(videoRef.current);
+          break;
+        default:
+          console.log(`ERROR: Unknown control scheme ${inputOptions.controlScheme}`);
+          this.registerLockedMouseEvents(videoRef.current);
+          break;
+      }
     };
     this.player.onDataChannelMessage = (o) => {
       const view = new Uint8Array(o);
@@ -308,7 +329,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
     if (!playerElement)
       return;
 
-    // this.registerMouseEnterAndLeaveEvents(playerElement);
+    this.registerMouseEnterAndLeaveEvents(playerElement);
     // registerTouchEvents(playerElement);
   }
 
@@ -320,7 +341,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
       let Data = new DataView(new ArrayBuffer(1));
       Data.setUint8(0, MessageType.MouseEnter);
       this.sendInputData(Data.buffer);
-      playerElement.pressMouseButtons(e);
+      this.pressMouseButtons(e.buttons, e.x, e.y);
     };
 
     playerElement.onmouseleave = (e: any) => {
@@ -330,7 +351,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
       let Data = new DataView(new ArrayBuffer(1));
       Data.setUint8(0, MessageType.MouseLeave);
       this.sendInputData(Data.buffer);
-      playerElement.releaseMouseButtons(e);
+      // playerElement.releaseMouseButtons(e);
     };
   }
 
@@ -394,106 +415,139 @@ export class UnrealAdapter extends UnrealAdapterHook {
     }
   }
 
+  resizePlayerStyleToActualSize(playerElement: any) {
+    let videoElement = document.getElementById("player");
+
+    if (videoElement) {
+      // Display image in its actual size
+      this.styleWidth = videoElement.videoWidth;
+      this.styleHeight = videoElement.videoHeight;
+      let Top = Math.floor((window.innerHeight - this.styleHeight) * 0.5);
+      let Left = Math.floor((window.innerWidth - this.styleWidth) * 0.5);
+      this.styleTop = (Top > 0) ? Top : 0;
+      this.styleLeft = (Left > 0) ? Left : 0;
+      //Video is now 100% of the playerElement, so set the playerElement style
+      playerElement.style = "top: " + this.styleTop + "px; left: " + this.styleLeft + "px; width: " + this.styleWidth + "px; height: " + this.styleHeight + "px; cursor: " + this.styleCursor + "; " + this.styleAdditional;
+    }
+  }
+
+  resizePlayerStyle(event?: any) {
+    let playerElement = document.getElementById('player-container');
+
+    if (!playerElement)
+      return;
+
+
+    let windowSmallerThanPlayer = window.innerWidth < playerElement.videoWidth || window.innerHeight < playerElement.videoHeight;
+    if (windowSmallerThanPlayer) {
+      this.resizePlayerStyleToFillWindow(playerElement);
+    } else {
+      this.resizePlayerStyleToActualSize(playerElement);
+    }
+  }
+
   setupNormalizeAndQuantize() {
-    return;
-    // let playerElement = document.getElementById('player');
-    // let videoElement = playerElement.getElementsByTagName("video");
+    let playerElement = document.getElementById('player-container');
+    let videoElement = document.getElementById("player");
 
-    // if (playerElement && videoElement.length > 0) {
-    //   let playerAspectRatio = playerElement.clientHeight / playerElement.clientWidth;
-    //   let videoAspectRatio = videoElement[0].videoHeight / videoElement[0].videoWidth;
+    if (playerElement && videoElement) {
+      this.styleWidth = videoElement.videoWidth;
+      this.styleHeight = videoElement.videoHeight;
+      let playerAspectRatio = playerElement!.clientHeight / playerElement!.clientWidth;
+      let videoAspectRatio = videoElement.videoHeight / videoElement.videoWidth;
 
-    //   // Unsigned XY positions are the ratio (0.0..1.0) along a viewport axis,
-    //   // quantized into an uint16 (0..65536).
-    //   // Signed XY deltas are the ratio (-1.0..1.0) along a viewport axis,
-    //   // quantized into an int16 (-32767..32767).
-    //   // This allows the browser viewport and client viewport to have a different
-    //   // size.
-    //   // Hack: Currently we set an out-of-range position to an extreme (65535)
-    //   // as we can't yet accurately detect mouse enter and leave events
-    //   // precisely inside a video with an aspect ratio which causes mattes.
-    //   if (playerAspectRatio > videoAspectRatio) {
-    //     // if (print_inputs) {
-    //     console.log('Setup Normalize and Quantize for playerAspectRatio > videoAspectRatio');
-    //     // }
-    //     let ratio = playerAspectRatio / videoAspectRatio;
-    //     // Unsigned.
-    //     this.normalizeAndQuantizeUnsigned = (x: number, y: number) => {
-    //       let normalizedX = x / playerElement.clientWidth;
-    //       let normalizedY = ratio * (y / playerElement.clientHeight - 0.5) + 0.5;
-    //       if (normalizedX < 0.0 || normalizedX > 1.0 || normalizedY < 0.0 || normalizedY > 1.0) {
-    //         return {
-    //           inRange: false,
-    //           x: 65535,
-    //           y: 65535
-    //         };
-    //       } else {
-    //         return {
-    //           inRange: true,
-    //           x: normalizedX * 65536,
-    //           y: normalizedY * 65536
-    //         };
-    //       }
-    //     };
-    //     const unquantizeAndDenormalizeUnsigned = (x: number, y: number) => {
-    //       let normalizedX = x / 65536;
-    //       let normalizedY = (y / 65536 - 0.5) / ratio + 0.5;
-    //       return {
-    //         x: normalizedX * playerElement.clientWidth,
-    //         y: normalizedY * playerElement.clientHeight
-    //       };
-    //     };
-    //     // Signed.
-    //     this.normalizeAndQuantizeSigned = (x: number, y: number) => {
-    //       let normalizedX = x / (0.5 * playerElement.clientWidth);
-    //       let normalizedY = (ratio * y) / (0.5 * playerElement.clientHeight);
-    //       return {
-    //         x: normalizedX * 32767,
-    //         y: normalizedY * 32767
-    //       };
-    //     };
-    //   } else {
-    //     // if (print_inputs) {
-    //       console.log('Setup Normalize and Quantize for playerAspectRatio <= videoAspectRatio');
-    //     // }
-    //     let ratio = videoAspectRatio / playerAspectRatio;
-    //     // Unsigned.
-    //     this.normalizeAndQuantizeUnsigned = (x: number, y: number) => {
-    //       let normalizedX = ratio * (x / playerElement.clientWidth - 0.5) + 0.5;
-    //       let normalizedY = y / playerElement.clientHeight;
-    //       if (normalizedX < 0.0 || normalizedX > 1.0 || normalizedY < 0.0 || normalizedY > 1.0) {
-    //         return {
-    //           inRange: false,
-    //           x: 65535,
-    //           y: 65535
-    //         };
-    //       } else {
-    //         return {
-    //           inRange: true,
-    //           x: normalizedX * 65536,
-    //           y: normalizedY * 65536
-    //         };
-    //       }
-    //     };
-    //     const unquantizeAndDenormalizeUnsigned = (x: number, y: number) => {
-    //       let normalizedX = (x / 65536 - 0.5) / ratio + 0.5;
-    //       let normalizedY = y / 65536;
-    //       return {
-    //         x: normalizedX * playerElement.clientWidth,
-    //         y: normalizedY * playerElement.clientHeight
-    //       };
-    //     };
-    //     // Signed.
-    //     this.normalizeAndQuantizeSigned = (x: number, y: number) => {
-    //       let normalizedX = (ratio * x) / (0.5 * playerElement.clientWidth);
-    //       let normalizedY = y / (0.5 * playerElement.clientHeight);
-    //       return {
-    //         x: normalizedX * 32767,
-    //         y: normalizedY * 32767
-    //       };
-    //     };
-    //   }
-    // }
+      // Unsigned XY positions are the ratio (0.0..1.0) along a viewport axis,
+      // quantized into an uint16 (0..65536).
+      // Signed XY deltas are the ratio (-1.0..1.0) along a viewport axis,
+      // quantized into an int16 (-32767..32767).
+      // This allows the browser viewport and client viewport to have a different
+      // size.
+      // Hack: Currently we set an out-of-range position to an extreme (65535)
+      // as we can't yet accurately detect mouse enter and leave events
+      // precisely inside a video with an aspect ratio which causes mattes.
+      if (playerAspectRatio > videoAspectRatio) {
+        // if (print_inputs) {
+        console.log('Setup Normalize and Quantize for playerAspectRatio > videoAspectRatio');
+        // }
+        let ratio = playerAspectRatio / videoAspectRatio;
+        // Unsigned.
+        this.normalizeAndQuantizeUnsigned = (x: number, y: number) => {
+          let normalizedX = x / playerElement!.clientWidth;
+          let normalizedY =
+            ratio * (y / playerElement!.clientHeight - 0.5) + 0.5;
+          if (normalizedX < 0.0 || normalizedX > 1.0 || normalizedY < 0.0 || normalizedY > 1.0) {
+            return {
+              inRange: false,
+              x: 65535,
+              y: 65535
+            };
+          } else {
+            return {
+              inRange: true,
+              x: normalizedX * 65536,
+              y: normalizedY * 65536
+            };
+          }
+        };
+        const unquantizeAndDenormalizeUnsigned = (x: number, y: number) => {
+          let normalizedX = x / 65536;
+          let normalizedY = (y / 65536 - 0.5) / ratio + 0.5;
+          return {
+            x: normalizedX * playerElement!.clientWidth,
+            y: normalizedY * playerElement!.clientHeight
+          };
+        };
+        // Signed.
+        this.normalizeAndQuantizeSigned = (x: number, y: number) => {
+          let normalizedX = x / (0.5 * playerElement!.clientWidth);
+          let normalizedY = (ratio * y) / (0.5 * playerElement!.clientHeight);
+          return {
+            x: normalizedX * 32767,
+            y: normalizedY * 32767
+          };
+        };
+      } else {
+        // if (print_inputs) {
+        console.log('Setup Normalize and Quantize for playerAspectRatio <= videoAspectRatio');
+        // }
+        let ratio = videoAspectRatio / playerAspectRatio;
+        // Unsigned.
+        this.normalizeAndQuantizeUnsigned = (x: number, y: number) => {
+          let normalizedX = ratio * (x / playerElement!.clientWidth - 0.5) + 0.5;
+          let normalizedY = y / playerElement!.clientHeight;
+          if (normalizedX < 0.0 || normalizedX > 1.0 || normalizedY < 0.0 || normalizedY > 1.0) {
+            return {
+              inRange: false,
+              x: 65535,
+              y: 65535
+            };
+          } else {
+            return {
+              inRange: true,
+              x: normalizedX * 65536,
+              y: normalizedY * 65536
+            };
+          }
+        };
+        const unquantizeAndDenormalizeUnsigned = (x: number, y: number) => {
+          let normalizedX = (x / 65536 - 0.5) / ratio + 0.5;
+          let normalizedY = y / 65536;
+          return {
+            x: normalizedX * playerElement!.clientWidth,
+            y: normalizedY * playerElement!.clientHeight
+          };
+        };
+        // Signed.
+        this.normalizeAndQuantizeSigned = (x: number, y: number) => {
+          let normalizedX = (ratio * x) / (0.5 * playerElement!.clientWidth);
+          let normalizedY = y / (0.5 * playerElement!.clientHeight);
+          return {
+            x: normalizedX * 32767,
+            y: normalizedY * 32767
+          };
+        };
+      }
+    }
   }
 
   emitMouseMove(x: number, y: number, deltaX: number, deltaY: number) {
@@ -513,7 +567,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
 
   emitMouseDown(button: any, x: number, y: number) {
     // if (print_inputs) {
-      console.log(`mouse button ${button} down at (${x}, ${y})`);
+    console.log(`mouse button ${button} down at (${x}, ${y})`);
     // }
     let coord = this.normalizeAndQuantizeUnsigned(x, y);
     let Data = new DataView(new ArrayBuffer(6));
@@ -526,7 +580,7 @@ export class UnrealAdapter extends UnrealAdapterHook {
 
   emitMouseUp(button: any, x: number, y: number) {
     // if (print_inputs) {
-      console.log(`mouse button ${button} up at (${x}, ${y})`);
+    console.log(`mouse button ${button} up at (${x}, ${y})`);
     // }
     let coord = this.normalizeAndQuantizeUnsigned(x, y);
     let Data = new DataView(new ArrayBuffer(6));
@@ -536,4 +590,163 @@ export class UnrealAdapter extends UnrealAdapterHook {
     Data.setUint16(4, coord.y, true);
     this.sendInputData(Data.buffer);
   }
+
+  registerLockedMouseEvents(playerElement: any) {
+    let x = playerElement.width / 2;
+    let y = playerElement.height / 2;
+
+    playerElement.requestPointerLock = playerElement.requestPointerLock || playerElement.mozRequestPointerLock;
+    document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+
+    playerElement.onclick = function () {
+      playerElement.requestPointerLock();
+    };
+
+    // Respond to lock state change events
+    document.addEventListener('pointerlockchange', lockStateChange, false);
+    document.addEventListener('mozpointerlockchange', lockStateChange, false);
+
+    function lockStateChange() {
+      if (document.pointerLockElement === playerElement ||
+        document.mozPointerLockElement === playerElement) {
+        console.log('Pointer locked');
+        document.addEventListener("mousemove", updatePosition, false);
+      } else {
+        console.log('The pointer lock status is now unlocked');
+        document.removeEventListener("mousemove", updatePosition, false);
+      }
+    }
+
+    const updatePosition = (e: any) => {
+      x += e.movementX;
+      y += e.movementY;
+      if (x > this.styleWidth) {
+        x -= this.styleWidth;
+      }
+      if (y > this.styleHeight) {
+        y -= this.styleHeight;
+      }
+      if (x < 0) {
+        x = this.styleWidth + x;
+      }
+      if (y < 0) {
+        y = this.styleHeight - y;
+      }
+      this.emitMouseMove(x, y, e.movementX, e.movementY);
+    }
+
+    playerElement.onmousedown = (e: any) => {
+      this.emitMouseDown(e.button, x, y);
+    };
+
+    playerElement.onmouseup = (e: any) => {
+      this.emitMouseUp(e.button, x, y);
+    };
+
+    playerElement.onmousewheel = (e: any) => {
+      // this.emitMouseWheel(e.wheelDelta, x, y);
+    };
+
+    playerElement.pressMouseButtons = (e: any) => {
+      this.pressMouseButtons(e.buttons, x, y);
+    };
+
+    playerElement.releaseMouseButtons = (e: any) => {
+      // this.releaseMouseButtons(e.buttons, x, y);
+    };
+  }
+
+  // A hovering mouse works by the user clicking the mouse button when they want
+  // the cursor to have an effect over the video. Otherwise the cursor just
+  // passes over the browser.
+  registerHoveringMouseEvents(playerElement: any) {
+    this.styleCursor = 'none'; // We will rely on UE4 client's software cursor.
+    //styleCursor = 'default';  // Showing cursor
+
+    playerElement.onmousemove = (e: any) => {
+      this.emitMouseMove(e.offsetX, e.offsetY, e.movementX, e.movementY);
+      e.preventDefault();
+    };
+
+    playerElement.onmousedown = (e: any) => {
+      this.emitMouseDown(e.button, e.offsetX, e.offsetY);
+      e.preventDefault();
+    };
+
+    playerElement.onmouseup = (e: any) => {
+      this.emitMouseUp(e.button, e.offsetX, e.offsetY);
+      e.preventDefault();
+    };
+
+    // When the context menu is shown then it is safest to release the button
+    // which was pressed when the event happened. This will guarantee we will
+    // get at least one mouse up corresponding to a mouse down event. Otherwise
+    // the mouse can get stuck.
+    // https://github.com/facebook/react/issues/5531
+    playerElement.oncontextmenu = (e: any) => {
+      this.emitMouseUp(e.button, e.offsetX, e.offsetY);
+      e.preventDefault();
+    };
+
+    if ('onmousewheel' in playerElement) {
+      playerElement.onmousewheel = (e: any) => {
+        // this.emitMouseWheel(e.wheelDelta, e.offsetX, e.offsetY);
+        e.preventDefault();
+      };
+    } else {
+      playerElement.addEventListener('DOMMouseScroll', (e: any) => {
+        // emitMouseWheel(e.detail * -120, e.offsetX, e.offsetY);
+        e.preventDefault();
+      }, false);
+    }
+
+    playerElement.pressMouseButtons = (e: any) => {
+      this.pressMouseButtons(e.buttons, e.offsetX, e.offsetY);
+    };
+
+    playerElement.releaseMouseButtons = (e: any) => {
+      // releaseMouseButtons(e.buttons, e.offsetX, e.offsetY);
+    };
+  }
+
+  resizePlayerStyleToFillWindow(playerElement: any) {
+    let videoElement = document.getElementById("player");
+
+    // Fill the player display in window, keeping picture's aspect ratio.
+    let windowAspectRatio = window.innerHeight / window.innerWidth;
+    let playerAspectRatio = playerElement.clientHeight / playerElement.clientWidth;
+    // We want to keep the video ratio correct for the video stream
+    let videoAspectRatio = videoElement?.videoHeight / videoElement?.videoWidth;
+    if (isNaN(videoAspectRatio)) {
+      //Video is not initialised yet so set playerElement to size of window
+      this.styleWidth = window.innerWidth;
+      this.styleHeight = window.innerHeight;
+      this.styleTop = 0;
+      this.styleLeft = 0;
+      playerElement.style = "top: " + this.styleTop + "px; left: " + this.styleLeft + "px; width: " + this.styleWidth + "px; height: " + this.styleHeight + "px; cursor: " + this.styleCursor + "; " + this.styleAdditional;
+    } else if (windowAspectRatio < playerAspectRatio) {
+      // Window height is the constraining factor so to keep aspect ratio change width appropriately
+      this.styleWidth = Math.floor(window.innerHeight / videoAspectRatio);
+      this.styleHeight = window.innerHeight;
+      this.styleTop = 0;
+      this.styleLeft = Math.floor((window.innerWidth - this.styleWidth) * 0.5);
+      //Video is now 100% of the playerElement, so set the playerElement style
+      playerElement.style = "top: " + this.styleTop + "px; left: " + this.styleLeft + "px; width: " + this.styleWidth + "px; height: " + this.styleHeight + "px; cursor: " + this.styleCursor + "; " + this.styleAdditional;
+    } else {
+      // Window width is the constraining factor so to keep aspect ratio change height appropriately
+      this.styleWidth = window.innerWidth;
+      this.styleHeight = Math.floor(window.innerWidth * videoAspectRatio);
+      this.styleTop = Math.floor((window.innerHeight - this.styleHeight) * 0.5);
+      this.styleLeft = 0;
+      //Video is now 100% of the playerElement, so set the playerElement style
+      playerElement.style = "top: " + this.styleTop + "px; left: " + this.styleLeft + "px; width: " + this.styleWidth + "px; height: " + this.styleHeight + "px; cursor: " + this.styleCursor + "; " + this.styleAdditional;
+    }
+  }
+
+  resizePlayerStyleToArbitrarySize(playerElement: any) {
+    let videoElement = document.getElementById("player");
+    //Video is now 100% of the playerElement, so set the playerElement style
+    playerElement.style = "top: 0px; left: 0px; width: " + this.styleWidth + "px; height: " + this.styleHeight + "px; cursor: " + this.styleCursor + "; " + this.styleAdditional;
+  }
+
 }
