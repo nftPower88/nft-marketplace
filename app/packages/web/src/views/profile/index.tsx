@@ -25,19 +25,19 @@ const Owned = () => {
     <>
       <div className='ownedBtns'>
         <div>
-          <Button className='ownedBtn'>
+          <Button className='ownedBtn leftOwnedBtn'>
             <AppstoreOutlined />
             Category
           </Button>
-          <Button className='ownedBtn'>
+          <Button className='ownedBtn leftOwnedBtn'>
             <BlockOutlined />
             Collections
           </Button>
-          <Button className='ownedBtn'>
+          <Button className='ownedBtn leftOwnedBtn'>
             <PartitionOutlined />
             Sale type
           </Button>
-          <Button className='ownedBtn'>
+          <Button className='ownedBtn leftOwnedBtn'>
             <DollarOutlined />
             Price range
           </Button>
@@ -104,10 +104,17 @@ export const ProfileView = () => {
         </div>
       </div>
       <div className='infoContainer'>
-        <div className='address'>
+        <div className='address desktop-show'>
           <img src='/Ethereum-Logo.svg'/>
           {publicKey?.toBase58()}
         </div>
+
+        <div className='address mobile-show'>
+          <img src='/Ethereum-Logo.svg'/>
+          {publicKey?.toBase58().slice(0, 10) + ' ... ' + publicKey?.toBase58().slice(-10)}
+        </div>
+
+
         <div className='follow'>
           <span className='followSpan mr20'><InfoCircleFilled className='infoIcon'/>followers</span>
           <span className='followSpan'><InfoCircleFilled className='infoIcon'/>followering</span>
