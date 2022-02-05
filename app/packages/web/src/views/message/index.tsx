@@ -7,6 +7,8 @@ import PixelStreamer from '../../components/PixelStreamer';
 import { useRouter } from 'next/router';
 import { fetchJson } from '../../utils';
 import { ArrowDownOutlined } from '@ant-design/icons';
+import { useTheme } from '../../contexts/themecontext';
+import { Loading } from '../../components/util/loading';
 
 const serverHost = 'http://localhost:8080/api'
 
@@ -17,12 +19,13 @@ export const MessageView = () => {
   const [btnStatus, setBtnStatus] = useState(false);
   const [address, setAddress] = useState('');
   const [text, setText] = useState("");
+  const { theme } = useTheme();
   const router = useRouter()
   const { publicKey } = useWallet();
   const [scrollH, setScrollH] = useState(0);
   const scrollDiv: any = useRef<HTMLHeadingElement>(null);
   const socket = io(`http://localhost:8889`);
-  const [nmsg, setNmsg] = useState(null)
+  const [nmsg, setNmsg] = useState(null);
   useEffect(() => {
     fetchJson(`${serverHost}/message/${offset}`).then(res => {
       if (res.type === 'success') {
@@ -86,14 +89,17 @@ export const MessageView = () => {
           <div className='background-stream'>
             <PixelStreamer />
           </div>
-          <div className='message-body' onScroll={handleScroll} ref={scrollDiv}>
-            {
-              messages && messages.length > 0 && messages.map((m: any, index: number) =>
-                <div key={index} style={{ padding: '1.5rem 0' }} className={`d-flex ${m.walletAddress === publicKey?.toString() ? 'justify-content-end' : 'justify-content-start'}`}>
-                  <p className='messages'>{m.text}</p>
-                </div>
-              )
-            }
+          <div className='message-body'>
+            <div className='message-lists' ref={scrollDiv} onScroll={handleScroll}>
+              {
+                messages && messages.length > 0 && messages.map((m: any, index: number) =>
+                  <div key={index} className='d-flex' style={{ width: '100%' }}>
+                    <p className='user-info' style={theme === 'Light' ? { color: 'white' } : { color: 'white' }}>{m.walletAddress}</p>
+                    <p className='messages' style={theme === 'Light' ? { color: 'white' } : { color: 'white' }}>{m.text}</p>
+                  </div>
+                )
+              }
+            </div>
           </div>
           <div className='message-send'>
             <input
@@ -101,8 +107,9 @@ export const MessageView = () => {
               className="message-insert"
               placeholder="Type a message"
               value={text}
+              style={theme === 'Light' ? { color: 'white', borderColor: 'white' } : { color: 'black', borderColor: 'black', outline: 'none' }}
               onChange={(e) => setText(e.target.value)}
-              onKeyPress={(e) => e.which === 13 && handleMessage()}
+              onKeyPress={(e) => e.which === 13 && text && handleMessage()}
             />
             {
               btnStatus && <button onClick={handleMessage} type="button" className="btn-send"><SendOutlined style={{ fontSize: 26 }} /></button>
@@ -114,7 +121,7 @@ export const MessageView = () => {
               style={{
                 position: 'absolute',
                 right: 50,
-                bottom: 65,
+                bottom: 85,
                 display: 'flex'
               }}
             >

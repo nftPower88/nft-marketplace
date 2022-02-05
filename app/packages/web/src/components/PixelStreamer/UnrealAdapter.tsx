@@ -1,11 +1,14 @@
 import { WebRtcPlayer } from './WebRtcPlayer';
 import { UnrealAdapterHook } from './UnrealAdapterHook';
+import React from 'react';
 
 interface SocketMessage {
   type: 'config' | 'playerCount' | 'answer' | 'iceCandidate';
   peerConnectionOptions?: RTCConfiguration;
   candidate?: RTCIceCandidateInit;
 }
+interface Props { onChangeLoading: any }
+interface State { loading: boolean }
 
 export interface UnrealAdapterOptions {
   container: HTMLElement;
@@ -141,7 +144,7 @@ export enum BusinessMessageType {
   init = '0',
 }
 
-export class UnrealAdapter extends UnrealAdapterHook {
+export class UnrealAdapter extends React.Component<Props, State> {
   private unrealAdapterOption: UnrealAdapterOptions;
   // @ts-ignore
   public player: WebRtcPlayer;
@@ -157,11 +160,14 @@ export class UnrealAdapter extends UnrealAdapterHook {
   private styleCursor = 'default';
   private styleAdditional: any;
 
-  constructor(options: UnrealAdapterOptions) {
-    super();
-    this.unrealAdapterOption = options;
+  constructor(props: any) {
+    super(props);
+    this.unrealAdapterOption = props.options;
+    this.state = {
+      loading: true
+    };
   }
-
+  unrealAdapterHook = new UnrealAdapterHook;
   public load(videoRef?: React.RefObject<HTMLVideoElement>) {
     console.log('loading UnrealAdapter');
 
@@ -170,6 +176,12 @@ export class UnrealAdapter extends UnrealAdapterHook {
         ? 'wss://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port
         : 'ws://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port,
     );
+    this.ws.onopen = () => {
+      if(this.ws.OPEN) {
+        this.props.onChangeLoading(false);
+      }
+      console.log('WebSocket Client Connected');
+    }
     this.ws.onmessage = (event) => {
       const data: SocketMessage = JSON.parse(event.data);
       console.log(`onmessage: ${data.type}`);
@@ -177,8 +189,8 @@ export class UnrealAdapter extends UnrealAdapterHook {
       switch (data.type) {
         case 'answer':
           this.player.handleReceiveAnswer(data);
-          if (this.onAnswer) {
-            this.onAnswer(data);
+          if (this.unrealAdapterHook.onAnswer) {
+            this.unrealAdapterHook.onAnswer(data);
           }
           break;
         case 'config':
@@ -190,8 +202,8 @@ export class UnrealAdapter extends UnrealAdapterHook {
           if (this.player && data.candidate) {
             this.player.handleCandidateFromServer(data.candidate);
           }
-          if (this.onIceCandidate) {
-            this.onIceCandidate(data.candidate);
+          if (this.unrealAdapterHook.onIceCandidate) {
+            this.unrealAdapterHook.onIceCandidate(data.candidate);
           }
           break;
         case 'playerCount':
@@ -280,21 +292,20 @@ export class UnrealAdapter extends UnrealAdapterHook {
       const view = new Uint8Array(o);
       const res = new TextDecoder('utf-16').decode(o.slice(1));
       if (view[0] === ToClientMessageType.Response) {
-        if (this.onMessage) {
+        if (this.unrealAdapterHook.onMessage) {
           try {
-            this.onMessage(JSON.parse(res));
+            this.unrealAdapterHook.onMessage(JSON.parse(res));
           } catch {
-            this.onMessage(undefined);
+            this.unrealAdapterHook.onMessage(undefined);
           }
         }
       }
     };
     await this.player.setupWrbRtcPlayer();
-    if (this.onConfig) {
-      this.onConfig(peerConnectionOptions);
+    if (this.unrealAdapterHook.onConfig) {
+      this.unrealAdapterHook.onConfig(peerConnectionOptions);
     }
   }
-
   emitUIInteraction(descriptor: any, type: string) {
     Object.assign(descriptor, { _message: 'true', _type: type });
     console.log(descriptor);

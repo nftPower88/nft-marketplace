@@ -15,30 +15,43 @@
     left: 0px;
     top: 0px;
 }
-.message-body {
-    padding-left: 8rem;
-    padding-right: 8rem;
-    height: calc(100vh - 130px);
-    overflow-y: auto;
-    position: relative;
+.user-info {
+    width: 8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-left: 2rem;
+    margin-right: 1rem;
 }
-.message-body::-webkit-scrollbar {
+.message-body {
+    position: relative;
+    height: calc(100% - 130px);
+}
+.message-lists {
+    position: absolute;
+    height: 400px;
+    overflow-y: auto;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    padding-right: 9rem;
+}
+.message-lists::-webkit-scrollbar {
     width: 6px;
     // opacity: 1;
     // background-color: white;
     // color: black;
 }
 
-.message-body::-webkit-scrollbar-thumb {
+.message-lists::-webkit-scrollbar-thumb {
     background: #5d2d9d; 
     border-radius: 6px;
-
 }
 .message-send {
     display: flex;
     margin: auto;
-    padding-left: 8rem;
-    padding-right: 8rem;
+    padding-left: 9rem;
+    padding-right: 9rem;
     position: relative;
 }
 .message-insert {
@@ -46,9 +59,7 @@
     border-radius: 10px;
     margin-right: 10px;
     width: 100%;
-    border-color: white;
-    outline: auto!important;
-    color: white!important;
+    outline: auto;
     padding: 6px 12px;
     height: 50px;
 }
@@ -56,7 +67,7 @@
     transition: .4s;
     color: #212529;
     border-color: #86b7fe;
-    outline: 0;
+    outline: auto;
     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }
 .message-insert::placeholder {
@@ -83,5 +94,4 @@
     word-break: break-word;
     font-family: 'Montserrat';
     font-size: 18px;
-    color: white;
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loading } from '../util/loading';
 import { UnrealAdapter } from './UnrealAdapter';
 
 const HOST = 'node101.stream.queendom.io';
@@ -16,7 +17,9 @@ const PixelStreamer: React.FC = () => {
 
 
 interface Props { }
-interface State { }
+interface State {
+  loading: boolean
+}
 
 class Mirror extends React.Component<Props, State> {
   // @ts-ignore
@@ -31,19 +34,23 @@ class Mirror extends React.Component<Props, State> {
 
   constructor(props: any) {
     super(props);
+    this.state = {
+      loading: true
+    };
   }
 
   videoReference = React.createRef<HTMLVideoElement>();
-  unrealAdapter = new UnrealAdapter(
-    {
+  unrealAdapter = new UnrealAdapter({
+    options: {
       container: document.createElement('div'),
       host: HOST,
       port: PORT,
       useSSL: true,
       useMic: false,
       matchViewPort: true,
-    }
-  );
+    },
+    onChangeLoading:(e: boolean) => this.setState({ loading: e })
+  });
 
   async componentDidMount() {
     this.unrealAdapter.load(this.videoReference);
@@ -54,7 +61,7 @@ class Mirror extends React.Component<Props, State> {
       this.videoReference.current.srcObject = null;
     }
   }
-
+  
   async componentDidUpdate() {
     // console.log('testing')
     // this.unrealAdapter.load();
@@ -69,12 +76,12 @@ class Mirror extends React.Component<Props, State> {
 
     // }
     // Load video @TODO: make autoplay back, make bitrate dynamic?
-    // /*
-    //   if (this.videoReference.current) {
-    //     this.videoReference.current.src = "/video/demo.mp4";
-    //     await this.videoReference.current.play(); //@TODO make this play a loop
-    //   };
-    //   */
+    /*
+      if (this.videoReference.current) {
+        this.videoReference.current.src = "/video/demo.mp4";
+        await this.videoReference.current.play(); //@TODO make this play a loop
+      };
+      */
 
     // Camera Debug Test
     /*
@@ -86,14 +93,20 @@ class Mirror extends React.Component<Props, State> {
   }
 
   render() {
+    const { loading } = this.state;
     return (
-        <video
-            ref={this.videoReference}
-            id="player"
-            autoPlay
-            muted // do we want this?
-            style={{ width: '100%', height: '100%' }}
-        ></video>
+      <React.Fragment>
+        {
+          loading ? <Loading description="Entering the metaverse ..." />
+            : <video
+              ref={this.videoReference}
+              id="player"
+              autoPlay
+              muted // do we want this?
+              style={{ width: '100%' }}
+            ></video>
+        }
+      </React.Fragment>
     );
   }
 }
