@@ -102,7 +102,7 @@ export const MessageView = () => {
             <div className='message-lists' ref={scrollDiv} onScroll={handleScroll}>
               {
                 messages && messages.length > 0 && messages.map((m: any, index: number) =>
-                  <div key={index} className='d-flex' style={{ width: '100%' }}>
+                  <div key={index} className='d-flex' style={{ width: '60%' }}>
                     <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.walletAddress}</p>
                     <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.text}</p>
                   </div>
