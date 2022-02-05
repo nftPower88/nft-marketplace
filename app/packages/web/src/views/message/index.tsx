@@ -19,11 +19,13 @@ export const MessageView = () => {
   const [btnStatus, setBtnStatus] = useState(false);
   const [address, setAddress] = useState('');
   const [text, setText] = useState("");
+  const [focus, setFocus] = useState(false);
   const { theme } = useTheme();
   const { publicKey } = useWallet();
   const history = useHistory();
   const [scrollH, setScrollH] = useState(0);
   const scrollDiv: any = useRef<HTMLHeadingElement>(null);
+  const input: any = useRef<HTMLHeadingElement>(null);
   const socket = io(`http://localhost:8889`);
   const [nmsg, setNmsg] = useState(null);
   useEffect(() => {
@@ -45,7 +47,6 @@ export const MessageView = () => {
       });
       history.push('/signin');
     }
-    console.log(publicKey?.toString());
   }, []);
   useEffect(() => {
     if (nmsg) {
@@ -90,34 +91,34 @@ export const MessageView = () => {
       })
     }
   };
-
   return (
     <React.Fragment>
       <div className='message'>
         <div className='message_content'>
           <div className='background-stream'>
-            <PixelStreamer />
+            <PixelStreamer focus={focus} activeFocus={() => input.current.focus()} />
           </div>
-          <div className='message-body'>
-            <div className='message-lists' ref={scrollDiv} onScroll={handleScroll}>
-              {
-                messages && messages.length > 0 && messages.map((m: any, index: number) =>
-                  <div key={index} className='d-flex' style={{ width: '60%' }}>
-                    <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.walletAddress}</p>
-                    <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.text}</p>
-                  </div>
-                )
-              }
-            </div>
+          <div className='message-body' ref={scrollDiv} onScroll={handleScroll}>
+            {
+              messages && messages.length > 0 && messages.map((m: any, index: number) =>
+                <div key={index} className='d-flex' style={{ width: '60%' }}>
+                  <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.walletAddress}</p>
+                  <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.text}</p>
+                </div>
+              )
+            }
           </div>
           <div className='message-send'>
             <input
+              ref={input}
               type="text"
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
               className="message-insert"
               placeholder="Type a message"
               value={text}
               style={theme === 'Light' ? { color: 'black', borderColor: 'black' } : { color: 'white', borderColor: 'white', outline: 'none' }}
-              onChange={(e) => setText(e.target.value)}
+              onChange={(e) => { e.preventDefault; setText(e.target.value); }}
               onKeyPress={(e) => e.which === 13 && text && handleMessage()}
             />
             {

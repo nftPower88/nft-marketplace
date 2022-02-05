@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loading } from '../util/loading';
 import { UnrealAdapter } from './UnrealAdapter';
 
 const HOST = 'node102.stream.queendom.io';
 const PORT = 443;
 
-const PixelStreamer: React.FC = () => {
+interface Props {
+  focus: boolean,
+  activeFocus: any
+}
+interface State {
+  loading: boolean
+}
+
+const PixelStreamer: React.FC<Props> = ({ focus, activeFocus }) => {
   return (
     <div className="App" style={{ height: '100%' }}>
       <header className="App-header" style={{ height: '100%' }}>
-        <Mirror></Mirror>
+        <Mirror focus={focus} activeFocus={activeFocus}></Mirror>
       </header>
     </div>
   );
 };
-
-
-interface Props { }
-interface State {
-  loading: boolean
-}
 
 class Mirror extends React.Component<Props, State> {
   // @ts-ignore
@@ -49,6 +51,8 @@ class Mirror extends React.Component<Props, State> {
       useMic: false,
       matchViewPort: true,
     },
+    activeFocus: this.props.activeFocus,
+    focus: this.props.focus,
     onChangeLoading:(e: boolean) => this.setState({ loading: e })
   });
 
@@ -63,7 +67,11 @@ class Mirror extends React.Component<Props, State> {
   }
   
   async componentDidUpdate() {
-    // console.log('testing')
+    if(this.props.focus) {
+      this.unrealAdapter.registerLockedKeyboardEvents();
+    } else {
+      this.unrealAdapter.registerKeyboardEvents();
+    }
     // this.unrealAdapter.load();
     // const newPlayer = this.unrealAdapter.player;
     // if (!newPlayer) {
