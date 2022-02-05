@@ -1,0 +1,100 @@
+// tablet
+@media screen and (max-width: 767px) {
+    .desktop-show {
+        display: none !important;
+    }
+
+    .ant-layout-header {
+        padding: 0 12px !important;
+    }
+
+    #metaplex-layout-content {
+        padding: 12px !important;
+
+        .title_container {
+            width: 100%;
+            max-width: 400px;
+            
+            h1 {
+                font-size: 26px;
+            }
+        }
+    }
+
+    .signin-confirm-address-container {
+        p:nth-child(2) {
+            word-break: break-all;
+            font-size: 14px;
+        }
+    }
+
+    .signin-policy-container {
+        font-size: 15px;
+    }
+
+    .metaplex-display-flex {
+        gap: 0 !important;
+    }
+
+    .editProfileContainer {
+        .rightContainer {
+            margin-top: 30px;
+            width: 100%;
+            padding-left: 0;
+            text-align: center;
+        }
+    }
+
+    .hero_title {
+        font-size: 52px;
+    }
+
+    .hero_subtitle {
+        font-size: 24px;
+    }
+
+    .subscribe-container {
+        max-width: 400px;
+    }
+
+    .footer_layout {
+        .layout-left {
+            justify-content: center;
+        }
+
+        .layout-right {
+            justify-content: center;
+        }
+    }
+
+    .ant-popover-placement-bottomRight {
+        .notification-title {
+            width: 280px;
+        }
+    }
+
+    .ant-drawer-content-wrapper {
+        height: 270px !important;
+    }
+}
+
+// laptop
+@media screen and (min-width: 768px) {
+    .mobile-show {
+        display: none !important;
+    }
+
+    .footer_layout {
+        .layout-left {
+            justify-content: left;
+        }
+
+        .layout-right {
+            justify-content: right;
+        }
+    }
+
+    .subscribe-container {
+        max-width: 700px;
+    }
+}
