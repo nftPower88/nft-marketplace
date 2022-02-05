@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  backend-db:
+    image: mongo:5.0.2
+    restart: unless-stopped
+    container_name: backend_db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    networks:
+      - api-network
+    volumes:
+      - "db:/data/db"
+
+  backend-app:
+    depends_on:
+      - backend-db
+    build: .
+    container_name: backend_app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8889:8889/tcp"
+      - "8889:8889/udp"
+    environment:
+      - MONGODB_CONNSTRING="mongodb://${MONGODB_USER?err}:${MONGODB_PASSWORD?err}@backend_db"
+    tty: true
+    networks:
+      - api-network
+
+volumes:
+  db:
+
+networks:
+    api-network:
+      driver: bridge
+      

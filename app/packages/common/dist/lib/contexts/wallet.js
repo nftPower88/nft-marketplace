@@ -26,6 +26,7 @@ const antd_1 = require("antd");
 const react_1 = __importStar(require("react"));
 const components_1 = require("../components");
 const utils_1 = require("../utils");
+const react_router_dom_1 = require("react-router-dom");
 const { Panel } = antd_1.Collapse;
 exports.WalletModalContext = react_1.createContext({
     visible: false,
@@ -42,19 +43,20 @@ const WalletModal = () => {
         setVisible(false);
     }, [setVisible]);
     const phatomWallet = react_1.useMemo(() => wallet_adapter_wallets_1.getPhantomWallet(), []);
-    return (react_1.default.createElement(components_1.MetaplexModal, { title: "Connect Wallet", visible: visible, onCancel: close },
-        react_1.default.createElement("h4", null, "RECOMMENDED"),
-        react_1.default.createElement(antd_1.Button, { className: "metaplex-button-jumbo", size: "large", onClick: () => {
-                console.log(phatomWallet.name);
+    return (
+    // <MetaplexModal title="Pick a wallet to connect to Queendom" centered visible={visible} onCancel={close} bodyStyle={{borderRadius:'5px',boxShadow:'2px 5px 10px'}}>
+    react_1.default.createElement(components_1.MetaplexModal, { centered: true, visible: visible, onCancel: close, closable: false },
+        react_1.default.createElement("h4", { className: 'mb-3' }, "Pick a wallet to conneect to Queendom"),
+        react_1.default.createElement(antd_1.Button, { type: 'link', className: "metaplex-button-jumbo d-flex", size: "large", onClick: () => {
                 select(phatomWallet.name);
                 close();
             } },
             react_1.default.createElement("img", { src: phatomWallet === null || phatomWallet === void 0 ? void 0 : phatomWallet.icon }),
-            "\u00A0Connect to Phantom"),
-        react_1.default.createElement(antd_1.Collapse, { ghost: true, expandIcon: panelProps => panelProps.isActive ? (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
-                react_1.default.createElement("path", { d: "M15 7.5L10 12.5L5 7.5", stroke: "white", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }))) : (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
-                react_1.default.createElement("path", { d: "M7.5 5L12.5 10L7.5 15", stroke: "white", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }))) },
-            react_1.default.createElement(Panel, { header: react_1.default.createElement("strong", null, "Other Wallets"), key: "1" },
+            react_1.default.createElement("h4", { style: { paddingLeft: '2px' }, className: 'ms-4 pt-1' }, "Connect to Phantom")),
+        react_1.default.createElement(antd_1.Collapse, { ghost: true, expandIcon: panelProps => panelProps.isActive ? (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "gray", xmlns: "http://www.w3.org/2000/svg" },
+                react_1.default.createElement("path", { d: "M15 7.5L10 12.5L5 7.5", stroke: "gray", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }))) : (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "gray", xmlns: "http://www.w3.org/2000/svg" },
+                react_1.default.createElement("path", { d: "M7.5 5L12.5 10L7.5 15", stroke: "gray", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }))) },
+            react_1.default.createElement(Panel, { header: react_1.default.createElement("strong", { className: 'ms-4' }, "Other Wallet"), key: "1" },
                 react_1.default.createElement(antd_1.Space, { wrap: true }, wallets.map((wallet, idx) => {
                     if (wallet.name === 'Phantom')
                         return null;
@@ -71,12 +73,17 @@ const WalletModalProvider = ({ children, }) => {
     const { publicKey } = wallet_adapter_react_1.useWallet();
     const [connected, setConnected] = react_1.useState(!!publicKey);
     const [visible, setVisible] = react_1.useState(false);
+    const history = react_router_dom_1.useHistory();
     react_1.useEffect(() => {
         if (publicKey) {
             const base58 = publicKey.toBase58();
             const keyToDisplay = base58.length > 20
                 ? `${base58.substring(0, 7)}.....${base58.substring(base58.length - 7, base58.length)}`
                 : base58;
+            if (localStorage.getItem('click-signin') === 'yes') {
+                history.push('/signinconfirm');
+                localStorage.removeItem('click-signin');
+            }
             utils_1.notify({
                 message: 'Wallet update',
                 description: 'Connected to wallet ' + keyToDisplay,

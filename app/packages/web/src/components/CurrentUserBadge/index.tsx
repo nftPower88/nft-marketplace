@@ -24,8 +24,7 @@ import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
 import CogSvg from '../svgs/cog';
-
-
+import { useHistory } from 'react-router-dom';
 
 const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
   const {publicKey} = useWallet();
@@ -48,31 +47,32 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
               <>
                 <Link to='/artworks/new'>
                   <Button
+                    className='w-100'
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Create
                   </Button>
                 </Link>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             ) : (
               <>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
@@ -81,29 +81,29 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
             {canCreate ? (
               <>
                 <Link to='/artworks/new'>
-                  <Button>Create</Button>
+                  <Button className='w-100'>Create</Button>
                 </Link>
-                &nbsp;&nbsp; &nbsp;
-                <Link to='/auction/create/'>
+                {/* &nbsp;&nbsp; &nbsp; */}
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
+                </Link> */}
               </>
             ) : (
               <>
-                <Link to='/auction/create/'>
+                {/* <Link to='/auction/create/'>
                   <Button
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
                     }}>
                     Sell
                   </Button>
-                </Link>
-                &nbsp;&nbsp; &nbsp;
+                </Link> */}
+                {/* &nbsp;&nbsp; &nbsp; */}
               </>
             )}
           </div>
@@ -167,11 +167,12 @@ export const CurrentUserBadge = (props: {
   showAddress?: boolean;
   iconSize?: number;
 }) => {
-
+  const history = useHistory()
+  
   const {wallet, publicKey, disconnect} = useWallet();
   const {account} = useNativeAccount();
   const solPrice = useSolPrice();
-
+  
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
   if (!wallet || !publicKey || !solPrice) {
@@ -186,6 +187,7 @@ export const CurrentUserBadge = (props: {
     name = unknownWallet.name;
   }
 
+
   const image = unknownWallet.image ? (
     <img src={unknownWallet.image} />
   ) : (
@@ -198,27 +200,47 @@ export const CurrentUserBadge = (props: {
         trigger='click'
         placement='bottomRight'
         content={
-          <Settings
-            additionalSettings={
-              <Space direction='vertical'>
-                <h5>BALANCE</h5>
-                <Space direction='horizontal'>
-                  <SolCircle />
-                  <span>{formatNumber.format(balance)} SOL</span>
-                  <span>{formatUSD.format(balanceInUSD)}</span>
-                </Space>
-                <Space direction='horizontal'>
-                  <Button onClick={() => setShowAddFundsModal(true)}>
-                    Add Funds
-                  </Button>
-                  <Button onClick={disconnect}>Disconnect</Button>
+          // <Settings
+          //   additionalSettings={
+          //     <Space direction='vertical'>
+          //       <h5>BALANCE</h5>
+          //       <Space direction='horizontal'>
+          //         <SolCircle />
+          //         <span>{formatNumber.format(balance)} SOL</span>
+          //         <span>{formatUSD.format(balanceInUSD)}</span>
+          //       </Space> 
+          //       <Space direction='horizontal'>
+          //         <Button onClick={() => setShowAddFundsModal(true)}>
+          //           Add Funds
+          //         </Button>
+          //         <Button onClick={disconnect}>Sign Out</Button>
             
-                </Space>
-                <UserActions />
-              </Space>
-            }
-          />
-        }>
+          //       </Space>
+          //       <UserActions />
+          //       <div className='setting-divider' />
+          //       <Button onClick={disconnect}>Sign Out</Button>
+          //     </Space>
+          //   }
+          // />
+          <div className='signin-dropdown'>
+            <div className='my-2'>
+              <a href="#/profile">Profile</a>
+            </div>
+            <div className='my-2'>
+              <a href="#/dashboard">Dashboard</a>
+            </div>
+            <div className='my-2'>
+              <a href="#/collection">Collection</a>
+            </div>
+            <div className='my-2'>
+              <a href="#/setting">Settings</a>
+            </div>
+            <div className='settingDivider' />
+            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); history.push('/');}}>Sign Out</span>
+            {/* <Button onClick={disconnect}>Sign Out</Button> */}
+          </div>
+        }
+        >
         <Button className='metaplex-button-appbar' type={props.buttonType}>
           <Space direction='horizontal'>
             {props.showBalance && (
@@ -230,7 +252,7 @@ export const CurrentUserBadge = (props: {
               </span>
             )}
             {image}
-            {name && <span>{name}</span>}
+            {/* {name && <span>{name}</span>} */}
           </Space>
         </Button>
       </Popover>
@@ -248,30 +270,34 @@ export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
   const {endpoint, setEndpoint} = useConnectionConfig();
   const {setVisible} = useWalletModal();
   const open = useCallback(() => setVisible(true), [setVisible]);
+  const history = useHistory()
 
   return (
-    <Popover
-      trigger='click'
-      placement='bottomRight'
-      content={
-        <Space direction='vertical'>
-          <h5>NETWORK</h5>
-          <Select onSelect={setEndpoint} value={endpoint} bordered={false}>
-            {ENDPOINTS.map(({name, endpoint}) => (
-              <Select.Option value={endpoint} key={endpoint}>
-                {name}
-              </Select.Option>
-            ))}
-          </Select>
+    // <Popover
+    //   trigger='click'
+    //   placement='bottomRight'
+    //   content={
+    //     <Space direction='vertical'>
+    //       <h5>NETWORK</h5>
+    //       <Select onSelect={setEndpoint} value={endpoint} bordered={false}>
+    //         {ENDPOINTS.map(({name, endpoint}) => (
+    //           <Select.Option value={endpoint} key={endpoint}>
+    //             {name}
+    //           </Select.Option>
+    //         ))}
+    //       </Select>
 
-          <Button onClick={open}>Change wallet</Button>
+    //       <Button onClick={open}>Change wallet</Button>
     
-        </Space>
-      }>
-      <Button className='metaplex-button-appbar' type={buttonType}>
-        <CogSvg />
-      </Button>
-    </Popover>
+    //     </Space>
+    //   }>
+    //   <Button className='metaplex-button-appbar' type={buttonType}>
+    //     <CogSvg />
+    //   </Button>
+    // </Popover>
+    <Button className='metaplex-button-appbar' type={buttonType} onClick={() => {history.push('setting')}}>
+      <CogSvg />
+    </Button>
   );
 };
 
@@ -286,6 +312,8 @@ export const CurrentUserBadgeMobile = (props: {
   const solPrice = useSolPrice();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
+
+  const history = useHistory()
 
   if (!wallet || !publicKey || !solPrice) {
     return null;
@@ -330,7 +358,7 @@ export const CurrentUserBadgeMobile = (props: {
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={disconnect}>Disconnect</Button>
+        <Button onClick={() => {disconnect(); history.push('/');}}>Sign Out</Button>
       </div>
       <div>
         <UserActions

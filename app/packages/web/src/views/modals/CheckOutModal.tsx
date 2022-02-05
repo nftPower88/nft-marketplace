@@ -47,8 +47,15 @@ import { MetaAvatar } from '../../components/MetaAvatar';
 import { ViewOn } from '../../components/ViewOn';
 import { AuctionCard } from '../../components/AuctionCard';
 import { AmountLabel } from '../../components/AmountLabel';
-import { CameraOutlined, CaretDownOutlined,FundProjectionScreenOutlined,ThunderboltOutlined } from '@ant-design/icons';
-import {useTheme,Theme} from '../../contexts/themecontext'
+import {
+  CameraOutlined,
+  CaretDownOutlined,
+  TransactionOutlined,
+  FundProjectionScreenOutlined,
+  BlockOutlined,
+  ThunderboltOutlined,
+} from '@ant-design/icons';
+import { useTheme, Theme } from '../../contexts/themecontext';
 interface Props {
   show: boolean;
   hide: (value: any) => void;
@@ -64,8 +71,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const { ref, data } = useExtendedArt(auction?.thumbnail.metadata.pubkey);
   const creators = useCreators(auction);
   const wallet = useWallet();
-  const {theme,setTheme} = useTheme()
-
+  const { theme, setTheme } = useTheme();
   let edition = '';
   if (art.type === ArtType.NFT) {
     edition = 'Unique';
@@ -93,9 +99,20 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
       ? auction.auction.info.priceFloor.minPrice?.toNumber() || 0
       : 0;
   const [storyShow, setStoryShow] = useState(false);
-  const [captureShow,setCaptureShow] = useState(true)
-  const [showcaseShow,setShowcaseShow] = useState(true)
-  const [tryShow,setTryShow] = useState(true)
+  const [captureShow, setCaptureShow] = useState(true);
+  const [showcaseShow, setShowcaseShow] = useState(true);
+  const [tryShow, setTryShow] = useState(true);
+  const [portShow, setPortShow] = useState(true);
+  const [tradeShow, setTradeShow] = useState(true);
+  const [showAuction, setShowAuction] = useState(true);
+  const [reloadAuction, setReloadAuction] = useState(false);
+  function refreshAuction() {
+    setTimeout(() => {
+      setReloadAuction(false);
+    }, 1);
+    setReloadAuction(true);
+  }
+
   useEffect(() => {
     return subscribeProgramChanges(
       connection,
@@ -185,7 +202,10 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
       </Col>
       <Col span={24} md={{ span: 24 }} lg={24}>
         <Row justify="center">
-          <div style={{ width: '100px', border: '1px solid' }}>
+          <div
+            style={{ width: '180px' }}
+            className="border-0 align-items-center mt-4"
+          >
             <Carousel
               className="metaplex-spacing-bottom-md"
               autoplay={false}
@@ -195,56 +215,79 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             </Carousel>
           </div>
         </Row>
+        <Divider />
         {!auction && <Skeleton paragraph={{ rows: 6 }} />}
-        {auction && (
-          <AuctionCard auctionView={auction} hideDefaultAction={false} />
-        )}
-        {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
-        {attributes && (
-          <div>
-            <Text>Attributes</Text>
-            <List grid={{ column: 2 }}>
-              {attributes.map((attribute, index) => (
-                <List.Item key={`${attribute.value}-${index}`}>
-                  <List.Item.Meta
-                    title={attribute.trait_type}
-                    description={attribute.value}
-                  />
-                </List.Item>
-              ))}
-            </List>
+        <Row justify="center">
+          <Col span={21}>
+            <Button
+              size="large"
+              hidden={!showAuction}
+              onClick={() => setShowAuction(false)}
+              type="primary"
+              className="metaplex-fullwidth rounded-3 mt-4"
+              style={{ height: '40px' }}
+            >
+              Buy Now
+            </Button>
+            {/* <Button hidden={showAuction} onClick={refreshAuction} style={{borderRadius:'5px'}} type='primary' className="metaplex-fullwidth rounded-3">Forgo Purchase</Button> */}
+          </Col>
+        </Row>
+        {auction && !reloadAuction && (
+          <div hidden={showAuction}>
+            <AuctionCard auctionView={auction} hideDefaultAction={false} />
           </div>
         )}
-  
+        {!auction?.isInstantSale && <AuctionBids auctionView={auction} />}
+
+        <div hidden={!showAuction}>
+          {' '}
+          <Divider />
+        </div>
         <Row justify="center">
           <Col span={24}>
             <Row justify="center">
-              <div className={theme===Theme.Light ? 'button_blackborder' : 'button_whiteborder'}>
-              <Button type='text'
-                
-                onClick={() => {
-                  setStoryShow(false);
-                 
-                }}
-                style={{ width: '179px' }}
+              <div
+                className={
+                  theme === Theme.Light
+                    ? 'button_blackborder'
+                    : 'button_whiteborder'
+                }
               >
-               <span className={!storyShow ? 'underlined_button': ''}>Asset</span>
-              </Button>
+                <Button
+                  type="text"
+                  onClick={() => {
+                    setStoryShow(false);
+                  }}
+                  style={{ width: '179px' }}
+                >
+                  <span className={!storyShow ? 'underlined_button' : ''}>
+                    Asset
+                  </span>
+                </Button>
               </div>
-              <div className={theme===Theme.Light ? 'button_blackborder' : 'button_whiteborder'}>
-              <Button type='text'
-                onClick={() => {
-                  setStoryShow(true);
-                }}
-                style={{ width: '179px' }}
+              <div
+                className={
+                  theme === Theme.Light
+                    ? 'button_blackborder'
+                    : 'button_whiteborder'
+                }
               >
-                <span className={storyShow ? 'underlined_button': ''}>Story</span>
-              </Button>
+                <Button
+                  type="text"
+                  onClick={() => {
+                    setStoryShow(true);
+                  }}
+                  style={{ width: '179px' }}
+                >
+                  <span className={storyShow ? 'underlined_button' : ''}>
+                    Story
+                  </span>
+                </Button>
               </div>
             </Row>
           </Col>
         </Row>
-     <Divider/>
+        <Divider />
         <Row justify="center">
           <Col span={21}>
             <Row justify="center">
@@ -268,9 +311,20 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             </Row>
           </Col>
           <Col span={21}>
-            <h5>Blockchain : <span style={{textDecoration:'underline'}}>XX</span> </h5>
-            <h5>Creator : <span style={{textDecoration:'underline'}}>{art.creators![0].address}</span> </h5>
-            <h5>Asset : <span style={{textDecoration:'underline'}}>{art.mint}</span> </h5>
+            <h5>
+              Blockchain :{' '}
+              <span style={{ textDecoration: 'underline' }}>XX</span>{' '}
+            </h5>
+            <h5>
+              Creator :{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {art.creators![0].address}
+              </span>{' '}
+            </h5>
+            <h5>
+              Asset :{' '}
+              <span style={{ textDecoration: 'underline' }}>{art.mint}</span>{' '}
+            </h5>
           </Col>
           {/* <Button onClick={() => setShowAbout(!showAbout)}>
             ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}
@@ -333,48 +387,123 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
           </div> */}
         </Row>
         <Divider />
+        {attributes && (
+          <Col span={24}>
+            <h3 style={{ fontWeight: 900 }}>Attributes</h3>
+            <List grid={{ column: 4 }}>
+              {attributes.map((attribute, index) => (
+                <List.Item
+                  key={`${attribute.value}-${index}`}
+                  className="d-flex"
+                >
+                  <List.Item.Meta title={`${attribute.trait_type}`} />
+                  <List.Item.Meta
+                    title={attribute.value}
+                    className="text-end"
+                  />
+                </List.Item>
+              ))}
+            </List>
+          </Col>
+        )}
+        <Divider />
         <Col span={24}>
           <h3 style={{ fontWeight: 900 }}>How to use</h3>
-          <Row justify="space-between" align="middle" onClick={()=>setCaptureShow(!captureShow)}>
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setCaptureShow(!captureShow)}
+          >
             <h4>
               <CameraOutlined />
             </h4>
-            <h4 style={{marginRight:'250px'}}>Capture it</h4>
-            <div >
-              <h4>
-                <CaretDownOutlined />
-              </h4>
-            </div>
-          </Row>
-          <div hidden={captureShow}><h5>Capture Captions</h5></div>
-          <hr />
-          <Row justify="space-between" align="middle" onClick={()=>setShowcaseShow(!showcaseShow)}>
-            <h4>
-              <FundProjectionScreenOutlined />
-            </h4>
-            <h4 style={{marginRight:'240px'}}>Showcase it</h4>
-            <div >
-              <h4>
-                <CaretDownOutlined />
-              </h4>
-            </div>
-          </Row>
-          <div hidden={showcaseShow}><h5>Showcase Captions</h5></div>
-          <hr />
-          <Row justify="space-between" align="middle" onClick={()=>setTryShow(!tryShow)}>
-            <h4>
-              <ThunderboltOutlined />
-            </h4>
-            <h4 style={{marginRight:'270px'}}>Try it on</h4>
+            <h4 style={{ marginRight: '250px' }}>Capture it</h4>
             <div>
               <h4>
                 <CaretDownOutlined />
               </h4>
             </div>
           </Row>
-          <div hidden={tryShow}><h5>Try it Captions</h5></div>
+          <div hidden={captureShow}>
+            <h5>Capture Captions</h5>
+          </div>
           <hr />
-          
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setShowcaseShow(!showcaseShow)}
+          >
+            <h4>
+              <FundProjectionScreenOutlined />
+            </h4>
+            <h4 style={{ marginRight: '240px' }}>Showcase it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={showcaseShow}>
+            <h5>Showcase Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setTryShow(!tryShow)}
+          >
+            <h4>
+              <ThunderboltOutlined />
+            </h4>
+            <h4 style={{ marginRight: '270px' }}>Try it on</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={tryShow}>
+            <h5>Try it Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setPortShow(!portShow)}
+          >
+            <h4>
+              <BlockOutlined />
+            </h4>
+            <h4 style={{ marginRight: '282px' }}>Port it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={portShow}>
+            <h5>Port it Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setTradeShow(!tradeShow)}
+          >
+            <h4>
+              <TransactionOutlined />
+            </h4>
+            <h4 style={{ marginRight: '270px' }}>Trade it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={tradeShow}>
+            <h5>Trade it Captions</h5>
+          </div>
+          <hr />
         </Col>
       </Col>
     </Row>

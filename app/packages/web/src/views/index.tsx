@@ -12,6 +12,11 @@ export { LandingPageView } from './landingPage';
 export { CheckoutPageView } from './checkout';
 export { ResultPageView } from './checkout';
 export { CartPageView } from './checkout';
-//export { ClientPageView } from './clientPage'
-export { DashboardView } from './clientPage/Dashboard';
-export {SignInView} from './signIn'
+export { ClientPageView } from './clientPage';
+export { DashboardView } from './dashboardPage';
+export { SignInView } from './signIn';
+export { SignInConfirmView } from './signinConfirm';
+export { MessageView } from './message';
+export { ProfileView } from './profile';
+export { EditProfileView } from './editProfile';
+export { SettingView } from './setting';

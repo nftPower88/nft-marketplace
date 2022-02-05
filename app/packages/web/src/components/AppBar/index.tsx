@@ -1,12 +1,16 @@
 import { ConnectButton, useStore } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Col, Menu, Row, Space, Button } from 'antd';
+import { Col, Menu, Row, Space, Button, Drawer } from 'antd';
 import React, { ReactNode, useMemo, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
+import {
+  MenuOutlined
+} from '@ant-design/icons';
+import { SocialIcon } from '../Footer/social_icon';
 type P = {
   logo: string;
 };
@@ -18,7 +22,12 @@ export const AppBar = (props: P) => {
   const { ownerAddress } = useStore();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState('');
-  const [isSignIn, setIsSignIn] = useState(false)
+  const [showMenu, setShowMenu] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(false);
+
+  let hide = false
+  locationPath == '/signinconfirm' && (hide = true)
+
   function switchTheme() {
     if (theme === 'Dark') {
       setCurrentTheme(Theme.Light);
@@ -121,13 +130,13 @@ export const AppBar = (props: P) => {
     if (connected) {
       menu = [
         ...menu,
-        {
-          key: 'profile',
-          title: 'Profile',
-          link: '/profile',
-          exact: true,
-          alt: [],
-        },
+        // {
+        //   key: 'profile',
+        //   title: 'Profile',
+        //   link: '/profile',
+        //   exact: true,
+        //   alt: [],
+        // },
       ];
     }
 
@@ -170,7 +179,7 @@ export const AppBar = (props: P) => {
   );
 
   return (
-    <div >
+    <div className='header-container'>
       <style global jsx>
         {`
           .ant-layout-header {
@@ -178,7 +187,7 @@ export const AppBar = (props: P) => {
             position: fixed;
             z-index: 2;
             width: 100vw;
-            opacity: 80%;
+            opacity: 100%;
             height: 64px;
           }
           .ant-btn {
@@ -187,41 +196,106 @@ export const AppBar = (props: P) => {
           }
         `}
       </style>
-      <Row wrap={false} align="middle">
-        <Col flex="0 0 auto">
-          <Link to="/" id="metaplex-header-logo" onClick={()=>setIsSignIn(false)}>
-            Queendom
-          </Link>
-        </Col>
-        <Col flex="1 0 0" style={{ overflow: 'hidden' }} hidden={isSignIn}>
+      <Row wrap={false} align="middle" className='justify-content-between'>
+        <Link
+          to="/"
+          id="metaplex-header-logo"
+          onClick={() => setIsSignIn(false)}
+        >
+          <img
+            style={{ width: '200px', paddingBottom: '5px' }}
+            className='desktop-show'
+            src={
+              theme === Theme.Light
+                ? 'Logo/QueendomDark.png'
+                : 'Logo/QueendomLight.png'
+            }
+          />
+          <img
+            style={{ width: '100px', paddingBottom: '5px' }}
+            className='mobile-show'
+            src={
+              theme === Theme.Light
+                ? 'Logo/QueendomDark.png'
+                : 'Logo/QueendomLight.png'
+            }
+          />
+        </Link>
+
+        <Col flex="1 0 0" className={`left-header ${hide ? ' hidden' : ''} desktop-show ms-4`} >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
-        <Col flex="0 1 auto" hidden={isSignIn}>
-          <Space className="metaplex-display-flex" align="center">
-            {connected ? (
-              <>
-                <CurrentUserBadge showAddress={true} buttonType="text" />
-                <Notifications buttonType="text" />
 
+        <Col flex="0 1 auto" className='right-header'>
+          <Space className="metaplex-display-flex" align="center">
+            <div className={`mobile-show ${hide ? ' hidden' : ''}`}>
+              <Button
+                onClick={() => setShowMenu(true)}
+                size="small"
+                icon={<MenuOutlined />}
+                type="text"
+              ></Button>
+              <Drawer
+                visible={showMenu}
+                placement="bottom"
+                mask={true}
+                maskStyle={{ opacity: '0%' }}
+                onClose={() => setShowMenu(false)}
+                closable={false}
+              >
+                <Menu
+                  onClick={() => setShowMenu(false)}
+                  mode="vertical"
+                  selectedKeys={activeItems}
+                >
+                  {menuItems}
+                  <div style={{marginTop: '50px'}}>
+                    <SocialIcon />
+                  </div>
+                </Menu>
+              </Drawer>
+            </div>
+
+            {connected ? (
+              <div className={`d-flex flex-row ${hide ? ' hidden' : ''}`} >
+                <CurrentUserBadge showAddress={true} buttonType="text" />
+
+                <Notifications buttonType="text" />
+                
                 <Cog buttonType="text" />
-              </>
+              </div>
             ) : (
-              <>
+              <div className='ant-button'>
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
-                <Link onClick={()=>setIsSignIn(true)} to='/signin'>Sign in</Link>
-              </>
+                <Link
+                  className="sign_in_button me-1"
+                  // onClick={() => setIsSignIn(true)}
+                  to="/signin"
+                >
+                  Sign in
+                </Link>
+              </div>
             )}
-            <Button shape='round' type='primary' style={{ float: 'right',height:'30px',width:'30px' }} onClick={switchTheme}>
+            <Button
+              shape="round"
+              type="primary"
+              style={{ float: 'right', height: '30px', width: '30px' }}
+              onClick={switchTheme}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill={currentTheme === Theme.Dark ? 'black':'white'}
-                stroke={currentTheme === Theme.Dark ? 'black':'white'}
-                style={{height:'20px',width:'20px',transform:'translate(-5.5px,1px)'}}
+                fill={theme === Theme.Dark ? 'black' : 'white'}
+                stroke={theme === Theme.Dark ? 'black' : 'white'}
+                style={{
+                  height: '20px',
+                  width: '20px',
+                  transform: 'translate(-6px,1.5px)',
+                }}
               >
-                {currentTheme === Theme.Dark ? (
+                {theme === Theme.Dark ? (
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -240,7 +314,6 @@ export const AppBar = (props: P) => {
             </Button>
           </Space>
         </Col>
-        {}
       </Row>
     </div>
   );

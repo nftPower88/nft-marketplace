@@ -49,7 +49,7 @@ export const AuctionListView = () => {
   const showCacheAuctionsAlert = isStoreOwner && notAllAuctionsCached;
 
   const renderModal = (id: string) => {
-    console.log(id, 'id');
+    // console.log(id, 'id');
     setItemId(id);
     setShowModal(true);
   };
@@ -145,7 +145,11 @@ export const AuctionListView = () => {
         />
       )}
       <h1>Creators: </h1>
-      <Select onChange={handleChange} defaultValue="All" style={{width:'30rem'}}>
+      <Select
+        onChange={handleChange}
+        defaultValue="All"
+        style={{ width: '30rem' }}
+      >
         <Option value={'initial'}>All</Option>
         {creators.map((m, idx) => {
           const address = m.info.address;
@@ -160,7 +164,7 @@ export const AuctionListView = () => {
       <MetaplexMasonry>
         {auctions.map((m, idx) => {
           const auctionId = m.auction.pubkey;
-          
+
           // const creator = useCreators(m)
           const creatorAdress =
             m.thumbnail.metadata.info.data.creators![0].address;
@@ -199,7 +203,6 @@ export const AuctionListView = () => {
       )}
       {showModal && (
         <DrawerWrapper
-        
           show={showModal}
           id={itemId}
           hide={() => setShowModal(false)}

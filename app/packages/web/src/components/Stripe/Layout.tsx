@@ -26,8 +26,8 @@ export const Layout = ({ children, title = 'Page Title' }: Props) => (
         content="https://nextjs-typescript-react-stripe-js.now.sh/social_card.png"
       />
     </Head>
-    <div className="container ">
-      <header>
+    <div >
+      {/* <header>
   
          
           <img
@@ -35,7 +35,7 @@ export const Layout = ({ children, title = 'Page Title' }: Props) => (
             className="myimg ant-card"
           />
         
-      </header>
+      </header> */}
       {children}
     </div>
     {/* <div className="banner">

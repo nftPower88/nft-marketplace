@@ -36,10 +36,11 @@ export const ConnectButton = ({
         onClick={e => {
           onClick && onClick(e);
           handleClick();
+          localStorage.setItem('click-signin', 'yes')
         }}
         disabled={connected && disabled}
       >
-        {connected ? children : 'Connect Wallet'}
+        {connected ? children : 'Select A Wallet'}
       </Button>
     );
   }
