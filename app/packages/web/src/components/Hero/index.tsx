@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import { Popover, Spin, Button, Typography, Space } from 'antd';
+import { Button, Typography, Space } from 'antd';
 import { MetaplexOverlay } from '@oyster/common';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';

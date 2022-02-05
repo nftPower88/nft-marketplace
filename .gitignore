@@ -66,3 +66,5 @@ app/packages/checkout/dist/lib/**/*.map
 
 # env exeptions
 !backend/.env
+
+.idea

@@ -56,7 +56,7 @@ export async function getServerSideProps(context: NextPageContext) {
     subdomain: 'market',
     pubkey: publicRuntimeConfig.publicStoreOwnerAddress,
     theme: {
-      logo: 'https://github.com/QueendomDAO/media/raw/main/logo_square.png',
+      logo: 'Logo/LogoSquare.png',
       banner: '',
       stylesheet: '../styles/theme.less',
       color: null,
@@ -66,7 +66,7 @@ export async function getServerSideProps(context: NextPageContext) {
       },
     },
     meta: {
-      favicon: 'https://github.com/QueendomDAO/media/raw/main/logo_square.png',
+      favicon: 'Logo/LogoSquare.png',
       title: 'Queendom',
       description:
         'An NFT Market and Community Built on Solana and Powered by Metaplex.',
