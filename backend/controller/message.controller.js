@@ -6,7 +6,7 @@ exports.findAll = async (req, res) => {
   const query = req.query;
 
   try {
-    const result = await Message.find().skip(10*req.params.offset).limit(10).sort({createdAt: 'DESC'});
+    const result = await Message.find().skip(10*req.params.offset).limit(8).sort({createdAt: 'DESC'});
     return res.status(200).send({ type: 'success', data: result });
   } catch (error) {
     res.status(500).send({

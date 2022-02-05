@@ -4,11 +4,11 @@ import { SendOutlined } from '@ant-design/icons';
 import { useWallet } from '@solana/wallet-adapter-react';
 import io from 'socket.io-client';
 import PixelStreamer from '../../components/PixelStreamer';
-import { useRouter } from 'next/router';
+import { useHistory } from "react-router-dom";
 import { fetchJson } from '../../utils';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { useTheme } from '../../contexts/themecontext';
-import { Loading } from '../../components/util/loading';
+import { notify } from '../../components/util/notification';
 
 const serverHost = 'http://localhost:8080/api'
 
@@ -20,23 +20,32 @@ export const MessageView = () => {
   const [address, setAddress] = useState('');
   const [text, setText] = useState("");
   const { theme } = useTheme();
-  const router = useRouter()
   const { publicKey } = useWallet();
+  const history = useHistory();
   const [scrollH, setScrollH] = useState(0);
   const scrollDiv: any = useRef<HTMLHeadingElement>(null);
   const socket = io(`http://localhost:8889`);
   const [nmsg, setNmsg] = useState(null);
   useEffect(() => {
-    fetchJson(`${serverHost}/message/${offset}`).then(res => {
-      if (res.type === 'success') {
-        setMessages(res.data.reverse());
-      }
-    })
-    socket.on('message-receive', (res: any) => {
-      if (res.type === 'success') {
-        setNmsg(res.data);
-      }
-    });
+    if (publicKey?.toString()) {
+      fetchJson(`${serverHost}/message/${offset}`).then(res => {
+        if (res.type === 'success') {
+          setMessages(res.data.reverse());
+        }
+      })
+      socket.on('message-receive', (res: any) => {
+        if (res.type === 'success') {
+          setNmsg(res.data);
+        }
+      });
+    } else {
+      notify({
+        message: 'Warning',
+        description: 'You must sign in!',
+      });
+      history.push('/signin');
+    }
+    console.log(publicKey?.toString());
   }, []);
   useEffect(() => {
     if (nmsg) {
@@ -93,9 +102,9 @@ export const MessageView = () => {
             <div className='message-lists' ref={scrollDiv} onScroll={handleScroll}>
               {
                 messages && messages.length > 0 && messages.map((m: any, index: number) =>
-                  <div key={index} className='d-flex' style={{ width: '100%' }}>
-                    <p className='user-info' style={theme === 'Light' ? { color: 'white' } : { color: 'white' }}>{m.walletAddress}</p>
-                    <p className='messages' style={theme === 'Light' ? { color: 'white' } : { color: 'white' }}>{m.text}</p>
+                  <div key={index} className='d-flex' style={{ width: '60%' }}>
+                    <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.walletAddress}</p>
+                    <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.text}</p>
                   </div>
                 )
               }
@@ -107,7 +116,7 @@ export const MessageView = () => {
               className="message-insert"
               placeholder="Type a message"
               value={text}
-              style={theme === 'Light' ? { color: 'white', borderColor: 'white' } : { color: 'black', borderColor: 'black', outline: 'none' }}
+              style={theme === 'Light' ? { color: 'black', borderColor: 'black' } : { color: 'white', borderColor: 'white', outline: 'none' }}
               onChange={(e) => setText(e.target.value)}
               onKeyPress={(e) => e.which === 13 && text && handleMessage()}
             />
