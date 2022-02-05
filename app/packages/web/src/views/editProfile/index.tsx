@@ -35,8 +35,30 @@ export const EditProfileView = () => {
         You can set preferred display name, create your branded profile URL and
         manage other personal settings
       </p>
-      <div className="mainContainer">
-        <div className="leftContainer">
+      <Row className="mainContainer">
+        <Col md={6} className="rightContainer mobile-show">
+          <input
+            className="fileInput"
+            type="file"
+            ref={inputRef}
+            onChange={e => _handleImageChange(e)}
+          />
+
+          {!imagePreviewUrl && <div className="preview"></div>}
+          {imagePreviewUrl && <img src={imagePreviewUrl} className="preview" />}
+          <p className="imageDescription">
+            We recommended an image of at least 300 * 300. Gifs works too. Max
+            5mb
+          </p>
+          <Button
+            className="fileButton"
+            onClick={() => inputRef.current && inputRef.current.click()}
+          >
+            Choose file
+          </Button>
+        </Col>
+
+        <Col md={18} className="leftContainer">
           <div className="inputContainer">
             <div className="customLabel">Display name</div>
             <Input
@@ -98,8 +120,8 @@ export const EditProfileView = () => {
           <div className="updateBtnContainer">
             <Button className="updateBtn">Update profile</Button>
           </div>
-        </div>
-        <div className="rightContainer">
+        </Col>
+        <Col md={6} className="rightContainer desktop-show">
           <input
             className="fileInput"
             type="file"
@@ -119,8 +141,8 @@ export const EditProfileView = () => {
           >
             Choose file
           </Button>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };
