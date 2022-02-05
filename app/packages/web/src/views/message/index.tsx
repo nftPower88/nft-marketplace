@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { fetchJson } from '../../utils';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { useTheme } from '../../contexts/themecontext';
+import { Loading } from '../../components/util/loading';
 
 const serverHost = 'http://localhost:8080/api'
 
