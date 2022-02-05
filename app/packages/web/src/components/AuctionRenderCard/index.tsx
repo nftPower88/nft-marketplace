@@ -34,10 +34,10 @@ export const AuctionRenderCard = (props: AuctionCard | null) => {
     ) {
       return (barWidth = 0);
     } else {
-      return (barWidth = artSupply / artSupply + '%');
+      return (barWidth = (artSupply / artMaxSupply) * 100) + '%';
     }
   }
-  console.log(barWidth);
+  console.log(getWidth(), 'getwidth');
   const card = (
     <Card hoverable bordered={false}>
       <Space direction="vertical" className="metaplex-fullwidth">

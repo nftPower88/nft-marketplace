@@ -47,6 +47,7 @@ import { MetaAvatar } from '../../components/MetaAvatar';
 import { ViewOn } from '../../components/ViewOn';
 import { AuctionCard } from '../../components/AuctionCard';
 import { AmountLabel } from '../../components/AmountLabel';
+import getConfig from 'next/config';
 import {
   CameraOutlined,
   CaretDownOutlined,
@@ -63,6 +64,7 @@ interface Props {
 }
 
 const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
+  const { publicRuntimeConfig } = getConfig();
   const { loading, auction } = useAuction(id);
   const connection = useConnection();
   const { patchState } = useMeta();
@@ -85,6 +87,8 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
 
   const hasDescription = data === undefined || data.description === undefined;
   const description = data?.description;
+  const story = data?.properties.story;
+  const item_id = data?.properties.item_id;
   const attributes = data?.attributes;
   const { Text } = Typography;
   const [showAbout, setShowAbout] = useState(true);
@@ -106,6 +110,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const [tradeShow, setTradeShow] = useState(true);
   const [showAuction, setShowAuction] = useState(true);
   const [reloadAuction, setReloadAuction] = useState(false);
+
   function refreshAuction() {
     setTimeout(() => {
       setReloadAuction(false);
@@ -177,7 +182,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
       ></Popover>
     );
   }
-
+  console.log(art);
   return (
     <Row justify="space-between" ref={ref} gutter={[24, 0]}>
       <Col span={12}>
@@ -194,7 +199,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
         </h4>
       </Col>
       <Col span={12}>
-        <h4 style={{ fontWeight: 'bold', textAlign: 'end' }}>item_id</h4>
+        <h4 style={{ fontWeight: 'bold', textAlign: 'end' }}>{item_id}</h4>
 
         <h4 style={{ fontWeight: 'bold', textAlign: 'end' }}>
           Supply: {art.supply}/{art.maxSupply}
@@ -261,7 +266,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                   style={{ width: '179px' }}
                 >
                   <span className={!storyShow ? 'underlined_button' : ''}>
-                    Asset
+                    Description
                   </span>
                 </Button>
               </div>
@@ -293,27 +298,22 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <Row justify="center">
               {storyShow ? (
                 <div>
-                  <h4>Story goes here</h4>
-                  <h5>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Placeat recusandae nemo expedita, nulla enim perspiciatis?
-                  </h5>
+                  <h5>{story}</h5>
                 </div>
               ) : (
                 <div>
-                  <h4>Asset goes here</h4>
-                  <h5>
-                    ?sitaicipsrep mine allun ,atidepxe omen eadnasucer taecalP
-                    .tile gnicisipida rutetcesnoc tema tis rolod muspi meroL
-                  </h5>
+                  <h5>{description}</h5>
                 </div>
               )}
             </Row>
+            <Divider />
           </Col>
           <Col span={21}>
             <h5>
               Blockchain :{' '}
-              <span style={{ textDecoration: 'underline' }}>XX</span>{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {publicRuntimeConfig.publicSolanaNetwork}
+              </span>{' '}
             </h5>
             <h5>
               Creator :{' '}

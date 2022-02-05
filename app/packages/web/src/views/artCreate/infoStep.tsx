@@ -57,6 +57,23 @@ export const InfoStep = (props: {
                 }
               />
             </label>
+            <label>
+              <h3>Item ID</h3>
+              <Input
+                placeholder="Max 50 characters"
+                value={props.attributes.properties.item_id}
+                onChange={info =>
+                  props.setAttributes({
+                    ...props.attributes,
+                    properties: {
+                      ...props.attributes.properties,
+                      item_id: info.target.value,
+                    },
+                  })
+                }
+                allowClear
+              />
+            </label>
             {/* <label>
             <span>Symbol</span>
             <Input
@@ -88,7 +105,24 @@ export const InfoStep = (props: {
                 allowClear
               />
             </label>
-
+            <label>
+              <h3>Story</h3>
+              <Input.TextArea
+                size="large"
+                placeholder="Max 500 characters"
+                value={props.attributes.properties.story}
+                onChange={info =>
+                  props.setAttributes({
+                    ...props.attributes,
+                    properties: {
+                      ...props.attributes.properties,
+                      story: info.target.value,
+                    },
+                  })
+                }
+                allowClear
+              />
+            </label>
             <label>
               <h3>Maximum Supply</h3>
               <InputNumber

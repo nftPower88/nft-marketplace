@@ -59,12 +59,13 @@ export const ArtCreateView = () => {
     properties: {
       files: [],
       category: MetadataCategory.Image,
+      story: '',
+      item_id: '',
     },
   });
   const { ownerAddress } = useStore();
 
-  const { whitelistedCreatorsByCreator} =
-  useMeta();
+  const { whitelistedCreatorsByCreator } = useMeta();
 
   const activatedCreators = Object.values(whitelistedCreatorsByCreator).filter(
     e => {
@@ -78,7 +79,6 @@ export const ArtCreateView = () => {
     console.log(`${e.info.address} - ${publicKey?.toBase58()}`);
     return e.info.address === publicKey?.toBase58();
   });
-
 
   const { track } = useAnalytics();
 
@@ -108,6 +108,8 @@ export const ArtCreateView = () => {
       attributes: attributes.attributes,
       external_url: attributes.external_url,
       properties: {
+        story: attributes.properties.story,
+        item_id: attributes.properties.item_id,
         files: attributes.properties.files,
         category: attributes.properties?.category,
       },
@@ -149,102 +151,108 @@ export const ArtCreateView = () => {
       setMinting(false);
     }
   };
-   return (
-     
+  console.log(attributes);
+  return (
     <>
-    {isActivatedCreator || publicKey?.toBase58() === ownerAddress ? (<> <Row>
-        {stepsVisible && (
-          <Col span={24} md={4}>
-            <Steps
-              progressDot
-              direction={width < 768 ? 'horizontal' : 'vertical'}
-              current={step}
-            >
-              <Step title="Category" />
-              <Step title="Upload" />
-              <Step title="Info" />
-              <Step title="Royalties" />
-              <Step title="Launch" />
-            </Steps>
-          </Col>
-        )}
-        <Col span={24} {...(stepsVisible ? { md: 20 } : { md: 24 })}>
-          <Space
-            className="metaplex-fullwidth metaplex-space-align-stretch"
-            direction="vertical"
-          >
-            {step === 0 && (
-              <CategoryStep
-                confirm={(category: MetadataCategory) => {
-                  setAttributes({
-                    ...attributes,
-                    properties: {
-                      ...attributes.properties,
-                      category,
-                    },
-                  });
-                  gotoStep(1);
-                }}
-              />
+      {isActivatedCreator || publicKey?.toBase58() === ownerAddress ? (
+        <>
+          {' '}
+          <Row>
+            {stepsVisible && (
+              <Col span={24} md={4}>
+                <Steps
+                  progressDot
+                  direction={width < 768 ? 'horizontal' : 'vertical'}
+                  current={step}
+                >
+                  <Step title="Category" />
+                  <Step title="Upload" />
+                  <Step title="Info" />
+                  <Step title="Royalties" />
+                  <Step title="Launch" />
+                </Steps>
+              </Col>
             )}
-            {step === 1 && (
-              <UploadStep
-                onSetCoverFile={setCoverFile}
-                onSetMainFile={setMainFile}
-                attributes={attributes}
-                setAttributes={setAttributes}
-                files={files}
-                setFiles={setFiles}
-                confirm={() => gotoStep(2)}
-              />
-            )}
+            <Col span={24} {...(stepsVisible ? { md: 20 } : { md: 24 })}>
+              <Space
+                className="metaplex-fullwidth metaplex-space-align-stretch"
+                direction="vertical"
+              >
+                {step === 0 && (
+                  <CategoryStep
+                    confirm={(category: MetadataCategory) => {
+                      setAttributes({
+                        ...attributes,
+                        properties: {
+                          ...attributes.properties,
+                          category,
+                        },
+                      });
+                      gotoStep(1);
+                    }}
+                  />
+                )}
+                {step === 1 && (
+                  <UploadStep
+                    onSetCoverFile={setCoverFile}
+                    onSetMainFile={setMainFile}
+                    attributes={attributes}
+                    setAttributes={setAttributes}
+                    files={files}
+                    setFiles={setFiles}
+                    confirm={() => gotoStep(2)}
+                  />
+                )}
 
-            {step === 2 && (
-              <InfoStep
-                attributes={attributes}
-                files={files}
-                setAttributes={setAttributes}
-                confirm={() => gotoStep(3)}
-              />
-            )}
-            {step === 3 && (
-              <RoyaltiesStep
-                attributes={attributes}
-                confirm={() => gotoStep(4)}
-                setAttributes={setAttributes}
-              />
-            )}
-            {step === 4 && (
-              <LaunchStep
-                attributes={attributes}
-                files={files}
-                confirm={() => gotoStep(5)}
-                connection={connection}
-              />
-            )}
-            {step === 5 && (
-              <WaitingStep
-                mint={mint}
-                minting={isMinting}
-                step={nftCreateProgress}
-                confirm={() => gotoStep(6)}
-              />
-            )}
-            {0 < step && step < 5 && (
-              <Row justify="center">
-                <Button onClick={() => gotoStep(step - 1)}>Back</Button>
-              </Row>
-            )}
-          </Space>
-        </Col>
-      </Row>
-      <MetaplexOverlay visible={step === 6}>
-        <Congrats nft={nft} alert={alertMessage} />
-      </MetaplexOverlay></>) : (    <>
+                {step === 2 && (
+                  <InfoStep
+                    attributes={attributes}
+                    files={files}
+                    setAttributes={setAttributes}
+                    confirm={() => gotoStep(3)}
+                  />
+                )}
+                {step === 3 && (
+                  <RoyaltiesStep
+                    attributes={attributes}
+                    confirm={() => gotoStep(4)}
+                    setAttributes={setAttributes}
+                  />
+                )}
+                {step === 4 && (
+                  <LaunchStep
+                    attributes={attributes}
+                    files={files}
+                    confirm={() => gotoStep(5)}
+                    connection={connection}
+                  />
+                )}
+                {step === 5 && (
+                  <WaitingStep
+                    mint={mint}
+                    minting={isMinting}
+                    step={nftCreateProgress}
+                    confirm={() => gotoStep(6)}
+                  />
+                )}
+                {0 < step && step < 5 && (
+                  <Row justify="center">
+                    <Button onClick={() => gotoStep(step - 1)}>Back</Button>
+                  </Row>
+                )}
+              </Space>
+            </Col>
+          </Row>
+          <MetaplexOverlay visible={step === 6}>
+            <Congrats nft={nft} alert={alertMessage} />
+          </MetaplexOverlay>
+        </>
+      ) : (
+        <>
           <h2>You are unauthorized</h2>
           <Link to="/">Go to Home</Link>
-        </>)}
-     
+        </>
+      )}
     </>
   );
 };
