@@ -98,13 +98,15 @@ class Mirror extends React.Component<Props, State> {
       <React.Fragment>
         {
           loading ? <Loading description="Entering the metaverse ..." />
-            : <video
-              ref={this.videoReference}
-              id="player"
-              autoPlay
-              muted // do we want this?
-              style={{ width: '100%' }}
-            ></video>
+            : <div id='player-container'>
+                <video
+                  ref={this.videoReference}
+                  id="player"
+                  autoPlay
+                  muted
+                  style={{ width: '100%', height: 'auto' }}
+                ></video>
+            </div>
         }
       </React.Fragment>
     );
