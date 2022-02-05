@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '../util/loading';
 import { UnrealAdapter } from './UnrealAdapter';
 
-const HOST = 'node101.stream.queendom.io';
+const HOST = 'node102.stream.queendom.io';
 const PORT = 443;
 
 const PixelStreamer: React.FC = () => {
