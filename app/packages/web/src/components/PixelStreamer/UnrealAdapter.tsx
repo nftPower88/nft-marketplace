@@ -7,7 +7,11 @@ interface SocketMessage {
   peerConnectionOptions?: RTCConfiguration;
   candidate?: RTCIceCandidateInit;
 }
-interface Props { onChangeLoading: any }
+interface Props {
+  onChangeLoading: any,
+  focus: boolean,
+  activeFocus: any
+}
 interface State { loading: boolean }
 
 export interface UnrealAdapterOptions {
@@ -164,7 +168,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
     super(props);
     this.unrealAdapterOption = props.options;
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   unrealAdapterHook = new UnrealAdapterHook;
@@ -213,7 +217,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
     window.addEventListener('orientationchange', () => {
       this.onOrientationChange();
     });
-    this.registerKeyboardEvents();
+    // this.registerKeyboardEvents();
   }
 
   resizeVideo() {
@@ -399,12 +403,27 @@ export class UnrealAdapter extends React.Component<Props, State> {
     };
 
     document.onkeypress = (e) => {
+      if(e.charCode === 99) {
+        this.props.activeFocus();
+      }
       console.log(`key press ${e.charCode}`);
       let data = new DataView(new ArrayBuffer(3));
       data.setUint8(0, MessageType.KeyPress);
       data.setUint16(1, e.charCode, true);
       this.sendInputData(data.buffer);
     };
+  }
+
+  public registerLockedKeyboardEvents() {
+    document.onkeyup = (e) => {
+      e.stopPropagation();
+    }
+    document.onkeydown = (e) => {
+      e.stopPropagation();
+    }
+    document.onkeypress = (e) => {
+      e.stopPropagation();
+    }
   }
 
   // If the user has any mouse buttons pressed then press them again.
