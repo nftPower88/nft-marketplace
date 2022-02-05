@@ -7,6 +7,7 @@ import { loadAccounts } from './loadAccounts';
 import { ParsedAccount } from '../accounts/types';
 import { Metadata } from '../../actions';
 import { MetaContextState, MetaState } from './types';
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const MetaContext = React.createContext<MetaContextState>({
   ...getEmptyMetaState(),
@@ -19,6 +20,7 @@ const MetaContext = React.createContext<MetaContextState>({
 export function MetaProvider({ children = null }: { children: ReactNode }) {
   const connection = useConnection();
   const { isReady, storeAddress, ownerAddress } = useStore();
+  const { publicKey } = useWallet();
 
   const [state, setState] = useState<MetaState>(getEmptyMetaState());
 
@@ -54,10 +56,10 @@ export function MetaProvider({ children = null }: { children: ReactNode }) {
       } else if (!state.store) {
         setIsLoading(true);
       }
-
-      const nextState = await loadAccounts(connection, ownerAddress);
-
-      setState(nextState);
+      if (publicKey) {
+        const nextState = await loadAccounts(connection, ownerAddress);
+        setState(nextState);
+      }
 
       setIsLoading(false);
     })();

@@ -431,7 +431,9 @@ export class UnrealAdapter extends React.Component<Props, State> {
 
     if (videoElement) {
       // Display image in its actual size
+      // @ts-ignore
       this.styleWidth = videoElement.videoWidth;
+      // @ts-ignore
       this.styleHeight = videoElement.videoHeight;
       let Top = Math.floor((window.innerHeight - this.styleHeight) * 0.5);
       let Left = Math.floor((window.innerWidth - this.styleWidth) * 0.5);
@@ -448,7 +450,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
     if (!playerElement)
       return;
 
-
+    // @ts-ignore
     let windowSmallerThanPlayer = window.innerWidth < playerElement.videoWidth || window.innerHeight < playerElement.videoHeight;
     if (windowSmallerThanPlayer) {
       this.resizePlayerStyleToFillWindow(playerElement);
@@ -462,9 +464,12 @@ export class UnrealAdapter extends React.Component<Props, State> {
     let videoElement = document.getElementById("player");
 
     if (playerElement && videoElement) {
+      // @ts-ignore
       this.styleWidth = videoElement.videoWidth;
+      // @ts-ignore
       this.styleHeight = videoElement.videoHeight;
       let playerAspectRatio = playerElement!.clientHeight / playerElement!.clientWidth;
+      // @ts-ignore
       let videoAspectRatio = videoElement.videoHeight / videoElement.videoWidth;
 
       // Unsigned XY positions are the ratio (0.0..1.0) along a viewport axis,
@@ -607,6 +612,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
     let y = playerElement.height / 2;
 
     playerElement.requestPointerLock = playerElement.requestPointerLock || playerElement.mozRequestPointerLock;
+    // @ts-ignore
     document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
     playerElement.onclick = function () {
@@ -619,6 +625,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
 
     function lockStateChange() {
       if (document.pointerLockElement === playerElement ||
+        // @ts-ignore
         document.mozPointerLockElement === playerElement) {
         console.log('Pointer locked');
         document.addEventListener("mousemove", updatePosition, false);
@@ -727,6 +734,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
     let windowAspectRatio = window.innerHeight / window.innerWidth;
     let playerAspectRatio = playerElement.clientHeight / playerElement.clientWidth;
     // We want to keep the video ratio correct for the video stream
+    // @ts-ignore
     let videoAspectRatio = videoElement?.videoHeight / videoElement?.videoWidth;
     if (isNaN(videoAspectRatio)) {
       //Video is not initialised yet so set playerElement to size of window
