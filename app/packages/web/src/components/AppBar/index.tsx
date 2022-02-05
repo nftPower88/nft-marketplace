@@ -7,9 +7,7 @@ import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
 import { useMeta } from '../../contexts';
 import { useTheme, Theme } from '../../contexts/themecontext';
-import {
-  MenuOutlined
-} from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
 import { SocialIcon } from '../Footer/social_icon';
 type P = {
   logo: string;
@@ -25,8 +23,8 @@ export const AppBar = (props: P) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false);
 
-  let hide = false
-  locationPath == '/signinconfirm' && (hide = true)
+  let hide = false;
+  locationPath == '/signinconfirm' && (hide = true);
 
   function switchTheme() {
     if (theme === 'Dark') {
@@ -95,10 +93,7 @@ export const AppBar = (props: P) => {
         title: 'Artists',
         link: `/artists/${ownerAddress}`,
         exact: true,
-        alt: [
-          { path: '/artists', exact: false },
-          { path: '/artworks', exact: false },
-        ],
+        alt: [{ path: '/artists', exact: false }],
       },
       {
         key: 'learn',
@@ -121,7 +116,7 @@ export const AppBar = (props: P) => {
           title: 'Create',
           link: '/artworks/new',
           exact: true,
-          alt: [],
+          alt: [{ path: '/artworks', exact: false }],
         },
         ...menu,
       ];
@@ -179,7 +174,7 @@ export const AppBar = (props: P) => {
   );
 
   return (
-    <div className='header-container'>
+    <div className="header-container">
       <style global jsx>
         {`
           .ant-layout-header {
@@ -196,7 +191,7 @@ export const AppBar = (props: P) => {
           }
         `}
       </style>
-      <Row wrap={false} align="middle" className='justify-content-between'>
+      <Row wrap={false} align="middle" className="justify-content-between">
         <Link
           to="/"
           id="metaplex-header-logo"
@@ -204,7 +199,7 @@ export const AppBar = (props: P) => {
         >
           <img
             style={{ width: '200px', paddingBottom: '5px' }}
-            className='desktop-show'
+            className="desktop-show"
             src={
               theme === Theme.Light
                 ? 'Logo/QueendomDark.png'
@@ -213,7 +208,7 @@ export const AppBar = (props: P) => {
           />
           <img
             style={{ width: '100px', paddingBottom: '5px' }}
-            className='mobile-show'
+            className="mobile-show"
             src={
               theme === Theme.Light
                 ? 'Logo/QueendomDark.png'
@@ -222,13 +217,16 @@ export const AppBar = (props: P) => {
           />
         </Link>
 
-        <Col flex="1 0 0" className={`left-header ${hide ? ' hidden' : ''} desktop-show ms-4`} >
+        <Col
+          flex="1 0 0"
+          className={`left-header ${hide ? ' hidden' : ''} desktop-show ms-4`}
+        >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
           </Menu>
         </Col>
 
-        <Col flex="0 1 auto" className='right-header'>
+        <Col flex="0 1 auto" className="right-header">
           <Space className="metaplex-display-flex" align="center">
             <div className={`mobile-show ${hide ? ' hidden' : ''}`}>
               <Button
@@ -251,7 +249,7 @@ export const AppBar = (props: P) => {
                   selectedKeys={activeItems}
                 >
                   {menuItems}
-                  <div style={{marginTop: '50px'}}>
+                  <div style={{ marginTop: '50px' }}>
                     <SocialIcon />
                   </div>
                 </Menu>
@@ -259,15 +257,15 @@ export const AppBar = (props: P) => {
             </div>
 
             {connected ? (
-              <div className={`d-flex flex-row ${hide ? ' hidden' : ''}`} >
+              <div className={`d-flex flex-row ${hide ? ' hidden' : ''}`}>
                 <CurrentUserBadge showAddress={true} buttonType="text" />
 
                 <Notifications buttonType="text" />
-                
+
                 <Cog buttonType="text" />
               </div>
             ) : (
-              <div className='ant-button'>
+              <div className="ant-button">
                 {/* <ConnectButton type="text" allowWalletChange={false} /> */}
                 <Link
                   className="sign_in_button me-1"

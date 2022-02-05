@@ -51,6 +51,8 @@ export interface IMetadataExtension {
     properties: {
         files?: FileOrString[];
         category: MetadataCategory;
+        story:string;
+        item_id:string;
         maxSupply?: number;
         creators?: {
             address: string;

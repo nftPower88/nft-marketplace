@@ -70,9 +70,9 @@ export type Attribute = {
 export interface IMetadataExtension {
   name: string;
   symbol: string;
-
   creators: Creator[] | null;
   description: string;
+
   // preview image absolute URI
   image: string;
   animation_url?: string;
@@ -87,6 +87,8 @@ export interface IMetadataExtension {
   properties: {
     files?: FileOrString[];
     category: MetadataCategory;
+    story: string;
+    item_id: string;
     maxSupply?: number;
     creators?: {
       address: string;

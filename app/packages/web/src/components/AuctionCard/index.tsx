@@ -87,7 +87,7 @@ import getConfig from 'next/config';
 const nextConfig = getConfig();
 const publicRuntimeConfig = nextConfig.publicRuntimeConfig;
 
-var currentCheckout = new Checkout();
+const currentCheckout = new Checkout();
 
 const { Text } = Typography;
 
@@ -795,18 +795,22 @@ export const AuctionCard = ({
   // Conduct an instant sale
   const instantFiatSaleBtn = (
     <Space
-    align='center'
+      align="center"
       onLoad={canEndInstantSale ? endInstantSale : instantFiatSale}
     >
-      {!isAuctionManagerAuthorityNotWalletOwner
-        ? canEndInstantSale
-          ? <Button onClick={endInstantSale}>End Sale & Claim Item</Button>
-          : <Button onClick={endInstantSale}>Claim Item</Button>
-        : auctionView.myBidderPot
-        ? <Button onClick={instantFiatSale}>Claim Purchase</Button>
-        : <currentCheckout.processPayment />}
+      {!isAuctionManagerAuthorityNotWalletOwner ? (
+        canEndInstantSale ? (
+          <Button onClick={endInstantSale}>End Sale & Claim Item</Button>
+        ) : (
+          <Button onClick={endInstantSale}>Claim Item</Button>
+        )
+      ) : auctionView.myBidderPot ? (
+        <Button onClick={instantFiatSale}>Claim Purchase</Button>
+      ) : (
+        <currentCheckout.processPayment />
+      )}
     </Space>
-    
+
     // <currentCheckout.processPayment />
   );
 
@@ -936,7 +940,15 @@ export const AuctionCard = ({
               ? startAuctionBtn
               : auctionView.isInstantSale && instantSolSaleBtn)}
           <hr />
-          <Space className='ant-card' style={{ position: 'absolute', top: 68, left: 140,padding:'0 10px 0 10px' }}>
+          <Space
+            className="ant-card"
+            style={{
+              position: 'absolute',
+              top: 68,
+              left: 140,
+              padding: '0 10px 0 10px',
+            }}
+          >
             <Text>Or pay with card</Text>
           </Space>
           {showStartAuctionBtn
