@@ -4,6 +4,7 @@ import { useConnection } from '../connection';
 import { useStore } from '../store';
 import { getEmptyMetaState } from './getEmptyMetaState';
 import { loadAccounts } from './loadAccounts';
+import { loadAccountsNoWallet } from './loadAccountsNoWallet';
 import { ParsedAccount } from '../accounts/types';
 import { Metadata } from '../../actions';
 import { MetaContextState, MetaState } from './types';
@@ -56,9 +57,15 @@ export function MetaProvider({ children = null }: { children: ReactNode }) {
       } else if (!state.store) {
         setIsLoading(true);
       }
+
+      // const nextState = await loadAccounts(connection, ownerAddress);
+      // setState(nextState);
       if (publicKey) {
         const nextState = await loadAccounts(connection, ownerAddress);
         setState(nextState);
+      } else {
+        const nextState = await loadAccountsNoWallet(connection, ownerAddress);
+        setState(nextState);        
       }
 
       setIsLoading(false);
