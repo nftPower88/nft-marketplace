@@ -133,6 +133,8 @@ module.exports = withPlugins(plugins, {
     publicStoreAddress: nextVars['publicStoreAddress'],
     publicStoreOwnerAddress: nextVars['publicStoreOwnerAddress'],
     publicStripePublishableKey: nextVars['publicStripePublishableKey'],
+    publicMatchmakerAddress: nextVars['publicMatchmakerAddress'],
+    publicMatchmakerPort: nextVars['publicMatchmakerPort'],
     nftStorageUploadEndpoint: nextVars['nftStorageUploadEndpoint'],
   },
   async rewrites() {
