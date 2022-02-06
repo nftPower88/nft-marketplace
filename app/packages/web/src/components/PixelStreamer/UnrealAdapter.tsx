@@ -284,11 +284,11 @@ export class UnrealAdapter extends React.Component<Props, State> {
           this.registerHoveringMouseEvents(videoRef.current);
           break;
         case ControlSchemeType.LockedMouse:
-          this.registerLockedMouseEvents(videoRef.current);
+          videoRef?.current && this.registerLockedMouseEvents(videoRef.current);
           break;
         default:
           console.log(`ERROR: Unknown control scheme ${inputOptions.controlScheme}`);
-          this.registerLockedMouseEvents(videoRef.current);
+          videoRef?.current && this.registerLockedMouseEvents(videoRef.current);
           break;
       }
     };

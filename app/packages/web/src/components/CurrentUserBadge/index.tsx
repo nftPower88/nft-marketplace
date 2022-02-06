@@ -23,6 +23,7 @@ import React, {
 import {Link} from 'react-router-dom';
 import {useMeta, useSolPrice} from '../../contexts';
 import {SolCircle} from '../Custom';
+import { WalletAvatar } from '../../components/util/walletAvatar';
 import CogSvg from '../svgs/cog';
 import { useHistory } from 'react-router-dom';
 
@@ -187,13 +188,6 @@ export const CurrentUserBadge = (props: {
     name = unknownWallet.name;
   }
 
-
-  const image = unknownWallet.image ? (
-    <img src={unknownWallet.image} />
-  ) : (
-    <Identicon address={publicKey?.toBase58()} size={22} />
-  );
-
   return (
     <>
       <Popover
@@ -251,7 +245,7 @@ export const CurrentUserBadge = (props: {
                 SOL
               </span>
             )}
-            {image}
+            <WalletAvatar />
             {/* {name && <span>{name}</span>} */}
           </Space>
         </Button>

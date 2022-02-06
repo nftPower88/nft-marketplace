@@ -9,6 +9,8 @@ import { fetchJson } from '../../utils';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { useTheme } from '../../contexts/themecontext';
 import { notify } from '../../components/util/notification';
+import { WalletAvatar } from '../../components/util/walletAvatar';
+import { MessageContent } from '../../components/Message';
 
 const serverHost = 'http://localhost:8080/api'
 
@@ -101,10 +103,11 @@ export const MessageView = () => {
           <div className='message-body' ref={scrollDiv} onScroll={handleScroll}>
             {
               messages && messages.length > 0 && messages.map((m: any, index: number) =>
-                <div key={index} className='d-flex' style={{ width: '60%' }}>
-                  <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.walletAddress}</p>
-                  <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.text}</p>
-                </div>
+                <MessageContent
+                  key={index}
+                  width={60}
+                  info={m}
+                />
               )
             }
           </div>
