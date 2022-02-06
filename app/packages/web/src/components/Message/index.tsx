@@ -5,11 +5,11 @@ import { useTheme } from '../../contexts/themecontext';
 export const MessageContent = (props: any) => {
   const { theme } = useTheme();
   return (
-    <div key={props.key} className='d-flex' style={{ width: `${props.width}%`, marginBottom: '0.5rem' }}>
+    <div key={props.key} className='d-flex' style={{ width: '100%', marginBottom: '2rem' }}>
       <div className='user-avatar'>
-        <Identicon address={props.info.walletAddress} size={50} />
+        <Identicon address={props.info.walletAddress} size={35} />
       </div>
-      <div>
+      <div style={{ width: '60%' }}>
         <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{props.info.walletAddress}</p>
         <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{props.info.text}</p>
       </div>

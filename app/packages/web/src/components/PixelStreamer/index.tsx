@@ -10,7 +10,8 @@ interface Props {
   activeFocus: any
 }
 interface State {
-  loading: boolean
+  loading: boolean,
+  videoReference: any
 }
 
 const PixelStreamer: React.FC<Props> = ({ focus, activeFocus }) => {
@@ -37,11 +38,12 @@ class Mirror extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
+      videoReference: React.createRef<HTMLVideoElement>()
     };
   }
 
-  videoReference = React.createRef<HTMLVideoElement>();
+  // videoReference = React.createRef<HTMLVideoElement>();
   unrealAdapter = new UnrealAdapter({
     options: {
       container: document.createElement('div'),
@@ -57,16 +59,19 @@ class Mirror extends React.Component<Props, State> {
   });
 
   async componentDidMount() {
-    this.unrealAdapter.load(this.videoReference);
+    this.unrealAdapter.connectionConfig();
   }
 
   async componentWillUnmount() {
-    if (this.videoReference.current) {
-      this.videoReference.current.srcObject = null;
+    if (this.state.videoReference.current) {
+      this.state.videoReference.current.srcObject = null;
     }
   }
   
-  async componentDidUpdate() {
+  async componentDidUpdate(prevProps: any, prevState:any) {
+    if(prevState.videoReference.current == null && this.state.videoReference) {
+      this.unrealAdapter.load(this.state.videoReference);
+    }
     if(this.props.focus) {
       this.unrealAdapter.registerLockedKeyboardEvents();
     } else {
@@ -108,7 +113,7 @@ class Mirror extends React.Component<Props, State> {
           loading ? <Loading description="Entering the metaverse ..." />
             : <div id='player-container'>
                 <video
-                  ref={this.videoReference}
+                  ref={this.state.videoReference}
                   id="player"
                   autoPlay
                   muted

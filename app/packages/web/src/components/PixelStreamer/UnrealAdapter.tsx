@@ -180,12 +180,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
         ? 'wss://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port
         : 'ws://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port,
     );
-    this.ws.onopen = () => {
-      if(this.ws.OPEN) {
-        this.props.onChangeLoading(false);
-      }
-      console.log('WebSocket Client Connected');
-    }
+
     this.ws.onmessage = (event) => {
       const data: SocketMessage = JSON.parse(event.data);
       console.log(`onmessage: ${data.type}`);
@@ -218,6 +213,20 @@ export class UnrealAdapter extends React.Component<Props, State> {
       this.onOrientationChange();
     });
     // this.registerKeyboardEvents();
+  }
+  
+  public connectionConfig() {
+    this.ws = new WebSocket(
+      this.unrealAdapterOption.useSSL
+        ? 'wss://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port
+        : 'ws://' + this.unrealAdapterOption.host + ':' + this.unrealAdapterOption.port,
+    );
+    this.ws.onopen = () => {
+      if(this.ws.OPEN) {
+        this.props.onChangeLoading(false);
+      }
+      console.log('WebSocket Client Connected');
+    }
   }
 
   resizeVideo() {
@@ -284,11 +293,11 @@ export class UnrealAdapter extends React.Component<Props, State> {
           this.registerHoveringMouseEvents(videoRef.current);
           break;
         case ControlSchemeType.LockedMouse:
-          videoRef?.current && this.registerLockedMouseEvents(videoRef.current);
+          this.registerLockedMouseEvents(videoRef.current);
           break;
         default:
           console.log(`ERROR: Unknown control scheme ${inputOptions.controlScheme}`);
-          videoRef?.current && this.registerLockedMouseEvents(videoRef.current);
+          this.registerLockedMouseEvents(videoRef.current);
           break;
       }
     };
