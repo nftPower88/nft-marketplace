@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Loading } from '../util/loading';
 import { UnrealAdapter } from './UnrealAdapter';
 
@@ -7,18 +7,19 @@ const PORT = 443;
 
 interface Props {
   focus: boolean,
-  activeFocus: any
+  activeFocus: any,
+  strConfig: any
 }
 interface State {
   loading: boolean,
   videoReference: any
 }
 
-const PixelStreamer: React.FC<Props> = ({ focus, activeFocus }) => {
+const PixelStreamer: React.FC<Props> = ({ focus, activeFocus, strConfig }) => {
   return (
     <div className="App" style={{ height: '100%' }}>
       <header className="App-header" style={{ height: '100%' }}>
-        <Mirror focus={focus} activeFocus={activeFocus}></Mirror>
+        <Mirror focus={focus} activeFocus={activeFocus} strConfig={strConfig}></Mirror>
       </header>
     </div>
   );
@@ -55,10 +56,11 @@ class Mirror extends React.Component<Props, State> {
     },
     activeFocus: this.props.activeFocus,
     focus: this.props.focus,
-    onChangeLoading:(e: boolean) => this.setState({ loading: e })
+    onChangeLoading:(e: boolean) => {this.setState({ loading: e });  this.props.strConfig(e)}
   });
 
   async componentDidMount() {
+    console.log(1111111);
     this.unrealAdapter.connectionConfig();
   }
 

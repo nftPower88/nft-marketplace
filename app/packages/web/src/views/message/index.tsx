@@ -22,6 +22,7 @@ export const MessageView = () => {
   const [address, setAddress] = useState('');
   const [text, setText] = useState("");
   const [focus, setFocus] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const { publicKey } = useWallet();
   const history = useHistory();
@@ -98,9 +99,9 @@ export const MessageView = () => {
       <div className='message'>
         <div className='message_content'>
           <div className='background-stream'>
-            <PixelStreamer focus={focus} activeFocus={() => input.current.focus()} />
+            <PixelStreamer focus={focus} activeFocus={() => input.current.focus()} strConfig={setLoading} />
           </div>
-          <div className='message-body' ref={scrollDiv} onScroll={handleScroll}>
+          <div className='message-body' ref={scrollDiv} onScroll={handleScroll} style={loading ? { zIndex: -1 } : { zIndex: 0 }}>
             {
               messages && messages.length > 0 && messages.map((m: any, index: number) =>
                 <MessageContent
@@ -111,7 +112,7 @@ export const MessageView = () => {
               )
             }
           </div>
-          <div className='message-send'>
+          <div className='message-send' style={loading ? { zIndex: -1 } : { zIndex: 0 }}>
             <input
               ref={input}
               type="text"
@@ -121,7 +122,7 @@ export const MessageView = () => {
               placeholder="Type a message"
               value={text}
               style={theme === 'Light' ? { color: 'black', borderColor: 'black' } : { color: 'white', borderColor: 'white', outline: 'none' }}
-              onChange={(e) => { e.preventDefault; setText(e.target.value); }}
+              onChange={(e) => setText(e.target.value)}
               onKeyPress={(e) => e.which === 13 && text && handleMessage()}
             />
             {
