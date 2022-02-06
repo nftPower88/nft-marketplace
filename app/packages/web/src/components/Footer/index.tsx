@@ -8,6 +8,8 @@ import TwitterIcon from '../svgs/twitter';
 import InstagramIcon from '../svgs/instagram';
 import RedditIcon from '../svgs/reddit';
 import YoutubeIcon from '../svgs/youtube';
+import LinkedinIcon from '../svgs/linkedin';
+import TiktokIcon from '../svgs/titkok';
 import { Link } from 'react-router-dom';
 
 export const Footer = () => {
@@ -72,25 +74,18 @@ export const Footer = () => {
  */
   return (
     <div className="footer_layout">
-      <Row className='align-items-center'>
-        <Col
-          xs={24}
-          sm={24}
-          md={8}
-          className='d-flex layout-left'
-        >
-          <h5>&copy; Queendom PBC, All rights reserved</h5>
+      <Row className="align-items-center">
+        <Col xs={24} sm={24} md={8} className="d-flex layout-left">
+          <h5>&copy; 2022 Queendom PBC, All rights reserved</h5>
         </Col>
-        <Col md={8} className='desktop-show'>
-          <Row justify="space-between" style={{maxWidth: '200px', margin: '0 auto'}}>
+        <Col md={8} className="desktop-show">
+          <Row
+            justify="space-between"
+            style={{ maxWidth: '200px', margin: '0 auto' }}
+          >
             <Col>
               <a href="https://twitter.com/Queendomverse">
                 <TwitterIcon />
-              </a>
-            </Col>
-            <Col>
-              <a href="https://instagram.com">
-                <InstagramIcon />
               </a>
             </Col>
             <Col>
@@ -99,8 +94,18 @@ export const Footer = () => {
               </a>
             </Col>
             <Col>
+              <a href="https://instagram.com">
+                <InstagramIcon />
+              </a>
+            </Col>
+            {/* <Col>
               <a href="https://www.reddit.com/r/queendomverse">
                 <RedditIcon />
+              </a>
+            </Col> */}
+            <Col>
+              <a href="https://www.tiktok.com/">
+                <TiktokIcon />
               </a>
             </Col>
             <Col>
@@ -108,9 +113,12 @@ export const Footer = () => {
                 <YoutubeIcon />
               </a>
             </Col>
+            <a href="https://www.linkedin.com/company/queendomverse/">
+              <LinkedinIcon />
+            </a>
           </Row>
         </Col>
-        <Col xs={24} sm={24} md={8} className='d-flex layout-right'>
+        <Col xs={24} sm={24} md={8} className="d-flex layout-right">
           <a href="" className="me-4">
             <h5 className="fw-bold">Terms</h5>
           </a>

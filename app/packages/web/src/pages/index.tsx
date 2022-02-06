@@ -11,7 +11,7 @@ import { applyTheme } from '../actions/applyTheme';
 import getConfig from 'next/config';
 import lightTheme from '../themes/light.json';
 import darkTheme from '../themes/dark.json';
-import {useTheme,Theme} from '../contexts/themecontext'
+import { useTheme, Theme } from '../contexts/themecontext';
 const lightColor = lightTheme.color;
 const darkColor = darkTheme.color;
 
@@ -33,10 +33,7 @@ if (serverRuntimeConfig.bugsSnagApiKey) {
   });
 }
 
-
 export async function getServerSideProps(context: NextPageContext) {
-  
-
   const headers = context?.req?.headers || {};
   const forwarded = headers.forwarded
     ?.split(';')
@@ -86,9 +83,8 @@ function AppWrapper({ storefront }: AppProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [hasLogo, setHasLogo] = useState(false);
   const [hasStylesheet, setHasStylesheet] = useState(false);
-  const [currentTheme,setCurrentTheme] = useState({}) 
-  const {theme,setTheme} = useTheme()
-
+  const [currentTheme, setCurrentTheme] = useState({});
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     if (hasLogo && hasStylesheet) {
@@ -97,22 +93,19 @@ function AppWrapper({ storefront }: AppProps) {
   }, [hasLogo, hasStylesheet]);
 
   useEffect(() => {
-    if(theme===Theme.Light){
+    if (theme === Theme.Light) {
+      storefront.theme.color = lightColor;
+    } else {
+      storefront.theme.color = darkColor;
+    }
 
-      storefront.theme.color=lightColor
-        
-      } else{
-        
-       storefront.theme.color=darkColor
-      }
-      
     const doc = document.documentElement;
 
     const cleanup = applyTheme(storefront.theme, doc.style, document.head);
     setHasStylesheet(true);
 
     return cleanup;
-  }, [storefront.theme,theme]);
+  }, [storefront.theme, theme]);
 
   useEffect(() => {
     const onHasLogo = () => {

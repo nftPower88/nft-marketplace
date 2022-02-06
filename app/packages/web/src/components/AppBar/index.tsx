@@ -95,13 +95,13 @@ export const AppBar = (props: P) => {
         exact: true,
         alt: [{ path: '/artists', exact: false }],
       },
-      {
-        key: 'learn',
-        title: 'Learn',
-        link: '/learn',
-        exact: true,
-        alt: [{ path: '/auction', exact: false }],
-      },
+      // {
+      //   key: 'learn',
+      //   title: 'Learn',
+      //   link: '/learn',
+      //   exact: true,
+      //   alt: [{ path: '/auction', exact: false }],
+      // },
     ];
 
     const isActivatedCreator = Object.values(activatedCreators).some(e => {
@@ -223,6 +223,9 @@ export const AppBar = (props: P) => {
         >
           <Menu theme="dark" mode="horizontal" selectedKeys={activeItems}>
             {menuItems}
+            <Menu.Item>
+              <a href="https://www.queendom.io/">About</a>
+            </Menu.Item>
           </Menu>
         </Col>
 
@@ -249,6 +252,9 @@ export const AppBar = (props: P) => {
                   selectedKeys={activeItems}
                 >
                   {menuItems}
+                  <Menu.Item>
+                    <a href="https://www.queendom.io/">About</a>
+                  </Menu.Item>
                   <div style={{ marginTop: '50px' }}>
                     <SocialIcon />
                   </div>
