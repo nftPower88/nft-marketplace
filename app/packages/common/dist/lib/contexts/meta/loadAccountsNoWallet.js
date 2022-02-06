@@ -4,6 +4,7 @@ exports.initMetadata = exports.processingAccounts = exports.makeSetter = exports
 // import { uniqWith, merge } from 'lodash';
 const ids_1 = require("../../utils/ids");
 const utils_1 = require("../../utils");
+// import { MAX_WHITELISTED_CREATOR_SIZE, TokenAccount } from '../../models';
 const models_1 = require("../../models");
 const actions_1 = require("../../actions");
 const metaplex_1 = require("../../models/metaplex");
