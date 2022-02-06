@@ -61,7 +61,6 @@ class Mirror extends React.Component<Props, State> {
   });
 
   async componentDidMount() {
-    console.log(1111111);
     this.unrealAdapter.connectionConfig();
   }
 
@@ -72,6 +71,7 @@ class Mirror extends React.Component<Props, State> {
   }
   
   async componentDidUpdate(prevProps: any, prevState:any) {
+    console.log(111);
     if(prevState.videoReference.current == null && this.state.videoReference) {
       this.unrealAdapter.load(this.state.videoReference);
     }

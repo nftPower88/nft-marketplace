@@ -9,7 +9,6 @@ import { fetchJson } from '../../utils';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { useTheme } from '../../contexts/themecontext';
 import { notify } from '../../components/util/notification';
-import { WalletAvatar } from '../../components/util/walletAvatar';
 import { MessageContent } from '../../components/Message';
 
 const serverHost = 'http://localhost:8080/api'
@@ -54,19 +53,18 @@ export const MessageView = () => {
   useEffect(() => {
     if (nmsg) {
       setMessages([...messages, nmsg]);
-      setText("");
+      input.current.value = '';
+      setBtnStatus(false);
       setScrollH(0);
     }
   }, [nmsg]);
   useEffect(() => {
-    text ? setBtnStatus(true) : setBtnStatus(false);
-  }, [text]);
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
   const handleMessage = () => {
+    console.log(1111);
     socket.emit('message-send', {
-      text,
+      text: input.current.value,
       walletAddress: publicKey?.toString()
     });
   };
@@ -120,10 +118,10 @@ export const MessageView = () => {
               onBlur={() => setFocus(false)}
               className="message-insert"
               placeholder="Type a message"
-              value={text}
+              // value={text}
               style={theme === 'Light' ? { color: 'black', borderColor: 'black' } : { color: 'white', borderColor: 'white', outline: 'none' }}
-              onChange={(e) => setText(e.target.value)}
-              onKeyPress={(e) => e.which === 13 && text && handleMessage()}
+              onChange={(e) => e.target.value ? setBtnStatus(true) : setBtnStatus(false)}
+              onKeyPress={(e) => e.which === 13 && input.current.value && handleMessage()}
             />
             {
               btnStatus && <button onClick={handleMessage} type="button" className="btn-send"><SendOutlined style={{ fontSize: 26 }} /></button>
