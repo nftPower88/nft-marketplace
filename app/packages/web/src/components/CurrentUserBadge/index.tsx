@@ -10,9 +10,9 @@ import {
   useNativeAccount,
   useWalletModal,
 } from '@oyster/common';
-import {useWallet} from '@solana/wallet-adapter-react';
-import {LAMPORTS_PER_SOL, PublicKey} from '@solana/web3.js';
-import {Button, ButtonProps, Popover, Select, Space} from 'antd';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { Button, ButtonProps, Popover, Select, Space } from 'antd';
 import React, {
   Dispatch,
   SetStateAction,
@@ -20,16 +20,16 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {Link} from 'react-router-dom';
-import {useMeta, useSolPrice} from '../../contexts';
-import {SolCircle} from '../Custom';
-import { WalletAvatar } from '../../components/util/walletAvatar';
+import { Link } from 'react-router-dom';
+import { useMeta, useSolPrice } from '../../contexts';
+import { SolCircle } from '../Custom';
 import CogSvg from '../svgs/cog';
 import { useHistory } from 'react-router-dom';
+import { WalletAvatar } from '../util/walletAvatar';
 
-const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
-  const {publicKey} = useWallet();
-  const {whitelistedCreatorsByCreator, store} = useMeta();
+const UserActions = (props: { mobile?: boolean; onClick?: () => void }) => {
+  const { publicKey } = useWallet();
+  const { whitelistedCreatorsByCreator, store } = useMeta();
   const pubkey = publicKey?.toBase58() || '';
 
   const canCreate = useMemo(() => {
@@ -46,12 +46,13 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
           <div>
             {canCreate ? (
               <>
-                <Link to='/artworks/new'>
+                <Link to="/artworks/new">
                   <Button
-                    className='w-100'
+                    className="w-100"
                     onClick={() => {
                       props.onClick ? props.onClick() : null;
-                    }}>
+                    }}
+                  >
                     Create
                   </Button>
                 </Link>
@@ -81,8 +82,8 @@ const UserActions = (props: {mobile?: boolean; onClick?: () => void}) => {
           <div>
             {canCreate ? (
               <>
-                <Link to='/artworks/new'>
-                  <Button className='w-100'>Create</Button>
+                <Link to="/artworks/new">
+                  <Button className="w-100">Create</Button>
                 </Link>
                 {/* &nbsp;&nbsp; &nbsp; */}
                 {/* <Link to='/auction/create/'>
@@ -123,7 +124,8 @@ const AddFundsModal = (props: {
     <MetaplexModal
       visible={props.showAddFundsModal}
       onCancel={() => props.setShowAddFundsModal(false)}
-      title='Add Funds'>
+      title="Add Funds"
+    >
       <div>
         <p>
           We partner with <b>FTX</b> to make it simple to start purchasing
@@ -134,7 +136,7 @@ const AddFundsModal = (props: {
           <span>
             {formatNumber.format(props.balance)}&nbsp;&nbsp;
             <span>
-              <img src='/sol.svg' width='10' />
+              <img src="/sol.svg" width="10" />
             </span>{' '}
             SOL
           </span>
@@ -149,12 +151,13 @@ const AddFundsModal = (props: {
             window.open(
               `https://ftx.com/pay/request?coin=SOL&address=${props.publicKey?.toBase58()}&tag=&wallet=sol&memoIsRequired=false`,
               '_blank',
-              'resizable,width=680,height=860'
+              'resizable,width=680,height=860',
             );
-          }}>
+          }}
+        >
           <div>
             <span>Sign with</span>
-            <img src='/ftxpay.png' width='80' />
+            <img src="/ftxpay.png" width="80" />
           </div>
         </Button>
       </div>
@@ -168,12 +171,12 @@ export const CurrentUserBadge = (props: {
   showAddress?: boolean;
   iconSize?: number;
 }) => {
-  const history = useHistory()
-  
-  const {wallet, publicKey, disconnect} = useWallet();
-  const {account} = useNativeAccount();
+  const history = useHistory();
+
+  const { wallet, publicKey, disconnect } = useWallet();
+  const { account } = useNativeAccount();
   const solPrice = useSolPrice();
-  
+
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
   if (!wallet || !publicKey || !solPrice) {
@@ -188,11 +191,17 @@ export const CurrentUserBadge = (props: {
     name = unknownWallet.name;
   }
 
+  const image = unknownWallet.image ? (
+    <img src={unknownWallet.image} />
+  ) : (
+    <Identicon address={publicKey?.toBase58()} size={22} />
+  );
+
   return (
     <>
       <Popover
-        trigger='click'
-        placement='bottomRight'
+        trigger="click"
+        placement="bottomRight"
         content={
           // <Settings
           //   additionalSettings={
@@ -202,13 +211,13 @@ export const CurrentUserBadge = (props: {
           //         <SolCircle />
           //         <span>{formatNumber.format(balance)} SOL</span>
           //         <span>{formatUSD.format(balanceInUSD)}</span>
-          //       </Space> 
+          //       </Space>
           //       <Space direction='horizontal'>
           //         <Button onClick={() => setShowAddFundsModal(true)}>
           //           Add Funds
           //         </Button>
           //         <Button onClick={disconnect}>Sign Out</Button>
-            
+
           //       </Space>
           //       <UserActions />
           //       <div className='setting-divider' />
@@ -216,31 +225,39 @@ export const CurrentUserBadge = (props: {
           //     </Space>
           //   }
           // />
-          <div className='signin-dropdown'>
-            <div className='my-2'>
+          <div className="signin-dropdown">
+            <div className="my-2">
               <a href="#/profile">Profile</a>
             </div>
-            <div className='my-2'>
+            <div className="my-2">
               <a href="#/dashboard">Dashboard</a>
             </div>
-            <div className='my-2'>
+            {/* <div className='my-2'>
               <a href="#/collection">Collection</a>
-            </div>
-            <div className='my-2'>
+            </div> */}
+            <div className="my-2">
               <a href="#/setting">Settings</a>
             </div>
-            <div className='settingDivider' />
-            <span className='mb-2 profileContainerSpan' onClick={() => {disconnect(); history.push('/');}}>Sign Out</span>
+            <div className="settingDivider" />
+            <span
+              className="mb-2 profileContainerSpan"
+              onClick={() => {
+                disconnect();
+                history.push('/');
+              }}
+            >
+              Sign Out
+            </span>
             {/* <Button onClick={disconnect}>Sign Out</Button> */}
           </div>
         }
-        >
-        <Button className='metaplex-button-appbar' type={props.buttonType}>
-          <Space direction='horizontal'>
+      >
+        <Button className="metaplex-button-appbar" type={props.buttonType}>
+          <Space direction="horizontal">
             {props.showBalance && (
               <span>
                 {formatNumber.format(
-                  (account?.lamports || 0) / LAMPORTS_PER_SOL
+                  (account?.lamports || 0) / LAMPORTS_PER_SOL,
                 )}{' '}
                 SOL
               </span>
@@ -260,11 +277,11 @@ export const CurrentUserBadge = (props: {
   );
 };
 
-export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
-  const {endpoint, setEndpoint} = useConnectionConfig();
-  const {setVisible} = useWalletModal();
+export const Cog = ({ buttonType }: { buttonType?: ButtonProps['type'] }) => {
+  const { endpoint, setEndpoint } = useConnectionConfig();
+  const { setVisible } = useWalletModal();
   const open = useCallback(() => setVisible(true), [setVisible]);
-  const history = useHistory()
+  const history = useHistory();
 
   return (
     // <Popover
@@ -282,14 +299,20 @@ export const Cog = ({buttonType}: {buttonType?: ButtonProps['type']}) => {
     //       </Select>
 
     //       <Button onClick={open}>Change wallet</Button>
-    
+
     //     </Space>
     //   }>
     //   <Button className='metaplex-button-appbar' type={buttonType}>
     //     <CogSvg />
     //   </Button>
     // </Popover>
-    <Button className='metaplex-button-appbar' type={buttonType} onClick={() => {history.push('setting')}}>
+    <Button
+      className="metaplex-button-appbar"
+      type={buttonType}
+      onClick={() => {
+        history.push('setting');
+      }}
+    >
       <CogSvg />
     </Button>
   );
@@ -301,13 +324,13 @@ export const CurrentUserBadgeMobile = (props: {
   iconSize?: number;
   closeModal?: () => void;
 }) => {
-  const {wallet, publicKey, disconnect} = useWallet();
-  const {account} = useNativeAccount();
+  const { wallet, publicKey, disconnect } = useWallet();
+  const { account } = useNativeAccount();
   const solPrice = useSolPrice();
 
   const [showAddFundsModal, setShowAddFundsModal] = useState<boolean>(false);
 
-  const history = useHistory()
+  const history = useHistory();
 
   if (!wallet || !publicKey || !solPrice) {
     return null;
@@ -337,7 +360,7 @@ export const CurrentUserBadgeMobile = (props: {
         <span>Balance</span>
         <span>
           <span>
-            <img src='/sol.svg' width='10' />
+            <img src="/sol.svg" width="10" />
           </span>{' '}
           {formatNumber.format(balance)}&nbsp;&nbsp; SOL{' '}
           <span>{formatUSD.format(balanceInUSD)}</span>
@@ -348,11 +371,19 @@ export const CurrentUserBadgeMobile = (props: {
           onClick={() => {
             props.closeModal ? props.closeModal() : null;
             setShowAddFundsModal(true);
-          }}>
+          }}
+        >
           Add Funds
         </Button>
         &nbsp;&nbsp;
-        <Button onClick={() => {disconnect(); history.push('/');}}>Sign Out</Button>
+        <Button
+          onClick={() => {
+            disconnect();
+            history.push('/');
+          }}
+        >
+          Sign Out
+        </Button>
       </div>
       <div>
         <UserActions

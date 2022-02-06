@@ -46,10 +46,12 @@ export const ArtworksView = () => {
   return (
     <>
       <Row justify="space-between" align="middle">
-        <h2>Owned Artwork</h2>
-        <Link to="/auction/create/0">
-          <Button size="large" type="primary">Sell NFT</Button>
-        </Link>
+        {/* <h2>Owned Artwork</h2> */}
+        {/* <Link to="/auction/create/0" className="my-3">
+          <Button size="large" type="primary">
+            Sell NFT
+          </Button>
+        </Link> */}
       </Row>
       <Row>
         <Col span={24}>

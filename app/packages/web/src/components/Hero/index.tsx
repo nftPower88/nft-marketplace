@@ -4,7 +4,7 @@ import { Button, Typography, Space } from 'antd';
 import { MetaplexOverlay } from '@oyster/common';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Hero = function () {
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -12,18 +12,20 @@ const Hero = function () {
   return (
     <div className="hero_element">
       <h1 className="hero_title">
-        Enter the <br /> Metaverse
+        Metaverse <br /> Fashion Show
       </h1>
-      <h3 className="hero_subtitle">
+      {/* <h3 className="hero_subtitle">
         Real-Time 3D Streaming for Limitless Experiences
-      </h3>
+      </h3> */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button type="primary">
           {/* <Link to='/client'>Connect</Link> */}
-          <Link to='/chat'>Connect</Link>
+          <Link to="/chat" className="bold_text">
+            Enter
+          </Link>
         </Button>
-        <span style={{ width: '2rem' }} />
-        <Button onClick={() => setOverlayVisible(true)}>Watch Video</Button>
+        {/* <span style={{ width: '2rem' }} />
+        <Button onClick={() => setOverlayVisible(true)}>Watch Video</Button> */}
       </div>
       <MetaplexOverlay
         visible={overlayVisible}

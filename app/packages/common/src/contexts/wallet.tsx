@@ -27,7 +27,6 @@ import { notify } from '../utils';
 import { useHistory } from 'react-router-dom';
 const { Panel } = Collapse;
 
-
 export interface WalletModalContextState {
   visible: boolean;
   setVisible: (open: boolean) => void;
@@ -52,12 +51,11 @@ export const WalletModal = () => {
   const phatomWallet = useMemo(() => getPhantomWallet(), []);
 
   return (
-
     // <MetaplexModal title="Pick a wallet to connect to Queendom" centered visible={visible} onCancel={close} bodyStyle={{borderRadius:'5px',boxShadow:'2px 5px 10px'}}>
     <MetaplexModal centered visible={visible} onCancel={close} closable={false}>
-      <h4 className='mb-3'>Pick a wallet to conneect to Queendom</h4>
+      <h4 className="mb-3">Pick a wallet to connect to Queendom</h4>
       <Button
-      type='link'
+        type="link"
         className="metaplex-button-jumbo d-flex"
         size="large"
         onClick={() => {
@@ -66,7 +64,9 @@ export const WalletModal = () => {
         }}
       >
         <img src={phatomWallet?.icon} />
-        <h4 style={{paddingLeft:'2px'}} className='ms-4 pt-1'>Connect to Phantom</h4>
+        <h4 style={{ paddingLeft: '2px' }} className="ms-4 pt-1">
+          Connect to Phantom
+        </h4>
       </Button>
       <Collapse
         ghost
@@ -106,7 +106,7 @@ export const WalletModal = () => {
           )
         }
       >
-        <Panel header={<strong className='ms-4'>Other Wallet</strong>} key="1">
+        <Panel header={<strong className="ms-4">Other Wallet</strong>} key="1">
           <Space wrap>
             {wallets.map((wallet, idx) => {
               if (wallet.name === 'Phantom') return null;
@@ -127,7 +127,6 @@ export const WalletModal = () => {
         </Panel>
       </Collapse>
     </MetaplexModal>
-     
   );
 };
 
@@ -150,10 +149,10 @@ export const WalletModalProvider: FC<{ children: ReactNode }> = ({
             )}`
           : base58;
       if (localStorage.getItem('click-signin') === 'yes') {
-        history.push('/signinconfirm')
-        localStorage.removeItem('click-signin')
+        history.push('/signinconfirm');
+        localStorage.removeItem('click-signin');
       }
-      
+
       notify({
         message: 'Wallet update',
         description: 'Connected to wallet ' + keyToDisplay,

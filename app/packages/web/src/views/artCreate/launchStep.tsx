@@ -94,7 +94,7 @@ export const LaunchStep = (props: {
         Pay with SOL
       </Button>
       <Button
-//        disabled={true}
+        //        disabled={true}
         className="metaplex-fullwidth"
         size="large"
         onClick={props.confirm}

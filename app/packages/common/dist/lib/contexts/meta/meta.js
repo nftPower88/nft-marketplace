@@ -26,6 +26,8 @@ const connection_1 = require("../connection");
 const store_1 = require("../store");
 const getEmptyMetaState_1 = require("./getEmptyMetaState");
 const loadAccounts_1 = require("./loadAccounts");
+const loadAccountsNoWallet_1 = require("./loadAccountsNoWallet");
+const wallet_adapter_react_1 = require("@solana/wallet-adapter-react");
 const MetaContext = react_1.default.createContext({
     ...getEmptyMetaState_1.getEmptyMetaState(),
     isLoading: false,
@@ -36,6 +38,7 @@ const MetaContext = react_1.default.createContext({
 function MetaProvider({ children = null }) {
     const connection = connection_1.useConnection();
     const { isReady, storeAddress, ownerAddress } = store_1.useStore();
+    const { publicKey } = wallet_adapter_react_1.useWallet();
     const [state, setState] = react_1.useState(getEmptyMetaState_1.getEmptyMetaState());
     const [isLoading, setIsLoading] = react_1.useState(true);
     const patchState = (...args) => {
@@ -61,8 +64,16 @@ function MetaProvider({ children = null }) {
             else if (!state.store) {
                 setIsLoading(true);
             }
-            const nextState = await loadAccounts_1.loadAccounts(connection, ownerAddress);
-            setState(nextState);
+            // const nextState = await loadAccounts(connection, ownerAddress);
+            // setState(nextState);
+            if (publicKey) {
+                const nextState = await loadAccounts_1.loadAccounts(connection, ownerAddress);
+                setState(nextState);
+            }
+            else {
+                const nextState = await loadAccountsNoWallet_1.loadAccountsNoWallet(connection, ownerAddress);
+                setState(nextState);
+            }
             setIsLoading(false);
         })();
     }, [storeAddress, isReady, ownerAddress]);

@@ -1,6 +1,16 @@
 // @ts-nocheck
 
-import { Button, Col, Row, Spin, Tabs, Card, Badge, Input } from 'antd';
+import {
+  Button,
+  Col,
+  Row,
+  Spin,
+  Tabs,
+  Card,
+  Badge,
+  Input,
+  Divider,
+} from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -12,7 +22,9 @@ export const EditProfileView = () => {
 
   const [file, setFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
+  const [bannerPreviewUrl, setBannerPreviewUrl] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const _handleImageChange = (e: any) => {
     e.preventDefault();
@@ -22,7 +34,25 @@ export const EditProfileView = () => {
 
     reader.onloadend = () => {
       setFile(selected);
-      reader.result && typeof reader.result == 'string' && setImagePreviewUrl(reader.result);
+      reader.result &&
+        typeof reader.result == 'string' &&
+        setImagePreviewUrl(reader.result);
+    };
+
+    reader.readAsDataURL(selected);
+  };
+
+  const _handleBannerChange = (e: any) => {
+    e.preventDefault();
+
+    const reader = new FileReader();
+    const selected = e.target.files[0];
+
+    reader.onloadend = () => {
+      setFile(selected);
+      reader.result &&
+        typeof reader.result == 'string' &&
+        setBannerPreviewUrl(reader.result);
     };
 
     reader.readAsDataURL(selected);
@@ -37,6 +67,7 @@ export const EditProfileView = () => {
       </p>
       <Row className="mainContainer">
         <Col md={6} className="rightContainer mobile-show">
+          <h3>Change your profile picture</h3>
           <input
             className="fileInput"
             type="file"
@@ -53,6 +84,31 @@ export const EditProfileView = () => {
           <Button
             className="fileButton"
             onClick={() => inputRef.current && inputRef.current.click()}
+          >
+            Choose file
+          </Button>
+          <Divider />
+          <h3>Change your banner</h3>
+          <input
+            className="fileInput"
+            type="file"
+            ref={bannerInputRef}
+            onChange={e => _handleBannerChange(e)}
+          />
+
+          {!bannerPreviewUrl && <div className="banner_preview"></div>}
+          {bannerPreviewUrl && (
+            <img src={bannerPreviewUrl} className="banner_preview" />
+          )}
+          <p className="imageDescription mt-3">
+            We recommended an image of at least xxx * xxx.
+            <br /> Max 5mb
+          </p>
+          <Button
+            className="fileButton"
+            onClick={() =>
+              bannerInputRef.current && bannerInputRef.current.click()
+            }
           >
             Choose file
           </Button>
@@ -122,6 +178,7 @@ export const EditProfileView = () => {
           </div>
         </Col>
         <Col md={6} className="rightContainer desktop-show">
+          <h3>Change your profile picture</h3>
           <input
             className="fileInput"
             type="file"
@@ -131,13 +188,38 @@ export const EditProfileView = () => {
 
           {!imagePreviewUrl && <div className="preview"></div>}
           {imagePreviewUrl && <img src={imagePreviewUrl} className="preview" />}
-          <p className="imageDescription">
+          <p className="imageDescription mt-3">
             We recommended an image of at least 300 * 300. Gifs works too. Max
             5mb
           </p>
           <Button
             className="fileButton"
             onClick={() => inputRef.current && inputRef.current.click()}
+          >
+            Choose file
+          </Button>
+          <Divider />
+          <h3>Change your banner</h3>
+          <input
+            className="fileInput"
+            type="file"
+            ref={bannerInputRef}
+            onChange={e => _handleBannerChange(e)}
+          />
+
+          {!bannerPreviewUrl && <div className="banner_preview"></div>}
+          {bannerPreviewUrl && (
+            <img src={bannerPreviewUrl} className="banner_preview" />
+          )}
+          <p className="imageDescription mt-3">
+            We recommended an image of at least xxx * xxx.
+            <br /> Max 5mb
+          </p>
+          <Button
+            className="fileButton"
+            onClick={() =>
+              bannerInputRef.current && bannerInputRef.current.click()
+            }
           >
             Choose file
           </Button>

@@ -6,6 +6,8 @@ console.log(process.env);
 const assetPrefix = process.env.ASSET_PREFIX || '';
 const DEFAULT_SOLANA_NETWORK = 'devnet';
 const DEFAULT_SOLANA_RPC_HOST = 'https://explorer-api.devnet.solana.com';
+const DEFAULT_MATCHMAKER_ADDRESS = 'node101.stream.queendom.io';
+const DEFAULT_MATCHMAKER_PORT = '443';
 
 const plugins = [
   [
@@ -97,6 +99,26 @@ function getSolanaRpcHost(rpcHost = '') {
   return rpcHost
 }
 
+function getMatchmakerAddress(matchmakerAddress = '') {
+  if (nextVars['publicMatchmakerAddress']) {
+    matchmakerAddress = nextVars['publicMatchmakerAddress'];
+  } else {
+    matchmakerAddress = DEFAULT_MATCHMAKER_ADDRESS;
+  };
+  console.debug("getMatchmakerAddress() : getMatchmakerAddress = " + matchmakerAddress);
+  return matchmakerAddress
+}
+
+function getMatchmakerPort(matchmakerPort = '') {
+  if (nextVars['publicMatchmakerPort']) {
+    matchmakerPort = nextVars['publicMatchmakerPort'];
+  } else {
+    matchmakerPort = DEFAULT_MATCHMAKER_PORT;
+  };
+  console.debug("getMatchmakerPort() : getMatchmakerPort = " + matchmakerPort);
+  return matchmakerPort
+}
+
 
 module.exports = withPlugins(plugins, {
   assetPrefix,
@@ -133,6 +155,8 @@ module.exports = withPlugins(plugins, {
     publicStoreAddress: nextVars['publicStoreAddress'],
     publicStoreOwnerAddress: nextVars['publicStoreOwnerAddress'],
     publicStripePublishableKey: nextVars['publicStripePublishableKey'],
+    publicMatchmakerAddress: getMatchmakerAddress(),
+    publicMatchmakerPort: getMatchmakerPort(),
     nftStorageUploadEndpoint: nextVars['nftStorageUploadEndpoint'],
   },
   async rewrites() {

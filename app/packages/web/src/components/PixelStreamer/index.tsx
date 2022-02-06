@@ -1,9 +1,10 @@
 import React from 'react';
 import { Loading } from '../util/loading';
 import { UnrealAdapter } from './UnrealAdapter';
+import getConfig from 'next/config';
 
-const HOST = 'node102.stream.queendom.io';
-const PORT = 443;
+
+const { publicRuntimeConfig } = getConfig();
 
 interface Props {
   focus: boolean,
@@ -29,8 +30,8 @@ class Mirror extends React.Component<Props, State> {
   // @ts-ignore
   options = {
     container: document.createElement('div'),
-    host: HOST,
-    port: PORT,
+    host: publicRuntimeConfig.publicMatchmakerAddress,
+    port: publicRuntimeConfig.publicMatchmakerPort,
     useSSL: true,
     useMic: false,
     matchViewPort: true,
@@ -48,8 +49,8 @@ class Mirror extends React.Component<Props, State> {
   unrealAdapter = new UnrealAdapter({
     options: {
       container: document.createElement('div'),
-      host: HOST,
-      port: PORT,
+      host: publicRuntimeConfig.publicMatchmakerAddress,
+      port: publicRuntimeConfig.publicMatchmakerPort,
       useSSL: true,
       useMic: false,
       matchViewPort: true,
