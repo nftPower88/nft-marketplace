@@ -9,6 +9,7 @@ import { fetchJson } from '../../utils';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import { useTheme } from '../../contexts/themecontext';
 import { notify } from '../../components/util/notification';
+import { MessageContent } from '../../components/Message';
 
 const serverHost = 'http://localhost:8080/api'
 
@@ -20,6 +21,7 @@ export const MessageView = () => {
   const [address, setAddress] = useState('');
   const [text, setText] = useState("");
   const [focus, setFocus] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const { publicKey } = useWallet();
   const history = useHistory();
@@ -51,19 +53,18 @@ export const MessageView = () => {
   useEffect(() => {
     if (nmsg) {
       setMessages([...messages, nmsg]);
-      setText("");
+      input.current.value = '';
+      setBtnStatus(false);
       setScrollH(0);
     }
   }, [nmsg]);
   useEffect(() => {
-    text ? setBtnStatus(true) : setBtnStatus(false);
-  }, [text]);
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
   const handleMessage = () => {
+    console.log(1111);
     socket.emit('message-send', {
-      text,
+      text: input.current.value,
       walletAddress: publicKey?.toString()
     });
   };
@@ -96,19 +97,20 @@ export const MessageView = () => {
       <div className='message'>
         <div className='message_content'>
           <div className='background-stream'>
-            <PixelStreamer focus={focus} activeFocus={() => input.current.focus()} />
+            <PixelStreamer focus={focus} activeFocus={() => input.current.focus()} strConfig={setLoading} />
           </div>
-          <div className='message-body' ref={scrollDiv} onScroll={handleScroll}>
+          <div className='message-body' ref={scrollDiv} onScroll={handleScroll} style={loading ? { zIndex: -1 } : { zIndex: 0 }}>
             {
               messages && messages.length > 0 && messages.map((m: any, index: number) =>
-                <div key={index} className='d-flex' style={{ width: '60%' }}>
-                  <p className='user-info' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.walletAddress}</p>
-                  <p className='messages' style={theme === 'Light' ? { color: 'black' } : { color: 'white' }}>{m.text}</p>
-                </div>
+                <MessageContent
+                  index={index}
+                  width={60}
+                  info={m}
+                />
               )
             }
           </div>
-          <div className='message-send'>
+          <div className='message-send' style={loading ? { zIndex: -1 } : { zIndex: 0 }}>
             <input
               ref={input}
               type="text"
@@ -116,10 +118,10 @@ export const MessageView = () => {
               onBlur={() => setFocus(false)}
               className="message-insert"
               placeholder="Type a message"
-              value={text}
+              // value={text}
               style={theme === 'Light' ? { color: 'black', borderColor: 'black' } : { color: 'white', borderColor: 'white', outline: 'none' }}
-              onChange={(e) => { e.preventDefault; setText(e.target.value); }}
-              onKeyPress={(e) => e.which === 13 && text && handleMessage()}
+              onChange={(e) => e.target.value ? setBtnStatus(true) : setBtnStatus(false)}
+              onKeyPress={(e) => e.which === 13 && input.current.value && handleMessage()}
             />
             {
               btnStatus && <button onClick={handleMessage} type="button" className="btn-send"><SendOutlined style={{ fontSize: 26 }} /></button>

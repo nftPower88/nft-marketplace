@@ -25,6 +25,7 @@ import { useMeta, useSolPrice } from '../../contexts';
 import { SolCircle } from '../Custom';
 import CogSvg from '../svgs/cog';
 import { useHistory } from 'react-router-dom';
+import { WalletAvatar } from '../util/walletAvatar';
 
 const UserActions = (props: { mobile?: boolean; onClick?: () => void }) => {
   const { publicKey } = useWallet();
@@ -261,7 +262,7 @@ export const CurrentUserBadge = (props: {
                 SOL
               </span>
             )}
-            {image}
+            <WalletAvatar />
             {/* {name && <span>{name}</span>} */}
           </Space>
         </Button>
