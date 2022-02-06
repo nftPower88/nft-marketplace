@@ -30,17 +30,22 @@ export const EmailSubscription = () => {
     };
     return (
       <div className="mb-2">
-        <h4 className="text-center fw-bold">Get the latest Queendom Updates</h4>
+        {/* <h4 className="text-center fw-bold">Get the latest Queendom Updates</h4> */}
         <Form onFinish={submit} validateMessages={validateMessages}>
-          <div className='d-flex mx-auto subscribe-container'>
+          <div className="d-flex mx-auto subscribe-container justify-content-center">
             <Input
+              style={{ width: '470px' }}
               required
               type="email"
-              placeholder="Subscribe to our newsletter"
+              placeholder="Enter your email to get the latest updates from The Queendom"
               bordered={false}
               className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
             />
-            <Button htmlType="submit" type="primary">
+            <Button
+              htmlType="submit"
+              type="primary"
+              className="subscribe_button"
+            >
               Subscribe
             </Button>
           </div>

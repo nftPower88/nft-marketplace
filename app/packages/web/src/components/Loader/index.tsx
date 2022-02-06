@@ -10,8 +10,13 @@ export const LoaderProvider: FC = ({ children }) => {
   return (
     <>
       <div id="metaplex-loading" className={isLoading ? 'loading' : undefined}>
-        <img id="metaplex-loading-icon" src={storefront.theme.logo} />
-        <div id="metaplex-loading-text"><h4 className='bold_text'>Loading</h4></div>
+        <img
+          src="Logo/QueendomDark.png"
+          style={{ width: '200px', marginBottom: '10px' }}
+        />
+        <div id="metaplex-loading-text">
+          <h4 className="bold_text">Loading</h4>
+        </div>
         <Spinner />
       </div>
       {!isLoading && children}
