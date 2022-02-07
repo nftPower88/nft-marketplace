@@ -1,7 +1,7 @@
 import { ConnectButton, useStore } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Col, Menu, Row, Space, Button, Drawer } from 'antd';
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { Cog, CurrentUserBadge } from '../CurrentUserBadge';
 import { Notifications } from '../Notifications';
@@ -124,6 +124,13 @@ export const AppBar = (props: P) => {
 
     if (connected) {
       menu = [
+        {
+          key: 'player',
+          title: 'Player',
+          link: '/chat',
+          exact: true,
+          alt: [{ path: '/chat', exact: false }],
+        },
         ...menu,
         // {
         //   key: 'profile',
@@ -133,6 +140,10 @@ export const AppBar = (props: P) => {
         //   alt: [],
         // },
       ];
+    } else {
+      const state = menu.filter(m => m.key === 'player');
+      console.log(state);
+      if(state.length) menu.shift();
     }
 
     if (publicKey?.toBase58() === ownerAddress) {
@@ -155,7 +166,7 @@ export const AppBar = (props: P) => {
     () =>
       menuInfo.map(({ key, link, title }) => (
         <Menu.Item key={key}>
-          <Link to={link}>{title}</Link>
+          <Link to={link} style={key === 'player' ? {color: 'red'} : {}}>{title}</Link>
         </Menu.Item>
       )),
     [menuInfo],
