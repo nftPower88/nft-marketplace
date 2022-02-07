@@ -392,7 +392,7 @@ export class UnrealAdapter extends React.Component<Props, State> {
     return keyCode >= 112 && keyCode <= 123 || keyCode === 9;
   }
 
-  public registerKeyboardEvents() {
+  public registerKeyboardEvents(videoRef?: React.RefObject<HTMLVideoElement>) {
     document.onkeydown = (e) => {
       console.log(`key down ${e.keyCode}, repeat = ${e.repeat}`);
       this.sendInputData(new Uint8Array([MessageType.KeyDown, this.getKeyCode(e), e.repeat]).buffer);
@@ -412,8 +412,10 @@ export class UnrealAdapter extends React.Component<Props, State> {
     };
 
     document.onkeypress = (e) => {
+      console.log(e);
       if(e.charCode === 99) {
         this.props.activeFocus();
+        this.registerLockedMouseEvents(videoRef?.current);
       }
       console.log(`key press ${e.charCode}`);
       let data = new DataView(new ArrayBuffer(3));

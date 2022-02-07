@@ -71,14 +71,13 @@ class Mirror extends React.Component<Props, State> {
   }
   
   async componentDidUpdate(prevProps: any, prevState:any) {
-    console.log(111);
     if(prevState.videoReference.current == null && this.state.videoReference) {
       this.unrealAdapter.load(this.state.videoReference);
     }
     if(this.props.focus) {
       this.unrealAdapter.registerLockedKeyboardEvents();
     } else {
-      this.unrealAdapter.registerKeyboardEvents();
+      this.unrealAdapter.registerKeyboardEvents(this.state.videoReference);
     }
     // this.unrealAdapter.load();
     // const newPlayer = this.unrealAdapter.player;
