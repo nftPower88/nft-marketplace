@@ -282,7 +282,9 @@ export const AppBar = (props: P) => {
                 <Notifications buttonType="text" />
 
                 <Cog buttonType="text" />
+
                 <Button
+                  className="mx-2"
                   shape="round"
                   type="primary"
                   style={{ float: 'right', height: '30px', width: '30px' }}

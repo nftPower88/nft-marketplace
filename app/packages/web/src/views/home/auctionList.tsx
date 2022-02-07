@@ -5,7 +5,7 @@ import {
   useConnection,
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Alert, Button, Spin, Divider, Select } from 'antd';
+import { Alert, Button, Spin, Divider, Select, Input } from 'antd';
 import React, { useState, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Link, useParams } from 'react-router-dom';
@@ -55,6 +55,7 @@ export const AuctionListView = () => {
   };
   //From artistView :
   const { Option } = Select;
+  const { Search } = Input;
   const { whitelistedCreatorsByCreator, patchState } = useMeta();
   const creators = Object.values(whitelistedCreatorsByCreator);
   const [loadingArt, setLoadingArt] = useState(true);
@@ -144,22 +145,39 @@ export const AuctionListView = () => {
           subHeadingText={storefront.meta.description}
         />
       )}
-      <h1>Creators: </h1>
-      <Select
-        onChange={handleChange}
-        defaultValue="All"
-        style={{ width: '30rem' }}
-      >
-        <Option value={'initial'}>All</Option>
-        {creators.map((m, idx) => {
-          const address = m.info.address;
-          return (
-            <Option key={idx} value={address}>
-              {address}
-            </Option>
-          );
-        })}
-      </Select>
+      <div className=" mx-1">
+        <div className="d-flex">
+          <h3 className="me-2 me-sm-3 d-none d-sm-block">Creators: </h3>
+          <Select
+            className="mb-2"
+            onChange={handleChange}
+            defaultValue="All"
+            style={{ width: '30rem' }}
+          >
+            <Option value={'initial'}>All</Option>
+            {creators.map((m, idx) => {
+              const address = m.info.address;
+              return (
+                <Option key={idx} value={address}>
+                  {address}
+                </Option>
+              );
+            })}
+          </Select>
+          <Search
+            style={{ width: '30rem' }}
+            className="ms-2 ms-sm-4 d-none d-sm-block"
+            enterButton
+            onSearch={() => alert('searched!')}
+          />
+        </div>
+        <Search
+          style={{ width: '100%' }}
+          className="d-block d-sm-none"
+          enterButton
+          onSearch={() => alert('searched!')}
+        />
+      </div>
       <Divider />
       <MetaplexMasonry>
         {auctions.map((m, idx) => {

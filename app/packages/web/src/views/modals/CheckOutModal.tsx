@@ -102,14 +102,15 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
     auction?.auction.info.priceFloor.type === PriceFloorType.Minimum
       ? auction.auction.info.priceFloor.minPrice?.toNumber() || 0
       : 0;
-  const [storyShow, setStoryShow] = useState(false);
-  const [captureShow, setCaptureShow] = useState(true);
-  const [showcaseShow, setShowcaseShow] = useState(true);
-  const [tryShow, setTryShow] = useState(true);
-  const [portShow, setPortShow] = useState(true);
-  const [tradeShow, setTradeShow] = useState(true);
-  const [showAuction, setShowAuction] = useState(true);
-  const [reloadAuction, setReloadAuction] = useState(false);
+  const [storyShow, setStoryShow] = useState<boolean>(false);
+  const [captureShow, setCaptureShow] = useState<boolean>(true);
+  const [showcaseShow, setShowcaseShow] = useState<boolean>(true);
+  const [tryShow, setTryShow] = useState<boolean>(true);
+  const [portShow, setPortShow] = useState<boolean>(true);
+  const [tradeShow, setTradeShow] = useState<boolean>(true);
+  const [detailShow, setDetailShow] = useState<boolean>(false);
+  const [showAuction, setShowAuction] = useState<boolean>(true);
+  const [reloadAuction, setReloadAuction] = useState<boolean>(false);
 
   function refreshAuction() {
     setTimeout(() => {
@@ -306,26 +307,8 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
                 </div>
               )}
             </Row>
-            <Divider />
           </Col>
-          <Col span={21}>
-            <h5>
-              Blockchain :{' '}
-              <span style={{ textDecoration: 'underline' }}>
-                {publicRuntimeConfig.publicSolanaNetwork}
-              </span>{' '}
-            </h5>
-            <h5>
-              Creator :{' '}
-              <span style={{ textDecoration: 'underline' }}>
-                {art.creators![0].address}
-              </span>{' '}
-            </h5>
-            <h5>
-              Asset :{' '}
-              <span style={{ textDecoration: 'underline' }}>{art.mint}</span>{' '}
-            </h5>
-          </Col>
+
           {/* <Button onClick={() => setShowAbout(!showAbout)}>
             ABOUT THIS {nftCount === 1 ? 'NFT' : 'COLLECTION'}
           </Button>
@@ -500,8 +483,40 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
               </h4>
             </div>
           </Row>
-          <div hidden={tradeShow}>
-            <h5>Trade it Captions</h5>
+          <div hidden={tradeShow} className="p-1"></div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setDetailShow(!detailShow)}
+          >
+            <h4>
+              <TransactionOutlined />
+            </h4>
+            <h4 style={{ marginRight: '270px' }}>Details</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={detailShow} className="p-1">
+            <h5>
+              Blockchain :{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {publicRuntimeConfig.publicSolanaNetwork}
+              </span>{' '}
+            </h5>
+            <h5>
+              Creator :{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {art.creators![0].address}
+              </span>{' '}
+            </h5>
+            <h5>
+              Asset :{' '}
+              <span style={{ textDecoration: 'underline' }}>{art.mint}</span>{' '}
+            </h5>
           </div>
           <hr />
         </Col>
