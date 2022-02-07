@@ -51,8 +51,7 @@ export const AuctionRenderCard = (props: AuctionCard | null) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Space direction="vertical" style={{ width: '65%' }}>
             <h4>
-              {' '}
-              {creators[0]?.name || creators[0]?.address?.substr(0, 6)} : <br />
+              {/* {creators[0]?.name || creators[0]?.address?.substr(0, 6)} : <br /> */}
               {name}
             </h4>
             {!status.isInstantSale && status.isLive && (
