@@ -137,16 +137,22 @@ export const SignInView = () => {
         <div className="title_container">
           <Row justify="center">
             <Col span={24}>
-              <h1 className="bold_text title_text">
-                Welcome! Let's begin with your wallet.
-              </h1>
+              <h1 className="bold_text title_text">Welcome! Let's begin.</h1>
               <ConnectButton
                 className="bold_text"
                 type="primary"
                 style={{ width: '100%', height: '50px' }}
                 allowWalletChange={false}
               />
-
+              <div className="mt-2">
+                <h4 className="fw-bold">Account on The Queendom</h4>
+                <h6>
+                  This will be your personal Blockchain profile which you will
+                  hold your NFTs. Just pick an icon and enter your email. Then
+                  you will receive a magic link to that address. Please note
+                  this means you do not need a log-in or password.
+                </h6>
+              </div>
               <div
                 className={
                   !showForm ? 'bold_text invisible' : 'bold_text visible'

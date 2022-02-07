@@ -83,7 +83,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 import { getStripe } from '../../utils/stripe';
 import getConfig from 'next/config';
-
+import { useHistory } from 'react-router-dom';
 const nextConfig = getConfig();
 const publicRuntimeConfig = nextConfig.publicRuntimeConfig;
 
@@ -229,7 +229,7 @@ export const AuctionCard = ({
   const connection = useConnection();
   const { patchState } = useMeta();
   const [errorMessage, setErrorMessage] = useState('');
-
+  const history = useHistory();
   const wallet = useWallet();
   const { setVisible } = useWalletModal();
   const connect = useCallback(
@@ -939,6 +939,17 @@ export const AuctionCard = ({
             (showStartAuctionBtn
               ? startAuctionBtn
               : auctionView.isInstantSale && instantSolSaleBtn)}
+          {!hideDefaultAction && !wallet.connected && (
+            <Button
+              className="metaplex-fullwidth rounded-3"
+              type="primary"
+              size="large"
+              onClick={() => history.push('/signin')}
+            >
+              Connect wallet to{' '}
+              {auctionView.isInstantSale ? 'purchase' : 'place bid'} with Sol
+            </Button>
+          )}
           <hr />
           <Space
             className="ant-card"
@@ -954,17 +965,6 @@ export const AuctionCard = ({
           {showStartAuctionBtn
             ? startAuctionBtn
             : auctionView.isInstantSale && instantFiatSaleBtn}
-          {!hideDefaultAction && !wallet.connected && (
-            <Button
-              className="metaplex-fullwidth rounded-3"
-              type="primary"
-              size="large"
-              onClick={connect}
-            >
-              Connect wallet to{' '}
-              {auctionView.isInstantSale ? 'purchase' : 'place bid'} with Sol
-            </Button>
-          )}
 
           {showRedeemReclaimRefundBtn && redeemReclaimRefundBtn}
 
