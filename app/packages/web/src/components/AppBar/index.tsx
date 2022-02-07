@@ -203,30 +203,62 @@ export const AppBar = (props: P) => {
         `}
       </style>
       <Row wrap={false} align="middle" className="justify-content-between">
-        <Link
-          to="/"
-          id="metaplex-header-logo"
-          onClick={() => setIsSignIn(false)}
-        >
-          <img
-            style={{ width: '200px', paddingBottom: '5px' }}
-            className="desktop-show"
-            src={
-              theme === Theme.Light
-                ? 'Logo/QueendomDark.png'
-                : 'Logo/QueendomLight.png'
-            }
-          />
-          <img
-            style={{ width: '100px', paddingBottom: '5px' }}
-            className="mobile-show"
-            src={
-              theme === Theme.Light
-                ? 'Logo/QueendomDark.png'
-                : 'Logo/QueendomLight.png'
-            }
-          />
-        </Link>
+        <div className="d-flex">
+          <Link
+            to="/"
+            id="metaplex-header-logo"
+            onClick={() => setIsSignIn(false)}
+          >
+            <img
+              style={{ width: '200px', paddingBottom: '5px' }}
+              className="desktop-show"
+              src={
+                theme === Theme.Light
+                  ? 'Logo/QueendomDark.png'
+                  : 'Logo/QueendomLight.png'
+              }
+            />
+            <img
+              style={{ width: '100px', paddingBottom: '5px' }}
+              className="mobile-show"
+              src={
+                theme === Theme.Light
+                  ? 'Logo/QueendomDark.png'
+                  : 'Logo/QueendomLight.png'
+              }
+            />
+          </Link>
+          <div className={`ms-3 mobile-show ${hide ? ' hidden' : ''}`}>
+            <Button
+              onClick={() => setShowMenu(true)}
+              size="small"
+              icon={<MenuOutlined />}
+              type="text"
+            ></Button>
+            <Drawer
+              visible={showMenu}
+              placement="bottom"
+              mask={true}
+              maskStyle={{ opacity: '0%' }}
+              onClose={() => setShowMenu(false)}
+              closable={false}
+            >
+              <Menu
+                onClick={() => setShowMenu(false)}
+                mode="vertical"
+                selectedKeys={activeItems}
+              >
+                {menuItems}
+                <Menu.Item>
+                  <a href="https://www.queendom.io/">About</a>
+                </Menu.Item>
+                <div style={{ marginTop: '50px' }}>
+                  <SocialIcon />
+                </div>
+              </Menu>
+            </Drawer>
+          </div>
+        </div>
 
         <Col
           flex="1 0 0"
@@ -242,37 +274,6 @@ export const AppBar = (props: P) => {
 
         <Col flex="0 1 auto" className="right-header">
           <Space className="metaplex-display-flex" align="center">
-            <div className={`mobile-show ${hide ? ' hidden' : ''}`}>
-              <Button
-                onClick={() => setShowMenu(true)}
-                size="small"
-                icon={<MenuOutlined />}
-                type="text"
-              ></Button>
-              <Drawer
-                visible={showMenu}
-                placement="bottom"
-                mask={true}
-                maskStyle={{ opacity: '0%' }}
-                onClose={() => setShowMenu(false)}
-                closable={false}
-              >
-                <Menu
-                  onClick={() => setShowMenu(false)}
-                  mode="vertical"
-                  selectedKeys={activeItems}
-                >
-                  {menuItems}
-                  <Menu.Item>
-                    <a href="https://www.queendom.io/">About</a>
-                  </Menu.Item>
-                  <div style={{ marginTop: '50px' }}>
-                    <SocialIcon />
-                  </div>
-                </Menu>
-              </Drawer>
-            </div>
-
             {connected ? (
               <div className={`d-flex flex-row ${hide ? ' hidden' : ''}`}>
                 <CurrentUserBadge showAddress={true} buttonType="text" />

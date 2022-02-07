@@ -57,6 +57,7 @@ import {
   ThunderboltOutlined,
 } from '@ant-design/icons';
 import { useTheme, Theme } from '../../contexts/themecontext';
+
 interface Props {
   show: boolean;
   hide: (value: any) => void;
@@ -517,6 +518,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
               Asset :{' '}
               <span style={{ textDecoration: 'underline' }}>{art.mint}</span>{' '}
             </h5>
+            <div className="text-center">
+              <ViewOn id={id} />
+            </div>
           </div>
           <hr />
         </Col>
