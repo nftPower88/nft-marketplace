@@ -12,6 +12,7 @@ import {
   Divider,
   Progress,
   Space,
+  Menu
 } from 'antd';
 import { useMeta } from '../../contexts';
 import {
@@ -45,7 +46,14 @@ import {
 import { Link } from 'react-router-dom';
 import { SetupVariables } from '../../components/SetupVariables';
 import { cacheAllAuctions } from '../../actions';
-import { LoadingOutlined } from '@ant-design/icons';
+import {
+  LoadingOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  WalletOutlined,
+  MenuOutlined,
+  NotificationOutlined
+} from '@ant-design/icons';
 import { useAuctionManagersToCache, useNotifications } from '../../hooks';
 import Bugsnag from '@bugsnag/browser';
 import getConfig from 'next/config';
@@ -54,7 +62,8 @@ import { ENDPOINTS, useConnectionConfig } from '@oyster/common';
 
 const { publicRuntimeConfig } = getConfig();
 
-const { Content } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
+
 export const AdminView = () => {
   const { store, whitelistedCreatorsByCreator, isLoading, patchState } =
     useMeta();
@@ -65,7 +74,6 @@ export const AdminView = () => {
   const { connected, publicKey } = useWallet();
   const { ownerAddress } = useStore();
   const [adminModalOpen, setAdminModalOpen] = useState(false);
-
   if (!wallet.publicKey) {
     console.log('wallet not connected');
     return (
@@ -436,171 +444,217 @@ function InnerAdminView({
     return finalResult;
   }
 
+  const [collapsed, setCollaped] = useState(false)
+  const [currentMenu, setCurrentMenu] = useState('1')
+
   return (
-    <Content>
-      <Col>
-        <h2>Metaplex</h2>
-        <Row>
-          {!store.info.public && (
-            <Col xs={24} md={24}>
-              <p>Storefront Values</p>
-              <Table columns={configColumns} dataSource={storeConfigData} />
-              <p>Public Environment Variables</p>
+    <Layout className='admin-layout'>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className='sidebar-toggle'>
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger',
+            onClick: () => { setCollaped(!collapsed) },
+          })}
+        </div>
+
+        <Menu mode="inline" onClick={(e) => setCurrentMenu(e.key)} selectedKeys={[currentMenu]}>
+          <Menu.Item key="1" icon={<WalletOutlined />}>
+            Metaplex
+          </Menu.Item>
+          <Menu.Item key="2" icon={<MenuOutlined />}>
+            Whitelisted Creators
+          </Menu.Item>
+          <Menu.Item key="3" icon={<NotificationOutlined />}>
+            Listing Notifications
+          </Menu.Item>
+          <Menu.Item key="4" icon={<UserOutlined />}>
+            Adminstrator Actions
+          </Menu.Item>
+        </Menu>
+      </Sider>
+      <Layout className="site-layout">
+        <Content className="site-layout-background">
+          {currentMenu == '1' &&
+            <>
+              <h2>Metaplex</h2>
+              <Row>
+                {!store.info.public && (
+                  <Col xs={24} md={24}>
+                    <p>Storefront Values</p>
+                    <Table columns={configColumns} dataSource={storeConfigData} />
+                    <p>Public Environment Variables</p>
+                    <Table
+                      columns={configColumns}
+                      dataSource={Object.keys(publicRuntimeConfig).map(key => ({
+                        key,
+                        attribute: unCamel(key),
+                        value: publicRuntimeConfig[key],
+                      }))}
+                    />
+                  </Col>
+                )}
+              </Row>
+            </>
+          }
+
+          {currentMenu == '2' &&
+            <>
+              <Row>
+                <h2>Whitelisted Creators</h2>
+                <Col span={22}>
+                  <ArtistModal
+                    setUpdatedCreators={setUpdatedCreators}
+                    uniqueCreatorsWithUpdates={uniqueCreatorsWithUpdates}
+                  />
+                  <Button
+                    onClick={async () => {
+                      notify({
+                        message: 'Saving...',
+                        type: 'info',
+                      });
+                      await saveAdmin(
+                        connection,
+                        wallet,
+                        newStore.public,
+                        Object.values(updatedCreators),
+                      );
+                      notify({
+                        message: 'Saved',
+                        type: 'success',
+                      });
+                    }}
+                    type="primary"
+                  >
+                    Submit
+                  </Button>
+                </Col>
+                <Col>
+                  <Row justify="end">
+                    <Col>
+                      <Switch
+                        checkedChildren="Public"
+                        unCheckedChildren="Whitelist Only"
+                        checked={newStore.public}
+                        onChange={val => {
+                          setNewStore(() => {
+                            const newS = new Store(store.info);
+                            newS.public = val;
+                            return newS;
+                          });
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={24}>
+                  <Table
+                    columns={columns}
+                    dataSource={Object.keys(uniqueCreatorsWithUpdates).map(key => ({
+                      key,
+                      address: uniqueCreatorsWithUpdates[key].address,
+                      activated: uniqueCreatorsWithUpdates[key].activated,
+                      name:
+                        uniqueCreatorsWithUpdates[key].name ||
+                        shortenAddress(uniqueCreatorsWithUpdates[key].address),
+                      image: uniqueCreatorsWithUpdates[key].image,
+                    }))}
+                  />
+                </Col>
+              </Row>
+            </>
+          }
+
+          {currentMenu == '3' &&
+            <>
+              <h2>Listing Notifications</h2>
               <Table
-                columns={configColumns}
-                dataSource={Object.keys(publicRuntimeConfig).map(key => ({
-                  key,
-                  attribute: unCamel(key),
-                  value: publicRuntimeConfig[key],
-                }))}
+                columns={[
+                  {
+                    key: 'accountPubkey',
+                    title: 'Listing',
+                    dataIndex: 'accountPubkey',
+                  },
+                  {
+                    key: 'description',
+                    title: 'Notification',
+                    dataIndex: 'description',
+                  },
+                  {
+                    key: 'action',
+                    title: 'Action',
+                    render: ({ action, callToAction }) => {
+                      const [status, setStatus] = useState<ListingNotificationStatus>(
+                        ListingNotificationStatus.Ready,
+                      );
+
+                      const onSubmit = async () => {
+                        try {
+                          setStatus(ListingNotificationStatus.Submitting);
+                          await action();
+                          setStatus(ListingNotificationStatus.Complete);
+                        } catch (e: any) {
+                          Bugsnag.notify(e);
+                          setStatus(ListingNotificationStatus.Error);
+                        }
+                      };
+                      const isComplete = status === ListingNotificationStatus.Complete;
+
+                      const label = isComplete ? 'Done' : callToAction;
+                      return (
+                        <Button
+                          loading={status === ListingNotificationStatus.Submitting}
+                          disabled={isComplete}
+                          onClick={onSubmit}
+                        >
+                          {label}
+                        </Button>
+                      );
+                    },
+                  },
+                ]}
+                dataSource={notifications}
               />
-            </Col>
-          )}
-        </Row>
-        <Row>
-          <h2>Whitelisted Creators</h2>
-          <Col span={22}>
-            <ArtistModal
-              setUpdatedCreators={setUpdatedCreators}
-              uniqueCreatorsWithUpdates={uniqueCreatorsWithUpdates}
-            />
-            <Button
-              onClick={async () => {
-                notify({
-                  message: 'Saving...',
-                  type: 'info',
-                });
-                await saveAdmin(
-                  connection,
-                  wallet,
-                  newStore.public,
-                  Object.values(updatedCreators),
-                );
-                notify({
-                  message: 'Saved',
-                  type: 'success',
-                });
-              }}
-              type="primary"
-            >
-              Submit
-            </Button>
-          </Col>
-          <Col>
-            <Row justify="end">
-              <Col>
-                <Switch
-                  checkedChildren="Public"
-                  unCheckedChildren="Whitelist Only"
-                  checked={newStore.public}
-                  onChange={val => {
-                    setNewStore(() => {
-                      const newS = new Store(store.info);
-                      newS.public = val;
-                      return newS;
-                    });
-                  }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col span={24}>
-            <Table
-              columns={columns}
-              dataSource={Object.keys(uniqueCreatorsWithUpdates).map(key => ({
-                key,
-                address: uniqueCreatorsWithUpdates[key].address,
-                activated: uniqueCreatorsWithUpdates[key].activated,
-                name:
-                  uniqueCreatorsWithUpdates[key].name ||
-                  shortenAddress(uniqueCreatorsWithUpdates[key].address),
-                image: uniqueCreatorsWithUpdates[key].image,
-              }))}
-            />
-          </Col>
-        </Row>
-      </Col>
-      <h2>Listing Notifications</h2>
-      <Table
-        columns={[
-          {
-            key: 'accountPubkey',
-            title: 'Listing',
-            dataIndex: 'accountPubkey',
-          },
-          {
-            key: 'description',
-            title: 'Notification',
-            dataIndex: 'description',
-          },
-          {
-            key: 'action',
-            title: 'Action',
-            render: ({ action, callToAction }) => {
-              const [status, setStatus] = useState<ListingNotificationStatus>(
-                ListingNotificationStatus.Ready,
-              );
+            </>
+          }
 
-              const onSubmit = async () => {
-                try {
-                  setStatus(ListingNotificationStatus.Submitting);
-                  await action();
-                  setStatus(ListingNotificationStatus.Complete);
-                } catch (e: any) {
-                  Bugsnag.notify(e);
-                  setStatus(ListingNotificationStatus.Error);
-                }
-              };
-              const isComplete = status === ListingNotificationStatus.Complete;
+          {currentMenu == '4' &&
+            <>
+              <h2>Adminstrator Actions</h2>
+              <Row>
+                {!store.info.public && (
+                  <Col xs={24} md={12}>
+                    <h3>Convert Master Editions</h3>
+                    <p>
+                      You have {filteredMetadata?.available.length} MasterEditionV1s
+                      that can be converted right now and{' '}
+                      {filteredMetadata?.unavailable.length} still in unfinished
+                      auctions that cannot be converted yet.
+                    </p>
+                    <Button
+                      size="large"
+                      loading={convertingMasterEditions}
+                      onClick={async () => {
+                        setConvertMasterEditions(true);
 
-              const label = isComplete ? 'Done' : callToAction;
-              return (
-                <Button
-                  loading={status === ListingNotificationStatus.Submitting}
-                  disabled={isComplete}
-                  onClick={onSubmit}
-                >
-                  {label}
-                </Button>
-              );
-            },
-          },
-        ]}
-        dataSource={notifications}
-      />
-      <Row></Row>
-      <h2>Adminstrator Actions</h2>
-      <Row>
-        {!store.info.public && (
-          <Col xs={24} md={12}>
-            <h3>Convert Master Editions</h3>
-            <p>
-              You have {filteredMetadata?.available.length} MasterEditionV1s
-              that can be converted right now and{' '}
-              {filteredMetadata?.unavailable.length} still in unfinished
-              auctions that cannot be converted yet.
-            </p>
-            <Button
-              size="large"
-              loading={convertingMasterEditions}
-              onClick={async () => {
-                setConvertMasterEditions(true);
+                        await convertMasterEditions(
+                          connection,
+                          wallet,
+                          filteredMetadata?.available || [],
+                          accountByMint,
+                        );
 
-                await convertMasterEditions(
-                  connection,
-                  wallet,
-                  filteredMetadata?.available || [],
-                  accountByMint,
-                );
-
-                setConvertMasterEditions(false);
-              }}
-            >
-              Convert Eligible Master Editions
-            </Button>
-          </Col>
-        )}
-      </Row>
-    </Content>
+                        setConvertMasterEditions(false);
+                      }}
+                    >
+                      Convert Eligible Master Editions
+                    </Button>
+                  </Col>
+                )}
+              </Row>
+            </>
+          }
+        </Content>
+      </Layout>
+    </Layout>
   );
 }

@@ -9,6 +9,7 @@ import {
   useConnectionConfig,
   useNativeAccount,
   useWalletModal,
+  useStore
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
@@ -184,6 +185,7 @@ export const CurrentUserBadge = (props: {
   }
   const balance = (account?.lamports || 0) / LAMPORTS_PER_SOL;
   const balanceInUSD = balance * solPrice;
+  const { ownerAddress } = useStore();
 
   let name = props.showAddress ? shortenAddress(`${publicKey}`) : '';
   const unknownWallet = wallet as any;
@@ -226,6 +228,9 @@ export const CurrentUserBadge = (props: {
           //   }
           // />
           <div className="signin-dropdown">
+            {publicKey?.toBase58() === ownerAddress && <div className="my-2">
+              <a href="#/admin">Admin</a>
+            </div>}
             <div className="my-2">
               <a href="#/profile">Profile</a>
             </div>

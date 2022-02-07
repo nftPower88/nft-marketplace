@@ -146,18 +146,18 @@ export const AppBar = (props: P) => {
       if (state.length) menu.shift();
     }
 
-    if (publicKey?.toBase58() === ownerAddress) {
-      menu = [
-        ...menu,
-        {
-          key: 'admin',
-          title: 'Admin',
-          link: '/admin',
-          exact: true,
-          alt: [],
-        },
-      ];
-    }
+    // if (publicKey?.toBase58() === ownerAddress) {
+    //   menu = [
+    //     ...menu,
+    //     {
+    //       key: 'admin',
+    //       title: 'Admin',
+    //       link: '/admin',
+    //       exact: true,
+    //       alt: [],
+    //     },
+    //   ];
+    // }
 
     return menu;
   }, [connected]);
