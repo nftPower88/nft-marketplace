@@ -27,6 +27,7 @@ import {
 import { AdminView } from './views/admin';
 import { BillingView } from './views/auction/billing';
 import { LandingPageView } from './views/landingPage';
+import { ReadyPlayerMeView } from "./views/readyPlayerMe";
 interface RoutesProps {
   storefront: Storefront;
 }
@@ -77,6 +78,7 @@ export function Routes({ storefront }: RoutesProps) {
             <Route path="/explore" component={() => <HomeView />} />
             {/* <Route path='/learn' component={() => <LearnPageView />} /> */}
             <Route path="/chat" component={() => <MessageView />} />
+            <Route path="/ready-player-me" component={() => <ReadyPlayerMeView  />} />
             <Route path="/dashboard" component={() => <DashboardView />} />
             <Route path="/collection" component={() => <ArtworksView />} />
             <Route path="/setting" component={() => <SettingView />} />
