@@ -125,8 +125,8 @@ export const AppBar = (props: P) => {
     if (connected) {
       menu = [
         {
-          key: 'player',
-          title: 'Player',
+          key: 'verse',
+          title: 'Verse',
           link: '/chat',
           exact: true,
           alt: [{ path: '/chat', exact: false }],
@@ -166,7 +166,7 @@ export const AppBar = (props: P) => {
     () =>
       menuInfo.map(({ key, link, title }) => (
         <Menu.Item key={key}>
-          <Link to={link} style={key === 'player' ? {color: 'red'} : {}}>{title}</Link>
+          <Link to={link}>{title}</Link>
         </Menu.Item>
       )),
     [menuInfo],

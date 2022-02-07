@@ -99,7 +99,7 @@ export const MessageView = () => {
           <div className='background-stream'>
             <PixelStreamer focus={focus} activeFocus={() => input.current.focus()} strConfig={setLoading} />
           </div>
-          <div className='message-body' ref={scrollDiv} onScroll={handleScroll} style={loading ? { zIndex: -1 } : { zIndex: 0 }}>
+          <div className={`message-body ${theme === 'Light' ? 'message-body-light' : 'message-body-dark'}`} ref={scrollDiv} onScroll={handleScroll} style={loading ? { zIndex: -1 } : { zIndex: 0 }}>
             {
               messages && messages.length > 0 && messages.map((m: any, index: number) =>
                 <MessageContent
@@ -142,7 +142,7 @@ export const MessageView = () => {
                   borderRadius: '50%',
                   border: 'none',
                   textAlign: 'center',
-                  backgroundColor: '#5d2d9d',
+                  backgroundColor: `${theme === 'Light' ? 'rgb(200,200,200)' : 'rbg(75,75,75)'}`,
                   padding: "8px 12px"
                 }}
                 onClick={() => {
