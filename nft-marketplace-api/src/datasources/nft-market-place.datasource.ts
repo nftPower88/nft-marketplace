@@ -4,7 +4,7 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'NFTMarketPlace',
   connector: 'mongodb',
-  url: 'mongodb://marketplace:test_password@localhost:27017/nft_backend',
+  url: 'mongodb://marketplace:test_password@localhost:27017/nft_backend?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false',
   host: 'localhost',
   port: 27017,
   user: 'marketplace',
