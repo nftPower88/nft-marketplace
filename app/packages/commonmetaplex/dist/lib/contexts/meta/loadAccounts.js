@@ -848,11 +848,15 @@ exports.loadAuctionManagers = loadAuctionManagers;
 const loadAuctionsForAuctionManagers = async (connection, auctionManagers) => {
     const state = getEmptyMetaState_1.getEmptyMetaState();
     const updateState = exports.makeSetter(state);
-    const auctionIds = auctionManagers.map(({ info: { auction } }) => auction);
-    const auctionExtendedKeys = await Promise.all(auctionManagers.map(account => actions_1.getAuctionExtended({
-        auctionProgramId: ids_1.AUCTION_ID,
-        resource: account.info.vault,
-    })));
+    // const auctionIds = auctionManagers.map(({ info: { auction } }) => auction);
+    // const auctionExtendedKeys = await Promise.all(
+    //   auctionManagers.map(account =>
+    //     getAuctionExtended({
+    //       auctionProgramId: AUCTION_ID,
+    //       resource: account.info.vault,
+    //     }),
+    //  ),
+    // );
     // const auctionData = await getMultipleAccounts(
     //   connection, [
     //   ...auctionIds,
