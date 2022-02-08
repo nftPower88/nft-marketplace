@@ -35,7 +35,7 @@ import {
   METAPLEX_ID,
   processMetaplexAccounts,
   subscribeProgramChanges,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
 import { saveAdmin } from '../../actions/saveAdmin';
@@ -58,7 +58,7 @@ import { useAuctionManagersToCache, useNotifications } from '../../hooks';
 import Bugsnag from '@bugsnag/browser';
 import getConfig from 'next/config';
 
-import { ENDPOINTS, useConnectionConfig } from '@oyster/common';
+import { ENDPOINTS, useConnectionConfig } from '@oyster/commonmetaplex';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -378,9 +378,9 @@ function InnerAdminView({
   }
 
   const { endpoint } = useConnectionConfig();
-  const endpointName = ENDPOINTS.find(e => e.endpoint === endpoint)?.name;
-  const endpointUrl = ENDPOINTS.find(e => e.endpoint === endpoint)?.endpoint;
-  const endpointId = ENDPOINTS.find(e => e.endpoint === endpoint)?.ChainId;
+  const endpointName = ENDPOINTS.find(e => e.url === endpoint.url)?.name;
+  const endpointUrl = ENDPOINTS.find(e => e.url === endpoint.url)?.url;
+  const endpointId = ENDPOINTS.find(e => e.url === endpoint.url)?.chainId;
 
   const { storefront, storeAddress } = useStore();
   const storeConfigData: DataType[] = [

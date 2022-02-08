@@ -2,7 +2,7 @@ import { Keypair, TransactionInstruction } from '@solana/web3.js';
 import {
   updatePrimarySaleHappenedViaToken,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { SafetyDepositDraft } from './createAuctionManager';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 const SALE_TRANSACTION_SIZE = 10;

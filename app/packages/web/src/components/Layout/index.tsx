@@ -1,4 +1,4 @@
-import { Storefront } from '@oyster/common';
+import { Storefront } from '@oyster/commonmetaplex';
 import { Layout, Divider } from 'antd';
 import React, { ReactNode } from 'react';
 import { AppBar } from '../AppBar';

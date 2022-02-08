@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { ENDPOINTS, useConnectionConfig, useStore } from '@oyster/common';
+import { ENDPOINTS, useConnectionConfig, useStore } from '@oyster/commonmetaplex';
 import { useLocation } from 'react-router';
 import { useSolPrice } from '../../contexts';
 import getConfig from 'next/config';
@@ -46,7 +46,7 @@ export function AnalyticsProvider(props: { children: React.ReactNode }) {
 
   // user pubkey / id
   const pubkey = publicKey?.toBase58() || '';
-  const endpointName = ENDPOINTS.find(e => e.endpoint === endpoint)?.name;
+  const endpointName = ENDPOINTS.find(e => e === endpoint)?.name;
   useEffect(() => {
     // const isStoreOwner = ownerAddress === publicKey?.toBase58();
 

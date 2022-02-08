@@ -6,7 +6,7 @@ import {
   createMint,
   Creator,
   Data,
-  ENV,
+  ENDPOINT_NAME,
   findProgramAddress,
   notify,
   programIds,
@@ -14,7 +14,7 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { MintLayout, Token } from '@solana/spl-token';
 import { Connection, Keypair, TransactionInstruction } from '@solana/web3.js';
 import BN from 'bn.js';
@@ -49,7 +49,7 @@ export type PinFileResponse = {
 export const mintNFT = async (
   connection: Connection,
   wallet: WalletSigner | undefined,
-  env: ENV,
+  env: ENDPOINT_NAME,
   files: File[],
   metadata: {
     name: string;

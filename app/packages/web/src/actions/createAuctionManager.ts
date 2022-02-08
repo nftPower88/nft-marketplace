@@ -25,7 +25,7 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { AccountLayout, Token } from '@solana/spl-token';
 import BN from 'bn.js';
@@ -41,8 +41,8 @@ import {
   SafetyDepositConfig,
   ParticipationStateV2,
   StoreIndexer,
-} from '@oyster/common/dist/lib/models/metaplex/index';
-import { createTokenAccount } from '@oyster/common/dist/lib/actions/account';
+} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
+import { createTokenAccount } from '@oyster/commonmetaplex/dist/lib/actions/account';
 import { createVault } from './createVault';
 import { closeVault } from './closeVault';
 import {
@@ -51,13 +51,13 @@ import {
 } from './addTokensToVault';
 import { makeAuction } from './makeAuction';
 import { createExternalPriceAccount } from './createExternalPriceAccount';
-import { deprecatedValidateParticipation } from '@oyster/common/dist/lib/models/metaplex/deprecatedValidateParticipation';
+import { deprecatedValidateParticipation } from '@oyster/commonmetaplex/dist/lib/models/metaplex/deprecatedValidateParticipation';
 import { deprecatedCreateReservationListForTokens } from './deprecatedCreateReservationListsForTokens';
 import { deprecatedPopulatePrintingTokens } from './deprecatedPopulatePrintingTokens';
 import { setVaultAndAuctionAuthorities } from './setVaultAndAuctionAuthorities';
 import { markItemsThatArentMineAsSold } from './markItemsThatArentMineAsSold';
-import { validateSafetyDepositBoxV2 } from '@oyster/common/dist/lib/models/metaplex/validateSafetyDepositBoxV2';
-import { initAuctionManagerV2 } from '@oyster/common/dist/lib/models/metaplex/initAuctionManagerV2';
+import { validateSafetyDepositBoxV2 } from '@oyster/commonmetaplex/dist/lib/models/metaplex/validateSafetyDepositBoxV2';
+import { initAuctionManagerV2 } from '@oyster/commonmetaplex/dist/lib/models/metaplex/initAuctionManagerV2';
 import { cacheAuctionIndexer } from './cacheAuctionInIndexer';
 import { SetStateAction, Dispatch } from 'react';
 

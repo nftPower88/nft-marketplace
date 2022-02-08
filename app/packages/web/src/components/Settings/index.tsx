@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Select } from 'antd';
-import { contexts } from '@oyster/common';
+import { contexts } from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 const { ENDPOINTS, useConnectionConfig } = contexts.Connection;
@@ -12,9 +12,9 @@ export const Settings = () => {
   return (
     <div>
       Network:{' '}
-      <Select onSelect={setEndpoint} value={endpoint}>
-        {ENDPOINTS.map(({ name, endpoint }) => (
-          <Select.Option value={endpoint} key={endpoint}>
+      <Select onSelect={setEndpoint} value={endpoint.url}>
+        {ENDPOINTS.map(({ name, url }) => (
+          <Select.Option value={url} key={endpoint.url}>
             {name}
           </Select.Option>
         ))}

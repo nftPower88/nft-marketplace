@@ -1,4 +1,4 @@
-import { shortenAddress } from '@oyster/common';
+import { shortenAddress } from '@oyster/commonmetaplex';
 import { Select, Spin } from 'antd';
 import { SelectProps, SelectValue } from 'antd/es/select';
 import debounce from 'lodash/debounce';

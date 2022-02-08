@@ -1,4 +1,4 @@
-import { Creator } from '@oyster/common';
+import { Creator } from '@oyster/commonmetaplex';
 import { Button, Input, Row, Select, Space } from 'antd';
 import { isNil } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
