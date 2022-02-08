@@ -315,7 +315,7 @@ export const Cog = ({ buttonType }: { buttonType?: ButtonProps['type'] }) => {
       className="metaplex-button-appbar"
       type={buttonType}
       onClick={() => {
-        history.push('setting');
+        history.push('/setting');
       }}
     >
       <CogSvg />
