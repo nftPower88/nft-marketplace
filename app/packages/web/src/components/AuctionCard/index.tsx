@@ -27,7 +27,7 @@ import {
   useWalletModal,
   VaultState,
   WinningConfigType,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { AccountLayout, MintLayout } from '@solana/spl-token';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Connection, LAMPORTS_PER_SOL } from '@solana/web3.js';

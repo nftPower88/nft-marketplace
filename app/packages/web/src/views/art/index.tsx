@@ -4,7 +4,7 @@ import {
   useConnection,
   useMeta,
   loadMultipleAccounts,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Divider, List, Row, Skeleton, Space, Tag, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';

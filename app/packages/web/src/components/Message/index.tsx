@@ -1,4 +1,6 @@
-import { Identicon } from '@oyster/commonlocal';
+// @ts-nocheck
+
+import { Identicon } from '@oyster/commonmetaplex';
 import React from 'react';
 import { useTheme } from '../../contexts/themecontext';
 

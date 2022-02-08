@@ -9,7 +9,7 @@ import { ParsedAccount } from '../accounts/types';
 import { Metadata } from '../../actions';
 import { MetaContextState, MetaState } from './types';
 import { useWallet } from "@solana/wallet-adapter-react";
-
+  
 const MetaContext = React.createContext<MetaContextState>({
   ...getEmptyMetaState(),
   isLoading: false,

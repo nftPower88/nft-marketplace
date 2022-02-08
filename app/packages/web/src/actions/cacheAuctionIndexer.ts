@@ -4,16 +4,16 @@ import {
   ParsedAccount,
   StringPublicKey,
   WalletSigner,
-} from '@oyster/commonlocal';
-import { getSafetyDepositBoxAddress } from '@oyster/commonlocal/dist/lib/actions/vault';
+} from '@oyster/commonmetaplex';
+import { getSafetyDepositBoxAddress } from '@oyster/commonmetaplex/dist/lib/actions/vault';
 import {
   StoreIndexer,
   getStoreIndexer,
   getAuctionCache,
   MAX_INDEXED_ELEMENTS,
-} from '@oyster/commonlocal/dist/lib/models/metaplex/index';
-import { setStoreIndex } from '@oyster/commonlocal/dist/lib/models/metaplex/setStoreIndex';
-import { setAuctionCache } from '@oyster/commonlocal/dist/lib/models/metaplex/setAuctionCache';
+} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
+import { setStoreIndex } from '@oyster/commonmetaplex/dist/lib/models/metaplex/setStoreIndex';
+import { setAuctionCache } from '@oyster/commonmetaplex/dist/lib/models/metaplex/setAuctionCache';
 import BN from 'bn.js';
 
 // This command caches an auction at position 0, page 0, and moves everything up

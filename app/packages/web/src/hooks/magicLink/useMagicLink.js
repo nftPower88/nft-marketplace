@@ -3,7 +3,7 @@ import EventEmitter from 'event-emitter';
 import unfetch from 'isomorphic-unfetch';
 import { Sema } from 'async-sema';
 import loadMagicLink from './loadMagicLink';
-import { useConnectionConfig } from '@oyster/commonlocal';
+import { useConnectionConfig } from '@oyster/commonmetaplex';
 import getConfig from 'next/config';
 
 

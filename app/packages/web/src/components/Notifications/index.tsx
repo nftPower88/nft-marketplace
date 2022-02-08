@@ -11,7 +11,7 @@ import {
   toPublicKey,
   useConnection,
   WalletSigner,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
 import { Badge, Button, ButtonProps, List, Popover } from 'antd';

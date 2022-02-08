@@ -1,4 +1,4 @@
-import { StringPublicKey } from '@oyster/commonlocal';
+import { StringPublicKey } from '@oyster/commonmetaplex';
 import { Space } from 'antd';
 import React, { useState } from 'react';
 import { ReactNode, useContext, useEffect, useMemo, useRef } from 'react';

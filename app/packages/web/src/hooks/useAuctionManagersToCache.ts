@@ -6,7 +6,7 @@ import {
   ParsedAccount,
   useMeta,
   useStore,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import BN from 'bn.js';
 
 interface AuctionCacheStatus {

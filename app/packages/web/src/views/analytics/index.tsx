@@ -5,7 +5,7 @@ import {
   AuctionManagerV1,
   AuctionManagerV2,
   WinningConfigType,
-} from '@oyster/commonlocal/dist/lib/models/metaplex/index';
+} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
 import { Pie, Bar } from 'react-chartjs-2';
 import {
   AuctionDataExtended,
@@ -16,7 +16,7 @@ import {
   ParsedAccount,
   programIds,
   useMint,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { AuctionView, useAuctions } from '../../hooks';
 import { QUOTE_MINT } from '../../constants';
 import { MintInfo } from '@solana/spl-token';

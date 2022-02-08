@@ -1,9 +1,10 @@
-name: nft-marketplace # just to not conflict with my env, don't change yours
+name: nft-marketplace_node16 # just to not conflict with my env, don't change yours
 channels:
   - pytorch
   - conda-forge
   - defaults
 dependencies:
-  - nodejs=14.17.4
+#  - nodejs=14.17.4
+  - nodejs=16
   - yarn
   - rust

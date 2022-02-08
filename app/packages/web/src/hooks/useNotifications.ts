@@ -6,7 +6,7 @@ import {
   StringPublicKey,
   WalletSigner,
   useMeta,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import {
   startAuctionManually,
   decommAuctionManagerAndReturnPrizes,

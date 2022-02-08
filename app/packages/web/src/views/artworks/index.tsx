@@ -3,7 +3,7 @@ import {
   loadMetadataForUsers,
   useConnection,
   useUserAccounts,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';

@@ -4,13 +4,13 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/commonlocal';
-import { createTokenAccount } from '@oyster/commonlocal/dist/lib/actions/account';
+} from '@oyster/commonmetaplex';
+import { createTokenAccount } from '@oyster/commonmetaplex/dist/lib/actions/account';
 import {
   activateVault,
   combineVault,
-} from '@oyster/commonlocal/dist/lib/actions/vault';
-import { approve } from '@oyster/commonlocal/dist/lib/models/account';
+} from '@oyster/commonmetaplex/dist/lib/actions/vault';
+import { approve } from '@oyster/commonmetaplex/dist/lib/models/account';
 
 import { AccountLayout } from '@solana/spl-token';
 import BN from 'bn.js';

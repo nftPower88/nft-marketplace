@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { useRouter } from 'next/router';
-import { ConnectButton, metadataByMintUpdater, useStore } from '@oyster/commonlocal';
+import { ConnectButton, metadataByMintUpdater, useStore } from '@oyster/commonmetaplex';
 import { Link } from 'react-router-dom';
 import { InstructionsModal } from '../components/InstructionsModal';
 import { useInfiniteScrollAuctions } from '../hooks';

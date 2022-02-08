@@ -4,7 +4,7 @@ import {
   setVaultAuthority,
   StringPublicKey,
   WalletSigner,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 
 // This command sets the authorities on the vault and auction to be the newly created auction manager.

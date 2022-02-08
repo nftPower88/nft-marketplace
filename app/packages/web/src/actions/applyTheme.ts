@@ -1,4 +1,4 @@
-import { StorefrontTheme } from '@oyster/commonlocal';
+import { StorefrontTheme } from '@oyster/commonmetaplex';
 import { Color, Vector2, Vector3 } from 'three';
 const { abs, cbrt } = Math;
 

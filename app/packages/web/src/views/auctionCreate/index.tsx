@@ -18,7 +18,7 @@ import {
   processAuctions,
   VAULT_ID,
   processVaultData,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import Bugsnag from '@bugsnag/browser';
 import {
   AmountRange,

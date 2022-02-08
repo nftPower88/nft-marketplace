@@ -12,12 +12,12 @@ import {
   TokenAccount,
   toPublicKey,
   WalletSigner,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 
 import { AuctionView } from '../hooks';
 
-import { claimBid } from '@oyster/commonlocal/dist/lib/models/metaplex/claimBid';
-import { emptyPaymentAccount } from '@oyster/commonlocal/dist/lib/models/metaplex/emptyPaymentAccount';
+import { claimBid } from '@oyster/commonmetaplex/dist/lib/models/metaplex/claimBid';
+import { emptyPaymentAccount } from '@oyster/commonmetaplex/dist/lib/models/metaplex/emptyPaymentAccount';
 import { QUOTE_MINT } from '../constants';
 import { setupPlaceBid } from './sendPlaceBid';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';

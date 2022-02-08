@@ -6,7 +6,7 @@ import { Connection } from '@solana/web3.js';
 import { AccountAndPubkey, MetaState, ProcessAccountsFunc, UpdateStateValueFunc } from './types';
 import { ParsedAccount } from '../accounts/types';
 export declare const loadMetadataForUsers: (connection: Connection, userTokenAccounts: TokenAccount[], whitelistedCreatorsByCreator: Record<string, ParsedAccount<WhitelistedCreator>>) => Promise<MetaState>;
-export declare const loadStoreIndexers: (connection: Connection) => Promise<MetaState>;
+export declare const pullYourMetadata: (connection: Connection) => Promise<MetaState>;
 export declare const loadAccounts: (connection: Connection, ownerAddress: StringPublicKey) => Promise<MetaState>;
 export declare const loadVaultsAndContentForAuthority: (connection: Connection, walletPubkey: StringPublicKey) => Promise<MetaState>;
 export declare const loadPayoutTickets: (connection: Connection) => Promise<MetaState>;

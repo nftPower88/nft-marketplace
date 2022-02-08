@@ -5,7 +5,7 @@ import {
   mintNewEditionFromMasterEditionViaToken,
   StringPublicKey,
   TokenAccount,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { createMintAndAccountWithOne } from './createMintAndAccountWithOne';
 import { Art } from '../types';
 import { WalletContextState } from '@solana/wallet-adapter-react';

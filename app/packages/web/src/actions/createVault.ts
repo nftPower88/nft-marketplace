@@ -11,13 +11,13 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import {
   initVault,
   MAX_VAULT_SIZE,
   VAULT_PREFIX,
-} from '@oyster/commonlocal/dist/lib/actions/vault';
-import { createTokenAccount } from '@oyster/commonlocal/dist/lib/actions/account';
+} from '@oyster/commonmetaplex/dist/lib/actions/vault';
+import { createTokenAccount } from '@oyster/commonmetaplex/dist/lib/actions/account';
 
 import { AccountLayout, MintLayout } from '@solana/spl-token';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';

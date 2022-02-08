@@ -3,8 +3,17 @@
 echo "Starting to deploy 'web', installing and bootstrapping..."
 yarn&& yarn bootstrap
 
-echo "Preparing 'common'..."
+# echo "Preparing 'common'..."
+# cd ./packages/common || exit
+# yarn prepare
+# cd ../commonlocal || exit
+
+echo "Preparing 'commonlocal'..."
 cd ./packages/commonlocal || exit
+yarn prepare
+cd ../commonmetaplex || exit
+
+echo "Preparing 'commonmetaplex'..."
 yarn prepare
 cd ../checkout || exit
 

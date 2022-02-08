@@ -3,7 +3,7 @@ import {
   IMetadataExtension,
   MetaplexModal,
   shortenAddress,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, InputNumber, Row, Slider, Space, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Space, Button, Typography } from 'antd';
 import { useArt } from '../../hooks';
-import { useConnectionConfig } from '@oyster/commonlocal';
+import { useConnectionConfig } from '@oyster/commonmetaplex';
 import { Art } from '../../types';
 
 type ViewOnProps = { id: string; art?: undefined } | { art: Art };

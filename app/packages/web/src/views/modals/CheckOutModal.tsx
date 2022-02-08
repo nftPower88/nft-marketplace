@@ -37,7 +37,7 @@ import {
   fromLamports,
   useMint,
   PriceFloorType,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { ArtType } from '../../types';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -87,7 +87,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
 
   const hasDescription = data === undefined || data.description === undefined;
   const description = data?.description;
+  // @ts-ignore
   const story = data?.properties.story;
+  // @ts-ignore
   const item_id = data?.properties.item_id;
   const attributes = data?.attributes;
   const { Text } = Typography;

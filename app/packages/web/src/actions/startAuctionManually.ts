@@ -4,12 +4,12 @@ import {
   ParsedAccount,
   AuctionManagerV1,
   AuctionManagerV2,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import {
   notify,
   sendTransactionWithRetry,
   WalletSigner,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 
 export async function startAuctionManually(
   connection: Connection,

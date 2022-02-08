@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CountdownState } from '@oyster/commonlocal';
+import { CountdownState } from '@oyster/commonmetaplex';
 import { AuctionView } from './useAuctions';
 
 export const useAuctionCountdown = (auctionView: AuctionView) => {

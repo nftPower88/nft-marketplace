@@ -4,7 +4,7 @@ import {
   useConnection,
   loadMetadataAndEditionsBySafetyDepositBoxes,
   loadPrizeTrackingTickets,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import {

@@ -6,7 +6,7 @@ import {
   StringPublicKey,
   useConnection,
   useConnectionConfig,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Space, Steps } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ import { RoyaltiesStep } from './royaltiesStep';
 import { UploadStep } from './uploadStep';
 import { WaitingStep } from './waitingStep';
 import { useMeta } from '../../contexts';
-import { useStore } from '@oyster/commonlocal';
+import { useStore } from '@oyster/commonmetaplex';
 
 const { Step } = Steps;
 
@@ -59,6 +59,7 @@ export const ArtCreateView = () => {
     properties: {
       files: [],
       category: MetadataCategory.Image,
+      // @ts-ignore
       story: '',
       item_id: '',
     },
@@ -108,7 +109,9 @@ export const ArtCreateView = () => {
       attributes: attributes.attributes,
       external_url: attributes.external_url,
       properties: {
+        // @ts-ignore
         story: attributes.properties.story,
+        // @ts-ignore
         item_id: attributes.properties.item_id,
         files: attributes.properties.files,
         category: attributes.properties?.category,

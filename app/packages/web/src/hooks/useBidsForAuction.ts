@@ -4,7 +4,7 @@ import {
   ParsedAccount,
   StringPublicKey,
   useMeta,
-} from '@oyster/commonlocal';
+} from '@oyster/commonmetaplex';
 
 export const useHighestBidForAuction = (
   auctionPubkey: StringPublicKey | string,
