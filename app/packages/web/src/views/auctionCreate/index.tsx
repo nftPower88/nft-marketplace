@@ -23,7 +23,7 @@ import Bugsnag from '@bugsnag/browser';
 import {
   AmountRange,
   WinningConfigType,
-} from '@oyster/commonlocal/dist/lib/models/metaplex/index';
+} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { LAMPORTS_PER_SOL, SystemProgram } from '@solana/web3.js';
 import { Button, Col, Row, Space, Steps } from 'antd';
@@ -49,7 +49,7 @@ import { PriceAuction } from './priceAuction';
 import { ReviewStep } from './reviewStep';
 import { TierTableStep } from './tierTableStep';
 import { WaitingStep } from './waitingStep';
-import { useStore } from '@oyster/commonlocal';
+import { useStore } from '@oyster/commonmetaplex';
 const { Step } = Steps;
 const { ZERO } = constants;
 

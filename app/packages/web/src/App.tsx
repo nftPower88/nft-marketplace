@@ -1,5 +1,5 @@
 import React from 'react';
-import { Storefront } from '@oyster/commonlocal';
+import { Storefront } from '@oyster/commonmetaplex';
 import { Routes } from './routes';
 
 interface AppProps {
