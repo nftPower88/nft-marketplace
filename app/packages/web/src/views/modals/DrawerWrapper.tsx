@@ -8,6 +8,7 @@ interface Props {
   hide: (value: any) => void;
   id: string;
   placement: 'top' | 'bottom' | 'right' | 'left';
+  mobileMode: boolean;
 }
 
 const DrawerWrapper: React.FC<Props> = ({
@@ -15,6 +16,7 @@ const DrawerWrapper: React.FC<Props> = ({
   hide,
   id,
   placement,
+  mobileMode,
 }: Props) => {
   const promisedModal = new Promise(resolve =>
     resolve(<CheckOutModal show={show} hide={hide} id={id} />),
@@ -22,6 +24,7 @@ const DrawerWrapper: React.FC<Props> = ({
 
   return (
     <Drawer
+      size="large"
       placement={placement}
       closable={false}
       onClose={hide}
@@ -29,7 +32,7 @@ const DrawerWrapper: React.FC<Props> = ({
       key="right"
       width={470}
     >
-      <CheckOutModal show={show} hide={hide} id={id} />
+      <CheckOutModal show={show} hide={hide} id={id} mobile={mobileMode} />
     </Drawer>
   );
 };

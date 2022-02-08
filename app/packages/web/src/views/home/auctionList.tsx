@@ -95,6 +95,8 @@ export const AuctionListView = () => {
   useEffect(() => {
     if (width <= 575) {
       setMobileMode(true);
+    } else if (width > 575) {
+      setMobileMode(false);
     }
   }, [height, width]);
 
@@ -259,6 +261,7 @@ export const AuctionListView = () => {
           hide={() => setShowModal(false)}
           placement="bottom"
           show={showModal && mobileMode}
+          mobileMode={mobileMode}
         />
       )}
       {showModal && (
@@ -267,6 +270,7 @@ export const AuctionListView = () => {
           hide={() => setShowModal(false)}
           placement="right"
           show={showModal && !mobileMode}
+          mobileMode={mobileMode}
         />
       )}
     </>
