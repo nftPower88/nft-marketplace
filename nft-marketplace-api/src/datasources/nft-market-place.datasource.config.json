@@ -1,0 +1,10 @@
+{
+  "name": "NFTMarketPlace",
+  "connector": "mongodb",
+  "url": "mongodb://marketplace:test_password@localhost:27017/nft_backend",
+  "host": "localhost",
+  "port": 27017,
+  "user": "marketplace",
+  "password": "test_password",
+  "database": "nft_backend"
+}
