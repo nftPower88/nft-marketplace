@@ -1,4 +1,4 @@
-import { useLocalStorage } from '@oyster/common';
+import { useLocalStorage } from '@oyster/commonlocal';
 import { TokenInfo } from '@solana/spl-token-registry';
 
 export const LAMPORT_MULTIPLIER = 10 ** 9;

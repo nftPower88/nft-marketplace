@@ -37,7 +37,7 @@ import {
   VAULT_ID,
   processVaultData,
   subscribeProgramChanges
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMeta } from '../../contexts';
 import { Connection } from '@solana/web3.js';

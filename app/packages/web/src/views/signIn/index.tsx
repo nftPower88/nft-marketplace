@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Divider, Row, Col, Layout, Input, Form } from 'antd';
-import { MetaplexOverlay, MetaplexModal, ConnectButton } from '@oyster/common';
+import { MetaplexOverlay, MetaplexModal, ConnectButton } from '@oyster/commonlocal';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Keypair } from '@solana/web3.js';

@@ -1,4 +1,4 @@
-import { MetadataCategory, StringPublicKey } from '@oyster/common';
+import { MetadataCategory, StringPublicKey } from '@oyster/commonlocal';
 import { Badge, Button, Card, CardProps, Space, Tag } from 'antd';
 import React from 'react';
 import { useArt } from '../../hooks';

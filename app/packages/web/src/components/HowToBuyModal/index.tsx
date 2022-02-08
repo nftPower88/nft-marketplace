@@ -1,4 +1,4 @@
-import { ConnectButton } from '@oyster/common';
+import { ConnectButton } from '@oyster/commonlocal';
 import { ButtonProps } from 'antd';
 import React from 'react';
 import { LABELS } from '../../constants';

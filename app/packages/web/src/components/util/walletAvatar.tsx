@@ -1,6 +1,6 @@
 import React from 'react';
 import {useWallet} from '@solana/wallet-adapter-react';
-import { Identicon } from '@oyster/common';
+import { Identicon } from '@oyster/commonlocal';
 
 export const WalletAvatar = () => {
   const {wallet, publicKey} = useWallet();

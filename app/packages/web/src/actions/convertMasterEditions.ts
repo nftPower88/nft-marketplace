@@ -13,7 +13,7 @@ import {
   programIds,
   toPublicKey,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { Token } from '@solana/spl-token';
 

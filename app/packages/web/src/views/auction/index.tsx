@@ -19,8 +19,8 @@ import {
   processMetaplexAccounts,
   VAULT_ID,
   processVaultData,
-} from '@oyster/common';
-import { AuctionViewItem } from '@oyster/common/dist/lib/models/metaplex/index';
+} from '@oyster/commonlocal';
+import { AuctionViewItem } from '@oyster/commonlocal/dist/lib/models/metaplex/index';
 import { getHandleAndRegistryKey } from '@solana/spl-name-service';
 import { MintInfo } from '@solana/spl-token';
 import { Link } from 'react-router-dom';

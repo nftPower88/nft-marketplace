@@ -1,4 +1,4 @@
-import { Creator } from '@oyster/common';
+import { Creator } from '@oyster/commonlocal';
 import { Button, Input, Row, Space } from 'antd';
 import React, { useState } from 'react';
 import { AuctionCategory, AuctionState } from '.';

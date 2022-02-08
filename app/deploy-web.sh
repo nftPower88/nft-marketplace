@@ -4,7 +4,7 @@ echo "Starting to deploy 'web', installing and bootstrapping..."
 yarn&& yarn bootstrap
 
 echo "Preparing 'common'..."
-cd ./packages/common || exit
+cd ./packages/commonlocal || exit
 yarn prepare
 cd ../checkout || exit
 

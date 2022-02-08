@@ -1,4 +1,4 @@
-import { StringPublicKey, pubkeyToString } from '@oyster/common';
+import { StringPublicKey, pubkeyToString } from '@oyster/commonlocal';
 import { useMeta } from '../contexts';
 
 export const useCreator = (id?: StringPublicKey) => {

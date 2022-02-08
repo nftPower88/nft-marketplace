@@ -123,7 +123,7 @@ const WalletProvider = ({ children }) => {
             description: error.message,
         });
     }, []);
-    return (react_1.default.createElement(wallet_adapter_react_1.WalletProvider, { wallets: wallets, onError: onError, autoConnect: true },
+    return (react_1.default.createElement(wallet_adapter_react_1.WalletProvider, { wallets: wallets, onError: onError, autoConnect: false },
         react_1.default.createElement(exports.WalletModalProvider, null, children)));
 };
 exports.WalletProvider = WalletProvider;

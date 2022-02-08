@@ -3,7 +3,7 @@ import { Card, Row, Col } from 'antd';
 
 import { Artist } from '../../types';
 
-import { shortenAddress } from '@oyster/common';
+import { shortenAddress } from '@oyster/commonlocal';
 import { MetaAvatar } from '../MetaAvatar';
 
 export const ArtistCard = ({

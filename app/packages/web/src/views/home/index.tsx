@@ -1,4 +1,4 @@
-import { useStore } from '@oyster/common';
+import { useStore } from '@oyster/commonlocal';
 import React from 'react';
 import { useMeta } from '../../contexts';
 import { AuctionListView } from './auctionList';

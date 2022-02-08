@@ -1,4 +1,4 @@
-import { Storefront } from '@oyster/common';
+import { Storefront } from '@oyster/commonlocal';
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { Providers } from './providers';

@@ -6,7 +6,7 @@ import {
   StringPublicKey,
   useConnection,
   useConnectionConfig,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button, Col, Row, Space, Steps } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ import { RoyaltiesStep } from './royaltiesStep';
 import { UploadStep } from './uploadStep';
 import { WaitingStep } from './waitingStep';
 import { useMeta } from '../../contexts';
-import { useStore } from '@oyster/common';
+import { useStore } from '@oyster/commonlocal';
 
 const { Step } = Steps;
 

@@ -1,5 +1,5 @@
 import { useMeta } from '../contexts';
-import { StringPublicKey } from '@oyster/common';
+import { StringPublicKey } from '@oyster/commonlocal';
 
 export const useCreatorArts = (id?: StringPublicKey) => {
   const { metadata } = useMeta();

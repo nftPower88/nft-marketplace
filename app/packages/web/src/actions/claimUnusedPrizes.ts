@@ -12,7 +12,7 @@ import {
   BidderMetadata,
   toPublicKey,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { AccountLayout, MintLayout } from '@solana/spl-token';
 import { AuctionView } from '../hooks';
@@ -25,8 +25,8 @@ import {
   getBidRedemption,
   PrizeTrackingTicket,
   AuctionViewItem,
-} from '@oyster/common/dist/lib/models/metaplex/index';
-import { createTokenAccount } from '@oyster/common/dist/lib/actions/account';
+} from '@oyster/commonlocal/dist/lib/models/metaplex/index';
+import { createTokenAccount } from '@oyster/commonlocal/dist/lib/actions/account';
 import {
   eligibleForParticipationPrizeGivenWinningIndex,
   setupRedeemParticipationInstructions,

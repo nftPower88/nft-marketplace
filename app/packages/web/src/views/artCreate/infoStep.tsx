@@ -1,5 +1,5 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { IMetadataExtension } from '@oyster/common';
+import { IMetadataExtension } from '@oyster/commonlocal';
 import { Button, Col, Form, Input, InputNumber, Row, Space } from 'antd';
 import React from 'react';
 import { useArtworkFiles } from '.';

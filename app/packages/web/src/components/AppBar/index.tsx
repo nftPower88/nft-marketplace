@@ -1,4 +1,4 @@
-import { ConnectButton, useStore } from '@oyster/common';
+import { ConnectButton, useStore } from '@oyster/commonlocal';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Col, Menu, Row, Space, Button, Drawer } from 'antd';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';

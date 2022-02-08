@@ -58,15 +58,19 @@ export function MetaProvider({ children = null }: { children: ReactNode }) {
         setIsLoading(true);
       }
 
-      // const nextState = await loadAccounts(connection, ownerAddress);
-      // setState(nextState);
-      if (publicKey) {
-        const nextState = await loadAccounts(connection, ownerAddress);
-        setState(nextState);
-      } else {
-        const nextState = await loadAccountsNoWallet(connection, ownerAddress);
-        setState(nextState);        
-      }
+      const nextState = await loadAccounts(connection, ownerAddress);
+      setState(nextState);
+      // if (publicKey) {
+      //   const nextState = await loadAccounts(connection, ownerAddress);
+      //   setState(nextState);
+      // } else {
+      //   const nextState = await loadAccountsNoWallet(connection, ownerAddress);
+      //   setState(nextState);        
+      // }
+      // if (publicKey) {
+      //   const nextState = await loadAccounts(connection, ownerAddress);
+      //   setState(nextState);
+      // }
 
       setIsLoading(false);
     })();

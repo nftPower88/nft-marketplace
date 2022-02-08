@@ -1,4 +1,4 @@
-import { ArrowButton, StringPublicKey } from '@oyster/common';
+import { ArrowButton, StringPublicKey } from '@oyster/commonlocal';
 import { Button, Space } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

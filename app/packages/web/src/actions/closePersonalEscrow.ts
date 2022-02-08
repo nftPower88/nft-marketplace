@@ -5,7 +5,7 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { Token } from '@solana/spl-token';
 // When you are an artist and you receive royalties, due to the design of the system

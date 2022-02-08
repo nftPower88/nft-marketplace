@@ -35,7 +35,7 @@ import {
   METAPLEX_ID,
   processMetaplexAccounts,
   subscribeProgramChanges,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
 import { saveAdmin } from '../../actions/saveAdmin';
@@ -58,7 +58,7 @@ import { useAuctionManagersToCache, useNotifications } from '../../hooks';
 import Bugsnag from '@bugsnag/browser';
 import getConfig from 'next/config';
 
-import { ENDPOINTS, useConnectionConfig } from '@oyster/common';
+import { ENDPOINTS, useConnectionConfig } from '@oyster/commonlocal';
 
 const { publicRuntimeConfig } = getConfig();
 

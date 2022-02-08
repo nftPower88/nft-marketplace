@@ -11,8 +11,8 @@ import {
   StringPublicKey,
   useLocalStorage,
   pubkeyToString,
-} from '@oyster/common';
-import { WhitelistedCreator } from '@oyster/common/dist/lib/models/metaplex/index';
+} from '@oyster/commonlocal';
+import { WhitelistedCreator } from '@oyster/commonlocal/dist/lib/models/metaplex/index';
 import { Cache } from 'three';
 import { useInView } from 'react-intersection-observer';
 import { maybeCDN } from '../utils/cdn';

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { NextPageContext } from 'next';
 import Head from 'next/head';
-import { Storefront } from '@oyster/common';
+import { Storefront } from '@oyster/commonlocal';
 import Bugsnag from '@bugsnag/js';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
 import { applyTheme } from '../actions/applyTheme';

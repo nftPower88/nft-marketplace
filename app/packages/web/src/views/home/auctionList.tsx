@@ -3,7 +3,7 @@ import {
   useStore,
   loadMetadataForCreator,
   useConnection,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Alert, Button, Spin, Divider, Select, Input } from 'antd';
 import React, { useState, useEffect } from 'react';

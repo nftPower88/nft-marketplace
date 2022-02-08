@@ -3,10 +3,10 @@ import {
   deprecatedCreateReservationList,
   StringPublicKey,
   WalletSigner,
-} from '@oyster/common';
+} from '@oyster/commonlocal';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { SafetyDepositInstructionTemplate } from './addTokensToVault';
-import { WinningConfigType } from '@oyster/common/dist/lib/models/metaplex/index';
+import { WinningConfigType } from '@oyster/commonlocal/dist/lib/models/metaplex/index';
 
 const BATCH_SIZE = 10;
 // This command batches out creating reservation lists for those tokens who are being sold in PrintingV1 mode.

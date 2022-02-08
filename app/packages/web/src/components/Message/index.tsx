@@ -1,4 +1,4 @@
-import { Identicon } from '@oyster/common';
+import { Identicon } from '@oyster/commonlocal';
 import React from 'react';
 import { useTheme } from '../../contexts/themecontext';
 
