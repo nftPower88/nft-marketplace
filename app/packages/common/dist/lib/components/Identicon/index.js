@@ -28,11 +28,11 @@ const jazzicon_1 = __importDefault(require("@metamask/jazzicon"));
 const web3_js_1 = require("@solana/web3.js");
 const Identicon = ({ size, address, alt, }) => {
     const pubkey = typeof address === 'string' ? new web3_js_1.PublicKey(address) : address;
-    const ref = react_1.useRef(null);
-    const el = react_1.useMemo(() => {
+    const ref = (0, react_1.useRef)(null);
+    const el = (0, react_1.useMemo)(() => {
         if (!pubkey)
             return undefined;
-        const el = jazzicon_1.default(72, Array.from(new Uint32Array(pubkey.toBytes())));
+        const el = (0, jazzicon_1.default)(72, Array.from(new Uint32Array(pubkey.toBytes())));
         // There's no need for jazzicon to dictate the element size, this allows
         // auto-scaling the element and its contents
         const svg = el.querySelector('svg');
@@ -43,7 +43,7 @@ const Identicon = ({ size, address, alt, }) => {
         }
         return el;
     }, [pubkey]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         // TODO: the current TSC toolchain does not have a correct definition for replaceChildren
         // @ts-ignore
         if (el && ref.current)

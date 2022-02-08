@@ -28,21 +28,21 @@ const components_1 = require("../components");
 const utils_1 = require("../utils");
 const react_router_dom_1 = require("react-router-dom");
 const { Panel } = antd_1.Collapse;
-exports.WalletModalContext = react_1.createContext({
+exports.WalletModalContext = (0, react_1.createContext)({
     visible: false,
     setVisible: () => { },
 });
 function useWalletModal() {
-    return react_1.useContext(exports.WalletModalContext);
+    return (0, react_1.useContext)(exports.WalletModalContext);
 }
 exports.useWalletModal = useWalletModal;
 const WalletModal = () => {
-    const { wallets, select } = wallet_adapter_react_1.useWallet();
+    const { wallets, select } = (0, wallet_adapter_react_1.useWallet)();
     const { visible, setVisible } = useWalletModal();
-    const close = react_1.useCallback(() => {
+    const close = (0, react_1.useCallback)(() => {
         setVisible(false);
     }, [setVisible]);
-    const phatomWallet = react_1.useMemo(() => wallet_adapter_wallets_1.getPhantomWallet(), []);
+    const phatomWallet = (0, react_1.useMemo)(() => (0, wallet_adapter_wallets_1.getPhantomWallet)(), []);
     return (
     // <MetaplexModal title="Pick a wallet to connect to Queendom" centered visible={visible} onCancel={close} bodyStyle={{borderRadius:'5px',boxShadow:'2px 5px 10px'}}>
     react_1.default.createElement(components_1.MetaplexModal, { centered: true, visible: visible, onCancel: close, closable: false },
@@ -70,11 +70,11 @@ const WalletModal = () => {
 };
 exports.WalletModal = WalletModal;
 const WalletModalProvider = ({ children, }) => {
-    const { publicKey } = wallet_adapter_react_1.useWallet();
-    const [connected, setConnected] = react_1.useState(!!publicKey);
-    const [visible, setVisible] = react_1.useState(false);
-    const history = react_router_dom_1.useHistory();
-    react_1.useEffect(() => {
+    const { publicKey } = (0, wallet_adapter_react_1.useWallet)();
+    const [connected, setConnected] = (0, react_1.useState)(!!publicKey);
+    const [visible, setVisible] = (0, react_1.useState)(false);
+    const history = (0, react_router_dom_1.useHistory)();
+    (0, react_1.useEffect)(() => {
         if (publicKey) {
             const base58 = publicKey.toBase58();
             const keyToDisplay = base58.length > 20
@@ -84,15 +84,15 @@ const WalletModalProvider = ({ children, }) => {
                 history.push('/signinconfirm');
                 localStorage.removeItem('click-signin');
             }
-            utils_1.notify({
+            (0, utils_1.notify)({
                 message: 'Wallet update',
                 description: 'Connected to wallet ' + keyToDisplay,
             });
         }
     }, [publicKey]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         if (!publicKey && connected) {
-            utils_1.notify({
+            (0, utils_1.notify)({
                 message: 'Wallet update',
                 description: 'Disconnected from wallet',
             });
@@ -108,22 +108,22 @@ const WalletModalProvider = ({ children, }) => {
 };
 exports.WalletModalProvider = WalletModalProvider;
 const WalletProvider = ({ children }) => {
-    const wallets = react_1.useMemo(() => [
-        wallet_adapter_wallets_1.getPhantomWallet(),
-        wallet_adapter_wallets_1.getSolflareWallet(),
-        wallet_adapter_wallets_1.getLedgerWallet(),
-        wallet_adapter_wallets_1.getSolongWallet(),
-        wallet_adapter_wallets_1.getMathWallet(),
-        wallet_adapter_wallets_1.getSolletWallet(),
+    const wallets = (0, react_1.useMemo)(() => [
+        (0, wallet_adapter_wallets_1.getPhantomWallet)(),
+        (0, wallet_adapter_wallets_1.getSolflareWallet)(),
+        (0, wallet_adapter_wallets_1.getLedgerWallet)(),
+        (0, wallet_adapter_wallets_1.getSolongWallet)(),
+        (0, wallet_adapter_wallets_1.getMathWallet)(),
+        (0, wallet_adapter_wallets_1.getSolletWallet)(),
     ], []);
-    const onError = react_1.useCallback((error) => {
+    const onError = (0, react_1.useCallback)((error) => {
         console.error(error);
-        utils_1.notify({
+        (0, utils_1.notify)({
             message: 'Wallet error',
             description: error.message,
         });
     }, []);
-    return (react_1.default.createElement(wallet_adapter_react_1.WalletProvider, { wallets: wallets, onError: onError, autoConnect: true },
+    return (react_1.default.createElement(wallet_adapter_react_1.WalletProvider, { wallets: wallets, onError: onError, autoConnect: false },
         react_1.default.createElement(exports.WalletModalProvider, null, children)));
 };
 exports.WalletProvider = WalletProvider;

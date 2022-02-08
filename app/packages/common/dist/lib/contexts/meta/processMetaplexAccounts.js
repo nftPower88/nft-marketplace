@@ -14,12 +14,12 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
     if (!isMetaplexAccount(account))
         return;
     try {
-        const STORE_ID = utils_1.programIds().store;
+        const STORE_ID = (0, utils_1.programIds)().store;
         if (isAuctionManagerV1Account(account) ||
             isAuctionManagerV2Account(account)) {
             const storeKey = new web3_js_1.PublicKey(account.data.slice(1, 33));
             if (STORE_ID && storeKey.equals(STORE_ID)) {
-                const auctionManager = models_1.decodeAuctionManager(account.data);
+                const auctionManager = (0, models_1.decodeAuctionManager)(account.data);
                 const parsedAccount = {
                     pubkey,
                     account,
@@ -30,7 +30,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
         }
         if (isBidRedemptionTicketV1Account(account) ||
             isBidRedemptionTicketV2Account(account)) {
-            const ticket = models_1.decodeBidRedemptionTicket(account.data);
+            const ticket = (0, models_1.decodeBidRedemptionTicket)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -45,7 +45,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             }
         }
         if (isPayoutTicketV1Account(account)) {
-            const ticket = models_1.decodePayoutTicket(account.data);
+            const ticket = (0, models_1.decodePayoutTicket)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -54,7 +54,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             setter('payoutTickets', pubkey, parsedAccount);
         }
         if (isAuctionCacheV1Account(account)) {
-            const cache = models_1.decodeAuctionCache(account.data);
+            const cache = (0, models_1.decodeAuctionCache)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -66,7 +66,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             }
         }
         if (isStoreIndexerV1Account(account)) {
-            const indexer = models_1.decodeStoreIndexer(account.data);
+            const indexer = (0, models_1.decodeStoreIndexer)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -77,7 +77,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             }
         }
         if (isPrizeTrackingTicketV1Account(account)) {
-            const ticket = models_1.decodePrizeTrackingTicket(account.data);
+            const ticket = (0, models_1.decodePrizeTrackingTicket)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -86,7 +86,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             setter('prizeTrackingTickets', pubkey, parsedAccount);
         }
         if (isStoreV1Account(account)) {
-            const store = models_1.decodeStore(account.data);
+            const store = (0, models_1.decodeStore)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -97,7 +97,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             }
         }
         if (isSafetyDepositConfigV1Account(account)) {
-            const config = models_1.decodeSafetyDepositConfig(account.data);
+            const config = (0, models_1.decodeSafetyDepositConfig)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -110,7 +110,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
             // TODO: figure out a way to avoid generating creator addresses during parsing
             // should we store store id inside creator?
             if (STORE_ID) {
-                const isWhitelistedCreator = await models_1.isCreatorPartOfTheStore(parsedAccount.info.address, pubkey);
+                const isWhitelistedCreator = await (0, models_1.isCreatorPartOfTheStore)(parsedAccount.info.address, pubkey);
                 // call the api
                 /* TODO: use env. variable for different environments */
                 // const users = await fetchGetJSON('http://localhost:8080/api/users');
@@ -135,7 +135,7 @@ const processMetaplexAccounts = async ({ account, pubkey }, setter) => {
     }
 };
 exports.processMetaplexAccounts = processMetaplexAccounts;
-const isMetaplexAccount = (account) => utils_1.pubkeyToString(account === null || account === void 0 ? void 0 : account.owner) === utils_1.METAPLEX_ID;
+const isMetaplexAccount = (account) => (0, utils_1.pubkeyToString)(account === null || account === void 0 ? void 0 : account.owner) === utils_1.METAPLEX_ID;
 const isAuctionManagerV1Account = (account) => account.data[0] === models_1.MetaplexKey.AuctionManagerV1;
 const isAuctionManagerV2Account = (account) => account.data[0] === models_1.MetaplexKey.AuctionManagerV2;
 const isBidRedemptionTicketV1Account = (account) => account.data[0] === models_1.MetaplexKey.BidRedemptionTicketV1;

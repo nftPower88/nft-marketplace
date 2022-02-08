@@ -17,7 +17,7 @@ const ExplorerLink = (props) => {
         return null;
     }
     const length = (_b = props.length) !== null && _b !== void 0 ? _b : 9;
-    return (react_1.default.createElement("a", { href: `https://explorer.solana.com/${type}/${address}`, target: "_blank", rel: "noopener noreferrer", title: address }, code ? (react_1.default.createElement(antd_1.Typography.Text, { code: true }, utils_1.shortenAddress(address, length))) : (utils_1.shortenAddress(address, length))));
+    return (react_1.default.createElement("a", { href: `https://explorer.solana.com/${type}/${address}`, target: "_blank", rel: "noopener noreferrer", title: address }, code ? (react_1.default.createElement(antd_1.Typography.Text, { code: true }, (0, utils_1.shortenAddress)(address, length))) : ((0, utils_1.shortenAddress)(address, length))));
 };
 exports.ExplorerLink = ExplorerLink;
 //# sourceMappingURL=index.js.map

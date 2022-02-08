@@ -8,17 +8,17 @@ const getStoreID = async (storeOwnerAddress) => {
         return undefined;
     }
     console.log('Store owner', storeOwnerAddress, ids_1.METAPLEX_ID);
-    const programs = await utils_1.findProgramAddress([
+    const programs = await (0, utils_1.findProgramAddress)([
         Buffer.from('metaplex'),
-        ids_1.toPublicKey(ids_1.METAPLEX_ID).toBuffer(),
-        ids_1.toPublicKey(storeOwnerAddress).toBuffer(),
-    ], ids_1.toPublicKey(ids_1.METAPLEX_ID));
+        (0, ids_1.toPublicKey)(ids_1.METAPLEX_ID).toBuffer(),
+        (0, ids_1.toPublicKey)(storeOwnerAddress).toBuffer(),
+    ], (0, ids_1.toPublicKey)(ids_1.METAPLEX_ID));
     const storeAddress = programs[0];
     return storeAddress;
 };
 exports.getStoreID = getStoreID;
 const setProgramIds = async (store) => {
-    STORE = store ? ids_1.toPublicKey(store) : undefined;
+    STORE = store ? (0, ids_1.toPublicKey)(store) : undefined;
 };
 exports.setProgramIds = setProgramIds;
 let STORE;

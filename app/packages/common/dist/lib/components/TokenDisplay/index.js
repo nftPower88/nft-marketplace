@@ -10,8 +10,8 @@ const hooks_1 = require("../../hooks");
 const TokenIcon_1 = require("../TokenIcon");
 const TokenDisplay = (props) => {
     const { showBalance, mintAddress, name, icon } = props;
-    const tokenMint = accounts_1.useMint(mintAddress);
-    const tokenAccount = hooks_1.useAccountByMint(mintAddress);
+    const tokenMint = (0, accounts_1.useMint)(mintAddress);
+    const tokenAccount = (0, hooks_1.useAccountByMint)(mintAddress);
     let balance = 0;
     let hasBalance = false;
     if (showBalance) {

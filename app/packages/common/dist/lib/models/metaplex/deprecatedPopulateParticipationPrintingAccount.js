@@ -8,66 +8,66 @@ const actions_1 = require("../../actions");
 const utils_1 = require("../../utils");
 const deprecatedStates_1 = require("./deprecatedStates");
 async function deprecatedPopulateParticipationPrintingAccount(vault, auctionManager, auction, safetyDepositTokenStore, transientOneTimeAccount, printingTokenAccount, safetyDeposit, fractionMint, printingMint, oneTimePrintingAuthorizationMint, masterEdition, metadata, payer, instructions) {
-    const PROGRAM_IDS = utils_1.programIds();
+    const PROGRAM_IDS = (0, utils_1.programIds)();
     const store = PROGRAM_IDS.store;
     if (!store) {
         throw new Error('Store not initialized');
     }
-    const transferAuthority = (await utils_1.findProgramAddress([
+    const transferAuthority = (await (0, utils_1.findProgramAddress)([
         Buffer.from(actions_1.VAULT_PREFIX),
-        utils_1.toPublicKey(PROGRAM_IDS.vault).toBuffer(),
-        utils_1.toPublicKey(vault).toBuffer(),
-    ], utils_1.toPublicKey(PROGRAM_IDS.vault)))[0];
+        (0, utils_1.toPublicKey)(PROGRAM_IDS.vault).toBuffer(),
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+    ], (0, utils_1.toPublicKey)(PROGRAM_IDS.vault)))[0];
     const value = new deprecatedStates_1.DeprecatedPopulateParticipationPrintingAccountArgs();
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(safetyDepositTokenStore),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositTokenStore),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(transientOneTimeAccount),
+            pubkey: (0, utils_1.toPublicKey)(transientOneTimeAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(printingTokenAccount),
+            pubkey: (0, utils_1.toPublicKey)(printingTokenAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(oneTimePrintingAuthorizationMint),
+            pubkey: (0, utils_1.toPublicKey)(oneTimePrintingAuthorizationMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(printingMint),
+            pubkey: (0, utils_1.toPublicKey)(printingMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDeposit),
+            pubkey: (0, utils_1.toPublicKey)(safetyDeposit),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionMint),
+            pubkey: (0, utils_1.toPublicKey)(fractionMint),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auction),
+            pubkey: (0, utils_1.toPublicKey)(auction),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(await actions_1.getAuctionExtended({
+            pubkey: (0, utils_1.toPublicKey)(await (0, actions_1.getAuctionExtended)({
                 auctionProgramId: PROGRAM_IDS.auction,
                 resource: vault,
             })),
@@ -75,7 +75,7 @@ async function deprecatedPopulateParticipationPrintingAccount(vault, auctionMana
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionManager),
+            pubkey: (0, utils_1.toPublicKey)(auctionManager),
             isSigner: false,
             isWritable: false,
         },
@@ -85,12 +85,12 @@ async function deprecatedPopulateParticipationPrintingAccount(vault, auctionMana
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.vault),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.vault),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.metadata),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.metadata),
             isSigner: false,
             isWritable: false,
         },
@@ -100,22 +100,22 @@ async function deprecatedPopulateParticipationPrintingAccount(vault, auctionMana
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(masterEdition),
+            pubkey: (0, utils_1.toPublicKey)(masterEdition),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(metadata),
+            pubkey: (0, utils_1.toPublicKey)(metadata),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(transferAuthority),
+            pubkey: (0, utils_1.toPublicKey)(transferAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: false,
             isWritable: false,
         },
@@ -127,7 +127,7 @@ async function deprecatedPopulateParticipationPrintingAccount(vault, auctionMana
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

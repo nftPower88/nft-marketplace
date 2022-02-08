@@ -7,77 +7,77 @@ const _1 = require(".");
 const actions_1 = require("../../actions");
 const utils_1 = require("../../utils");
 async function redeemPrintingV2Bid(vault, safetyDepositTokenStore, tokenAccount, safetyDeposit, bidder, payer, metadata, masterEdition, originalMint, newMint, edition, editionOffset, winIndex, instructions) {
-    const PROGRAM_IDS = utils_1.programIds();
+    const PROGRAM_IDS = (0, utils_1.programIds)();
     const store = PROGRAM_IDS.store;
     if (!store) {
         throw new Error('Store not initialized');
     }
-    const { auctionKey, auctionManagerKey } = await _1.getAuctionKeys(vault);
-    const { bidRedemption, bidMetadata } = await _1.getBidderKeys(auctionKey, bidder);
-    const prizeTrackingTicket = await _1.getPrizeTrackingTicket(auctionManagerKey, originalMint);
-    const safetyDepositConfig = await _1.getSafetyDepositConfig(auctionManagerKey, safetyDeposit);
-    const newMetadata = await actions_1.getMetadata(newMint);
-    const newEdition = await actions_1.getEdition(newMint);
-    const editionMarkPda = await actions_1.getEditionMarkPda(originalMint, edition);
+    const { auctionKey, auctionManagerKey } = await (0, _1.getAuctionKeys)(vault);
+    const { bidRedemption, bidMetadata } = await (0, _1.getBidderKeys)(auctionKey, bidder);
+    const prizeTrackingTicket = await (0, _1.getPrizeTrackingTicket)(auctionManagerKey, originalMint);
+    const safetyDepositConfig = await (0, _1.getSafetyDepositConfig)(auctionManagerKey, safetyDeposit);
+    const newMetadata = await (0, actions_1.getMetadata)(newMint);
+    const newEdition = await (0, actions_1.getEdition)(newMint);
+    const editionMarkPda = await (0, actions_1.getEditionMarkPda)(originalMint, edition);
     const value = new _1.RedeemPrintingV2BidArgs({ editionOffset, winIndex });
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
-    const extended = await actions_1.getAuctionExtended({
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
+    const extended = await (0, actions_1.getAuctionExtended)({
         auctionProgramId: PROGRAM_IDS.auction,
         resource: vault,
     });
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(auctionManagerKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionManagerKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDepositTokenStore),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositTokenStore),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(tokenAccount),
+            pubkey: (0, utils_1.toPublicKey)(tokenAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidRedemption),
+            pubkey: (0, utils_1.toPublicKey)(bidRedemption),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDeposit),
+            pubkey: (0, utils_1.toPublicKey)(safetyDeposit),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDepositConfig),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositConfig),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidMetadata),
+            pubkey: (0, utils_1.toPublicKey)(bidMetadata),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidder),
+            pubkey: (0, utils_1.toPublicKey)(bidder),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: true,
         },
@@ -87,12 +87,12 @@ async function redeemPrintingV2Bid(vault, safetyDepositTokenStore, tokenAccount,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.vault),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.vault),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.metadata),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.metadata),
             isSigner: false,
             isWritable: false,
         },
@@ -112,32 +112,32 @@ async function redeemPrintingV2Bid(vault, safetyDepositTokenStore, tokenAccount,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(prizeTrackingTicket),
+            pubkey: (0, utils_1.toPublicKey)(prizeTrackingTicket),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(newMetadata),
+            pubkey: (0, utils_1.toPublicKey)(newMetadata),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(newEdition),
+            pubkey: (0, utils_1.toPublicKey)(newEdition),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(masterEdition),
+            pubkey: (0, utils_1.toPublicKey)(masterEdition),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(newMint),
+            pubkey: (0, utils_1.toPublicKey)(newMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(editionMarkPda),
+            pubkey: (0, utils_1.toPublicKey)(editionMarkPda),
             isSigner: false,
             isWritable: true,
         },
@@ -146,24 +146,24 @@ async function redeemPrintingV2Bid(vault, safetyDepositTokenStore, tokenAccount,
             // may not be signer hre - we may be redeeming for someone else (permissionless)
             // and during the txn, mint authority is removed from us and given to master edition.
             // The ATA account is already owned by bidder by default. No signing needed
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(metadata),
+            pubkey: (0, utils_1.toPublicKey)(metadata),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(extended),
+            pubkey: (0, utils_1.toPublicKey)(extended),
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

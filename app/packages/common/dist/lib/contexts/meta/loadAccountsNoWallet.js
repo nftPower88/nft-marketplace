@@ -22,15 +22,15 @@ const createPipelineExecutor_1 = require("../../utils/createPipelineExecutor");
 const __1 = require("../..");
 const queryStoreIndexer = async (connection, updateState) => {
     let i = 0;
-    let pageKey = await metaplex_1.getStoreIndexer(i);
-    let account = await getAccountInfo_1.getAccountInfo(connection, pageKey);
+    let pageKey = await (0, metaplex_1.getStoreIndexer)(i);
+    let account = await (0, getAccountInfo_1.getAccountInfo)(connection, pageKey);
     while (account) {
-        pageKey = await metaplex_1.getStoreIndexer(i);
-        account = await getAccountInfo_1.getAccountInfo(connection, pageKey);
+        pageKey = await (0, metaplex_1.getStoreIndexer)(i);
+        account = await (0, getAccountInfo_1.getAccountInfo)(connection, pageKey);
         if (!account) {
             break;
         }
-        processMetaplexAccounts_1.processMetaplexAccounts({
+        (0, processMetaplexAccounts_1.processMetaplexAccounts)({
             pubkey: pageKey,
             account,
         }, updateState);
@@ -38,19 +38,19 @@ const queryStoreIndexer = async (connection, updateState) => {
     }
 };
 const loadAccountsNoWallet = async (connection, ownerAddress) => {
-    const state = getEmptyMetaState_1.getEmptyMetaState();
-    const updateState = exports.makeSetter(state);
-    const storeAddress = await utils_1.getStoreID(ownerAddress);
+    const state = (0, getEmptyMetaState_1.getEmptyMetaState)();
+    const updateState = (0, exports.makeSetter)(state);
+    const storeAddress = await (0, utils_1.getStoreID)(ownerAddress);
     if (!storeAddress) {
         console.error('no store address. unable to lookup store account.');
         return state;
     }
     const queryAuctionCaches = async () => {
         const auctionCacheKeys = state.storeIndexer.reduce((memo, storeIndex) => [...memo, ...storeIndex.info.auctionCaches], []);
-        const auctionCacheData = await getMultipleAccounts_1.getMultipleAccounts(connection, auctionCacheKeys);
+        const auctionCacheData = await (0, getMultipleAccounts_1.getMultipleAccounts)(connection, auctionCacheKeys);
         if (auctionCacheData) {
             await Promise.all(auctionCacheData.keys.map((pubkey, i) => {
-                processMetaplexAccounts_1.processMetaplexAccounts({
+                (0, processMetaplexAccounts_1.processMetaplexAccounts)({
                     pubkey,
                     account: auctionCacheData.array[i],
                 }, updateState);
@@ -62,7 +62,7 @@ const loadAccountsNoWallet = async (connection, ownerAddress) => {
         let accountPubKeys = [];
         for (const auctionCache of auctionCaches) {
             const { info: { auction, vault, metadata, auctionManager }, } = auctionCache;
-            const auctionExtended = await actions_1.getAuctionExtended({
+            const auctionExtended = await (0, actions_1.getAuctionExtended)({
                 auctionProgramId: ids_1.AUCTION_ID,
                 resource: vault,
             });
@@ -94,9 +94,9 @@ const loadAccountsNoWallet = async (connection, ownerAddress) => {
         await Promise.all(readyMetadata);
     };
     const queryStorefront = async (storeAddress) => {
-        const storeData = await getAccountInfo_1.getAccountInfo(connection, storeAddress);
+        const storeData = await (0, getAccountInfo_1.getAccountInfo)(connection, storeAddress);
         if (storeData) {
-            processMetaplexAccounts_1.processMetaplexAccounts({
+            (0, processMetaplexAccounts_1.processMetaplexAccounts)({
                 pubkey: storeAddress,
                 account: storeData,
             }, updateState);
@@ -104,17 +104,17 @@ const loadAccountsNoWallet = async (connection, ownerAddress) => {
     };
     const queryAuctionsFromAuctionManagers = async (parsedAccounts) => {
         const auctionIds = parsedAccounts.map(({ info: { auction } }) => auction);
-        const auctionExtendedKeys = await Promise.all(parsedAccounts.map(account => actions_1.getAuctionExtended({
+        const auctionExtendedKeys = await Promise.all(parsedAccounts.map(account => (0, actions_1.getAuctionExtended)({
             auctionProgramId: ids_1.AUCTION_ID,
             resource: account.info.vault,
         })));
-        const auctionData = await getMultipleAccounts_1.getMultipleAccounts(connection, [
+        const auctionData = await (0, getMultipleAccounts_1.getMultipleAccounts)(connection, [
             ...auctionIds,
             ...auctionExtendedKeys,
         ]);
         if (auctionData) {
             await Promise.all(auctionData.keys.map((pubkey, i) => {
-                processAuctions_1.processAuctions({
+                (0, processAuctions_1.processAuctions)({
                     pubkey,
                     account: auctionData.array[i],
                 }, updateState);
@@ -123,10 +123,10 @@ const loadAccountsNoWallet = async (connection, ownerAddress) => {
     };
     const queryVaultsForAuctionManagers = async (auctionManagers) => {
         const vaultKeys = auctionManagers.map(({ info: { vault } }) => vault);
-        const vaultData = await getMultipleAccounts_1.getMultipleAccounts(connection, vaultKeys);
+        const vaultData = await (0, getMultipleAccounts_1.getMultipleAccounts)(connection, vaultKeys);
         if (vaultData) {
             await Promise.all(vaultData.keys.map((pubkey, i) => {
-                processVaultData_1.processVaultData({
+                (0, processVaultData_1.processVaultData)({
                     pubkey,
                     account: vaultData.array[i],
                 }, updateState);
@@ -191,8 +191,8 @@ exports.loadAccountsNoWallet = loadAccountsNoWallet;
 //   return state;
 // };
 const queryCreators = async (connection, updateState) => {
-    const forEachAccount = exports.processingAccounts(updateState);
-    const response = await web3_1.getProgramAccounts(connection, ids_1.METAPLEX_ID, {
+    const forEachAccount = (0, exports.processingAccounts)(updateState);
+    const response = await (0, web3_1.getProgramAccounts)(connection, ids_1.METAPLEX_ID, {
         filters: [
             {
                 dataSize: models_1.MAX_WHITELISTED_CREATOR_SIZE,
@@ -210,8 +210,8 @@ const queryCreators = async (connection, updateState) => {
 //   return state;
 // };
 const queryAuctionManagers = async (connection, updateState, storeAddress) => {
-    const forEachAccount = exports.processingAccounts(updateState);
-    const response = await web3_1.getProgramAccounts(connection, ids_1.METAPLEX_ID, {
+    const forEachAccount = (0, exports.processingAccounts)(updateState);
+    const response = await (0, web3_1.getProgramAccounts)(connection, ids_1.METAPLEX_ID, {
         filters: [
             {
                 memcmp: {
@@ -470,7 +470,7 @@ const queryAuctionManagers = async (connection, updateState, storeAddress) => {
 //   return state;
 // };
 const pullSafetyDepositBoxAccountsForVault = async (connection, vault) => {
-    return web3_1.getProgramAccounts(connection, ids_1.VAULT_ID, {
+    return (0, web3_1.getProgramAccounts)(connection, ids_1.VAULT_ID, {
         filters: [
             {
                 memcmp: {
@@ -502,12 +502,12 @@ const pullSafetyDepositBoxAccountsForVault = async (connection, vault) => {
 //   return state;
 // };
 const loadAuction = async (connection, auctionManager) => {
-    const state = getEmptyMetaState_1.getEmptyMetaState();
-    const updateState = exports.makeSetter(state);
-    const forEachAccount = exports.processingAccounts(updateState);
+    const state = (0, getEmptyMetaState_1.getEmptyMetaState)();
+    const updateState = (0, exports.makeSetter)(state);
+    const forEachAccount = (0, exports.processingAccounts)(updateState);
     const rpcQueries = [
         // safety deposit box config
-        web3_1.getProgramAccounts(connection, ids_1.METAPLEX_ID, {
+        (0, web3_1.getProgramAccounts)(connection, ids_1.METAPLEX_ID, {
             filters: [
                 {
                     memcmp: {
@@ -520,7 +520,7 @@ const loadAuction = async (connection, auctionManager) => {
         // // safety deposit
         pullSafetyDepositBoxAccountsForVault(connection, auctionManager.info.vault).then(forEachAccount(processVaultData_1.processVaultData)),
         // bidder redemptions
-        web3_1.getProgramAccounts(connection, ids_1.METAPLEX_ID, {
+        (0, web3_1.getProgramAccounts)(connection, ids_1.METAPLEX_ID, {
             filters: [
                 {
                     memcmp: {
@@ -531,7 +531,7 @@ const loadAuction = async (connection, auctionManager) => {
             ],
         }).then(forEachAccount(processMetaplexAccounts_1.processMetaplexAccounts)),
         // bidder metadata
-        web3_1.getProgramAccounts(connection, ids_1.AUCTION_ID, {
+        (0, web3_1.getProgramAccounts)(connection, ids_1.AUCTION_ID, {
             filters: [
                 {
                     memcmp: {
@@ -542,7 +542,7 @@ const loadAuction = async (connection, auctionManager) => {
             ],
         }).then(forEachAccount(processAuctions_1.processAuctions)),
         // bidder pot
-        web3_1.getProgramAccounts(connection, ids_1.AUCTION_ID, {
+        (0, web3_1.getProgramAccounts)(connection, ids_1.AUCTION_ID, {
             filters: [
                 {
                     memcmp: {
@@ -554,15 +554,15 @@ const loadAuction = async (connection, auctionManager) => {
         }).then(forEachAccount(processAuctions_1.processAuctions)),
     ];
     await Promise.all(rpcQueries);
-    const bidderRedemptionIds = await Promise.all(Object.values(state.bidderMetadataByAuctionAndBidder).map(bm => metaplex_1.getBidRedemption(auctionManager.info.auction, bm.pubkey)));
-    const bidRedemptionData = await getMultipleAccounts_1.getMultipleAccounts(connection, bidderRedemptionIds, 'single');
+    const bidderRedemptionIds = await Promise.all(Object.values(state.bidderMetadataByAuctionAndBidder).map(bm => (0, metaplex_1.getBidRedemption)(auctionManager.info.auction, bm.pubkey)));
+    const bidRedemptionData = await (0, getMultipleAccounts_1.getMultipleAccounts)(connection, bidderRedemptionIds, 'single');
     if (bidRedemptionData) {
         await Promise.all(bidRedemptionData.keys.map((pubkey, i) => {
             const account = bidRedemptionData.array[i];
             if (!account) {
                 return;
             }
-            return processMetaplexAccounts_1.processMetaplexAccounts({
+            return (0, processMetaplexAccounts_1.processMetaplexAccounts)({
                 pubkey,
                 account,
             }, updateState);
@@ -707,7 +707,7 @@ const makeSetter = (state) => (prop, key, value) => {
 };
 exports.makeSetter = makeSetter;
 const processingAccounts = (updater) => (fn) => async (accounts) => {
-    await createPipelineExecutor_1.createPipelineExecutor(accounts.values(), account => fn(account, updater), {
+    await (0, createPipelineExecutor_1.createPipelineExecutor)(accounts.values(), account => fn(account, updater), {
         sequence: 10,
         delay: 1,
         jobsCount: 3,
@@ -740,7 +740,7 @@ exports.processingAccounts = processingAccounts;
 // };
 const initMetadata = async (metadata, whitelistedCreators, setter) => {
     var _a;
-    if (isMetadataPartOfStore_1.isMetadataPartOfStore(metadata, whitelistedCreators)) {
+    if ((0, isMetadataPartOfStore_1.isMetadataPartOfStore)(metadata, whitelistedCreators)) {
         await metadata.info.init();
         setter('metadataByMint', metadata.info.mint, metadata);
         setter('metadata', '', metadata);
@@ -753,7 +753,7 @@ const initMetadata = async (metadata, whitelistedCreators, setter) => {
 };
 exports.initMetadata = initMetadata;
 const queryMultipleAccountsIntoState = async (conn, updateState, keys, commitment) => {
-    const { array } = await getMultipleAccounts_1.getMultipleAccounts(conn, keys, commitment);
+    const { array } = await (0, getMultipleAccounts_1.getMultipleAccounts)(conn, keys, commitment);
     await Promise.all(array.map(async (account, i) => {
         const pubkey = keys[i];
         // account has an incorrect type ascription
@@ -761,7 +761,7 @@ const queryMultipleAccountsIntoState = async (conn, updateState, keys, commitmen
             console.warn(`Didn't see account for pubkey ${pubkey}`);
             return;
         }
-        const PROGRAM_IDS = __1.programIds();
+        const PROGRAM_IDS = (0, __1.programIds)();
         const pair = { pubkey, account };
         // account.owner ALSO has an incorrect type ascription
         const owner = account.owner instanceof web3_js_1.PublicKey
@@ -769,16 +769,16 @@ const queryMultipleAccountsIntoState = async (conn, updateState, keys, commitmen
             : account.owner;
         switch (owner) {
             case PROGRAM_IDS.metadata:
-                await processMetaData_1.processMetaData(pair, updateState);
+                await (0, processMetaData_1.processMetaData)(pair, updateState);
                 break;
             case PROGRAM_IDS.vault:
-                await processVaultData_1.processVaultData(pair, updateState);
+                await (0, processVaultData_1.processVaultData)(pair, updateState);
                 break;
             case PROGRAM_IDS.auction:
-                await processAuctions_1.processAuctions(pair, updateState);
+                await (0, processAuctions_1.processAuctions)(pair, updateState);
                 break;
             case PROGRAM_IDS.metaplex:
-                await processMetaplexAccounts_1.processMetaplexAccounts(pair, updateState);
+                await (0, processMetaplexAccounts_1.processMetaplexAccounts)(pair, updateState);
                 break;
             default:
                 // console.warn(

@@ -15,7 +15,7 @@ const getMintInfo = async (connection, pubKey) => {
         throw new Error('Failed to find mint account');
     }
     const data = Buffer.from(info.data);
-    return deserialize_1.deserializeMint(data);
+    return (0, deserialize_1.deserializeMint)(data);
 };
 exports.cache = {
     emitter: new eventEmitter_1.EventEmitter(),
@@ -144,7 +144,7 @@ exports.cache = {
         return mintCache.get(key);
     },
     addMint: (pubKey, obj) => {
-        const mint = deserialize_1.deserializeMint(obj.data);
+        const mint = (0, deserialize_1.deserializeMint)(obj.data);
         const id = pubKey.toBase58();
         mintCache.set(id, mint);
         return mint;

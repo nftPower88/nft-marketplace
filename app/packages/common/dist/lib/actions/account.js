@@ -119,7 +119,7 @@ function ensureWrappedAccount(instructions, cleanupInstructions, toCheck, payer,
     if (toCheck && !toCheck.info.isNative) {
         return toCheck.pubkey;
     }
-    const TOKEN_PROGRAM_ID = programIds_1.programIds().token;
+    const TOKEN_PROGRAM_ID = (0, programIds_1.programIds)().token;
     const account = web3_js_1.Keypair.generate();
     instructions.push(web3_js_1.SystemProgram.createAccount({
         fromPubkey: payer,

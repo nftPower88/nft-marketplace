@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMultipleAccounts = void 0;
 const utils_1 = require("../../utils/utils");
 const getMultipleAccounts = async (connection, keys, commitment = 'single') => {
-    const result = await Promise.all(utils_1.chunks(keys, 99).map(chunk => getMultipleAccountsCore(connection, chunk, commitment)));
+    const result = await Promise.all((0, utils_1.chunks)(keys, 99).map(chunk => getMultipleAccountsCore(connection, chunk, commitment)));
     const array = result
         .map(a => a.array.map(acc => {
         if (!acc) {

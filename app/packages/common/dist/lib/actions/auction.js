@@ -73,41 +73,41 @@ exports.BidState = BidState;
 const AuctionParser = (pubkey, account) => ({
     pubkey,
     account,
-    info: exports.decodeAuction(account.data),
+    info: (0, exports.decodeAuction)(account.data),
 });
 exports.AuctionParser = AuctionParser;
 const decodeAuction = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.AUCTION_SCHEMA, AuctionData, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.AUCTION_SCHEMA, AuctionData, buffer);
 };
 exports.decodeAuction = decodeAuction;
 const BidderPotParser = (pubkey, account) => ({
     pubkey,
     account,
-    info: exports.decodeBidderPot(account.data),
+    info: (0, exports.decodeBidderPot)(account.data),
 });
 exports.BidderPotParser = BidderPotParser;
 const decodeBidderPot = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.AUCTION_SCHEMA, BidderPot, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.AUCTION_SCHEMA, BidderPot, buffer);
 };
 exports.decodeBidderPot = decodeBidderPot;
 const AuctionDataExtendedParser = (pubkey, account) => ({
     pubkey,
     account,
-    info: exports.decodeAuctionDataExtended(account.data),
+    info: (0, exports.decodeAuctionDataExtended)(account.data),
 });
 exports.AuctionDataExtendedParser = AuctionDataExtendedParser;
 const decodeAuctionDataExtended = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.AUCTION_SCHEMA, AuctionDataExtended, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.AUCTION_SCHEMA, AuctionDataExtended, buffer);
 };
 exports.decodeAuctionDataExtended = decodeAuctionDataExtended;
 const BidderMetadataParser = (pubkey, account) => ({
     pubkey,
     account,
-    info: exports.decodeBidderMetadata(account.data),
+    info: (0, exports.decodeBidderMetadata)(account.data),
 });
 exports.BidderMetadataParser = BidderMetadataParser;
 const decodeBidderMetadata = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.AUCTION_SCHEMA, BidderMetadata, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.AUCTION_SCHEMA, BidderMetadata, buffer);
 };
 exports.decodeBidderMetadata = decodeBidderMetadata;
 exports.BASE_AUCTION_DATA_SIZE = 32 + 32 + 32 + 9 + 9 + 9 + 9 + 1 + 32 + 1 + 8 + 8;
@@ -156,7 +156,7 @@ class AuctionData {
     }
     timeToEnd() {
         var _a;
-        const now = moment_1.default().unix();
+        const now = (0, moment_1.default)().unix();
         const ended = { days: 0, hours: 0, minutes: 0, seconds: 0 };
         let endAt = ((_a = this.endedAt) === null || _a === void 0 ? void 0 : _a.toNumber()) || 0;
         if (this.auctionGap && this.lastBid) {
@@ -175,7 +175,7 @@ class AuctionData {
         return { days, hours, minutes, seconds };
     }
     ended() {
-        const now = moment_1.default().unix();
+        const now = (0, moment_1.default)().unix();
         if (!this.endedAt)
             return false;
         if (this.endedAt.toNumber() > now)
@@ -422,30 +422,30 @@ exports.AUCTION_SCHEMA = new Map([
     ],
 ]);
 const decodeAuctionData = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.AUCTION_SCHEMA, AuctionData, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.AUCTION_SCHEMA, AuctionData, buffer);
 };
 exports.decodeAuctionData = decodeAuctionData;
 async function createAuction(settings, creator, instructions) {
-    const auctionProgramId = programIds_1.programIds().auction;
-    const data = Buffer.from(borsh_1.serialize(exports.AUCTION_SCHEMA, settings));
-    const auctionKey = (await utils_1.findProgramAddress([
+    const auctionProgramId = (0, programIds_1.programIds)().auction;
+    const data = Buffer.from((0, borsh_1.serialize)(exports.AUCTION_SCHEMA, settings));
+    const auctionKey = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(settings.resource).toBuffer(),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(settings.resource).toBuffer(),
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(creator),
+            pubkey: (0, utils_1.toPublicKey)(creator),
             isSigner: true,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(await getAuctionExtended({
+            pubkey: (0, utils_1.toPublicKey)(await getAuctionExtended({
                 auctionProgramId,
                 resource: settings.resource,
             })),
@@ -465,29 +465,29 @@ async function createAuction(settings, creator, instructions) {
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(auctionProgramId),
+        programId: (0, utils_1.toPublicKey)(auctionProgramId),
         data: data,
     }));
 }
 exports.createAuction = createAuction;
 async function startAuctionWithResource(resource, creator, instructions) {
-    const auctionProgramId = programIds_1.programIds().auction;
-    const data = Buffer.from(borsh_1.serialize(exports.AUCTION_SCHEMA, new StartAuctionArgs({
+    const auctionProgramId = (0, programIds_1.programIds)().auction;
+    const data = Buffer.from((0, borsh_1.serialize)(exports.AUCTION_SCHEMA, new StartAuctionArgs({
         resource,
     })));
-    const auctionKey = (await utils_1.findProgramAddress([
+    const auctionKey = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(resource).toBuffer(),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(resource).toBuffer(),
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(creator),
+            pubkey: (0, utils_1.toPublicKey)(creator),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: true,
         },
@@ -499,109 +499,109 @@ async function startAuctionWithResource(resource, creator, instructions) {
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(auctionProgramId),
+        programId: (0, utils_1.toPublicKey)(auctionProgramId),
         data: data,
     }));
 }
 exports.startAuctionWithResource = startAuctionWithResource;
 async function setAuctionAuthority(auction, currentAuthority, newAuthority, instructions) {
-    const auctionProgramId = programIds_1.programIds().auction;
-    const data = Buffer.from(borsh_1.serialize(exports.AUCTION_SCHEMA, new SetAuthorityArgs()));
+    const auctionProgramId = (0, programIds_1.programIds)().auction;
+    const data = Buffer.from((0, borsh_1.serialize)(exports.AUCTION_SCHEMA, new SetAuthorityArgs()));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(auction),
+            pubkey: (0, utils_1.toPublicKey)(auction),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(currentAuthority),
+            pubkey: (0, utils_1.toPublicKey)(currentAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(newAuthority),
+            pubkey: (0, utils_1.toPublicKey)(newAuthority),
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(auctionProgramId),
+        programId: (0, utils_1.toPublicKey)(auctionProgramId),
         data: data,
     }));
 }
 exports.setAuctionAuthority = setAuctionAuthority;
 async function placeBid(bidderPubkey, bidderTokenPubkey, bidderPotTokenPubkey, tokenMintPubkey, transferAuthority, payer, resource, amount, instructions) {
-    const auctionProgramId = programIds_1.programIds().auction;
-    const data = Buffer.from(borsh_1.serialize(exports.AUCTION_SCHEMA, new PlaceBidArgs({
+    const auctionProgramId = (0, programIds_1.programIds)().auction;
+    const data = Buffer.from((0, borsh_1.serialize)(exports.AUCTION_SCHEMA, new PlaceBidArgs({
         resource,
         amount,
     })));
-    const auctionKey = (await utils_1.findProgramAddress([
+    const auctionKey = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(resource).toBuffer(),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(resource).toBuffer(),
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
     const bidderPotKey = await getBidderPotKey({
         auctionProgramId,
         auctionKey,
         bidderPubkey,
     });
-    const bidderMetaKey = (await utils_1.findProgramAddress([
+    const bidderMetaKey = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(auctionKey).toBuffer(),
-        utils_1.toPublicKey(bidderPubkey).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionKey).toBuffer(),
+        (0, utils_1.toPublicKey)(bidderPubkey).toBuffer(),
         Buffer.from('metadata'),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(bidderPubkey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPubkey),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderTokenPubkey),
+            pubkey: (0, utils_1.toPublicKey)(bidderTokenPubkey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderPotKey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPotKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderPotTokenPubkey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPotTokenPubkey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderMetaKey),
+            pubkey: (0, utils_1.toPublicKey)(bidderMetaKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(await getAuctionExtended({ auctionProgramId, resource })),
+            pubkey: (0, utils_1.toPublicKey)(await getAuctionExtended({ auctionProgramId, resource })),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(tokenMintPubkey),
+            pubkey: (0, utils_1.toPublicKey)(tokenMintPubkey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(transferAuthority),
+            pubkey: (0, utils_1.toPublicKey)(transferAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
@@ -621,14 +621,14 @@ async function placeBid(bidderPubkey, bidderTokenPubkey, bidderPotTokenPubkey, t
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(auctionProgramId),
+        programId: (0, utils_1.toPublicKey)(auctionProgramId),
         data: data,
     }));
     return {
@@ -637,83 +637,83 @@ async function placeBid(bidderPubkey, bidderTokenPubkey, bidderPotTokenPubkey, t
 }
 exports.placeBid = placeBid;
 async function getBidderPotKey({ auctionProgramId, auctionKey, bidderPubkey, }) {
-    return (await utils_1.findProgramAddress([
+    return (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(auctionKey).toBuffer(),
-        utils_1.toPublicKey(bidderPubkey).toBuffer(),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionKey).toBuffer(),
+        (0, utils_1.toPublicKey)(bidderPubkey).toBuffer(),
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
 }
 exports.getBidderPotKey = getBidderPotKey;
 async function getAuctionExtended({ auctionProgramId, resource, }) {
-    return (await utils_1.findProgramAddress([
+    return (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(resource).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(resource).toBuffer(),
         Buffer.from(exports.EXTENDED),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
 }
 exports.getAuctionExtended = getAuctionExtended;
 async function cancelBid(bidderPubkey, bidderTokenPubkey, bidderPotTokenPubkey, tokenMintPubkey, resource, instructions) {
-    const auctionProgramId = programIds_1.programIds().auction;
-    const data = Buffer.from(borsh_1.serialize(exports.AUCTION_SCHEMA, new CancelBidArgs({
+    const auctionProgramId = (0, programIds_1.programIds)().auction;
+    const data = Buffer.from((0, borsh_1.serialize)(exports.AUCTION_SCHEMA, new CancelBidArgs({
         resource,
     })));
-    const auctionKey = (await utils_1.findProgramAddress([
+    const auctionKey = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(resource).toBuffer(),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(resource).toBuffer(),
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
     const bidderPotKey = await getBidderPotKey({
         auctionProgramId,
         auctionKey,
         bidderPubkey,
     });
-    const bidderMetaKey = (await utils_1.findProgramAddress([
+    const bidderMetaKey = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.AUCTION_PREFIX),
-        utils_1.toPublicKey(auctionProgramId).toBuffer(),
-        utils_1.toPublicKey(auctionKey).toBuffer(),
-        utils_1.toPublicKey(bidderPubkey).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionKey).toBuffer(),
+        (0, utils_1.toPublicKey)(bidderPubkey).toBuffer(),
         Buffer.from('metadata'),
-    ], utils_1.toPublicKey(auctionProgramId)))[0];
+    ], (0, utils_1.toPublicKey)(auctionProgramId)))[0];
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(bidderPubkey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPubkey),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderTokenPubkey),
+            pubkey: (0, utils_1.toPublicKey)(bidderTokenPubkey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderPotKey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPotKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderPotTokenPubkey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPotTokenPubkey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderMetaKey),
+            pubkey: (0, utils_1.toPublicKey)(bidderMetaKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(await getAuctionExtended({ auctionProgramId, resource })),
+            pubkey: (0, utils_1.toPublicKey)(await getAuctionExtended({ auctionProgramId, resource })),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(tokenMintPubkey),
+            pubkey: (0, utils_1.toPublicKey)(tokenMintPubkey),
             isSigner: false,
             isWritable: true,
         },
@@ -733,14 +733,14 @@ async function cancelBid(bidderPubkey, bidderTokenPubkey, bidderPotTokenPubkey, 
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(auctionProgramId),
+        programId: (0, utils_1.toPublicKey)(auctionProgramId),
         data: data,
     }));
 }

@@ -13,7 +13,7 @@ const labels_1 = require("../../constants/labels");
 const __1 = require("..");
 const wallet_adapter_react_1 = require("@solana/wallet-adapter-react");
 const AppBar = (props) => {
-    const { connected } = wallet_adapter_react_1.useWallet();
+    const { connected } = (0, wallet_adapter_react_1.useWallet)();
     const TopBar = (react_1.default.createElement("div", null,
         props.left,
         connected ? (react_1.default.createElement(CurrentUserBadge_1.CurrentUserBadge, null)) : (react_1.default.createElement(__1.ConnectButton, { type: "text", size: "large", allowWalletChange: true })),

@@ -8,7 +8,7 @@ const processVaultData = async ({ account, pubkey }, setter) => {
         return;
     try {
         if (isSafetyDepositBoxV1Account(account)) {
-            const safetyDeposit = actions_1.decodeSafetyDeposit(account.data);
+            const safetyDeposit = (0, actions_1.decodeSafetyDeposit)(account.data);
             const parsedAccount = {
                 pubkey,
                 account: account,
@@ -17,7 +17,7 @@ const processVaultData = async ({ account, pubkey }, setter) => {
             setter('safetyDepositBoxesByVaultAndIndex', safetyDeposit.vault + '-' + safetyDeposit.order, parsedAccount);
         }
         if (isVaultV1Account(account)) {
-            const vault = actions_1.decodeVault(account.data);
+            const vault = (0, actions_1.decodeVault)(account.data);
             const parsedAccount = {
                 pubkey,
                 account: account,
@@ -32,7 +32,7 @@ const processVaultData = async ({ account, pubkey }, setter) => {
     }
 };
 exports.processVaultData = processVaultData;
-const isVaultAccount = (account) => utils_1.pubkeyToString(account === null || account === void 0 ? void 0 : account.owner) === utils_1.VAULT_ID;
+const isVaultAccount = (account) => (0, utils_1.pubkeyToString)(account === null || account === void 0 ? void 0 : account.owner) === utils_1.VAULT_ID;
 const isSafetyDepositBoxV1Account = (account) => account.data[0] === actions_1.VaultKey.SafetyDepositBoxV1;
 const isVaultV1Account = (account) => account.data[0] === actions_1.VaultKey.VaultV1;
 //# sourceMappingURL=processVaultData.js.map

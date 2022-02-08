@@ -23,32 +23,32 @@ exports.useStore = exports.StoreProvider = exports.StoreContext = void 0;
 const react_1 = __importStar(require("react"));
 const utils_1 = require("../utils");
 const hooks_1 = require("../hooks");
-exports.StoreContext = react_1.createContext(null);
+exports.StoreContext = (0, react_1.createContext)(null);
 const StoreProvider = ({ children, storefront, storeAddress }) => {
     const ownerAddress = storefront.pubkey;
-    const searchParams = hooks_1.useQuerySearch();
+    const searchParams = (0, hooks_1.useQuerySearch)();
     const ownerAddressFromQuery = searchParams.get('store');
     const initOwnerAddress = ownerAddressFromQuery || ownerAddress;
     const initStoreAddress = !ownerAddressFromQuery ? storeAddress : undefined;
     const isConfigured = Boolean(initStoreAddress || initOwnerAddress);
-    const [store, setStore] = react_1.useState({
+    const [store, setStore] = (0, react_1.useState)({
         storeAddress: initStoreAddress,
         isReady: Boolean(!initOwnerAddress || initStoreAddress),
     });
-    const setStoreForOwner = react_1.useMemo(() => async (ownerAddress) => {
-        const storeAddress = await utils_1.getStoreID(ownerAddress);
-        utils_1.setProgramIds(storeAddress); // fallback
+    const setStoreForOwner = (0, react_1.useMemo)(() => async (ownerAddress) => {
+        const storeAddress = await (0, utils_1.getStoreID)(ownerAddress);
+        (0, utils_1.setProgramIds)(storeAddress); // fallback
         setStore({ storeAddress, isReady: true });
         console.log(`CUSTOM STORE: ${storeAddress}`);
         return storeAddress;
     }, []);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         console.log(`STORE_OWNER_ADDRESS: ${initOwnerAddress}`);
         if (initOwnerAddress && !initStoreAddress) {
             setStoreForOwner(initOwnerAddress);
         }
         else {
-            utils_1.setProgramIds(initStoreAddress); // fallback
+            (0, utils_1.setProgramIds)(initStoreAddress); // fallback
             console.log(`CUSTOM STORE FROM ENV: ${initStoreAddress}`);
         }
     }, [initOwnerAddress]);
@@ -62,7 +62,7 @@ const StoreProvider = ({ children, storefront, storeAddress }) => {
 };
 exports.StoreProvider = StoreProvider;
 const useStore = () => {
-    return react_1.useContext(exports.StoreContext);
+    return (0, react_1.useContext)(exports.StoreContext);
 };
 exports.useStore = useStore;
 //# sourceMappingURL=store.js.map

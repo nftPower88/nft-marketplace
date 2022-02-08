@@ -11,20 +11,20 @@ async function redeemBid(vault, safetyDepositTokenStore, destination, safetyDepo
 // and this will instead call the proxy route instead of the real one, wrapping the original
 // redemption call in an override call that forces the winning index if the auctioneer is authorized.
 auctioneerReclaimIndex) {
-    const PROGRAM_IDS = utils_1.programIds();
+    const PROGRAM_IDS = (0, utils_1.programIds)();
     const store = PROGRAM_IDS.store;
     if (!store) {
         throw new Error('Store not initialized');
     }
-    const { auctionKey, auctionManagerKey } = await _1.getAuctionKeys(vault);
-    const { bidRedemption, bidMetadata } = await _1.getBidderKeys(auctionKey, bidder);
-    const transferAuthority = (await utils_1.findProgramAddress([
+    const { auctionKey, auctionManagerKey } = await (0, _1.getAuctionKeys)(vault);
+    const { bidRedemption, bidMetadata } = await (0, _1.getBidderKeys)(auctionKey, bidder);
+    const transferAuthority = (await (0, utils_1.findProgramAddress)([
         Buffer.from(actions_1.VAULT_PREFIX),
-        utils_1.toPublicKey(PROGRAM_IDS.vault).toBuffer(),
-        utils_1.toPublicKey(vault).toBuffer(),
-    ], utils_1.toPublicKey(PROGRAM_IDS.vault)))[0];
-    const safetyDepositConfig = await _1.getSafetyDepositConfig(auctionManagerKey, safetyDeposit);
-    const auctionExtended = await actions_1.getAuctionExtended({
+        (0, utils_1.toPublicKey)(PROGRAM_IDS.vault).toBuffer(),
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+    ], (0, utils_1.toPublicKey)(PROGRAM_IDS.vault)))[0];
+    const safetyDepositConfig = await (0, _1.getSafetyDepositConfig)(auctionManagerKey, safetyDeposit);
+    const auctionExtended = await (0, actions_1.getAuctionExtended)({
         auctionProgramId: PROGRAM_IDS.auction,
         resource: vault,
     });
@@ -34,60 +34,60 @@ auctioneerReclaimIndex) {
             proxyCall: _1.ProxyCallAddress.RedeemBid,
         })
         : new _1.RedeemBidArgs();
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(auctionManagerKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionManagerKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDepositTokenStore),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositTokenStore),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(destination),
+            pubkey: (0, utils_1.toPublicKey)(destination),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidRedemption),
+            pubkey: (0, utils_1.toPublicKey)(bidRedemption),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDeposit),
+            pubkey: (0, utils_1.toPublicKey)(safetyDeposit),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionMint),
+            pubkey: (0, utils_1.toPublicKey)(fractionMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidMetadata),
+            pubkey: (0, utils_1.toPublicKey)(bidMetadata),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidder),
+            pubkey: (0, utils_1.toPublicKey)(bidder),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
@@ -97,12 +97,12 @@ auctioneerReclaimIndex) {
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.vault),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.vault),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.metadata),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.metadata),
             isSigner: false,
             isWritable: false,
         },
@@ -122,36 +122,36 @@ auctioneerReclaimIndex) {
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(transferAuthority),
+            pubkey: (0, utils_1.toPublicKey)(transferAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDepositConfig),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositConfig),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionExtended),
+            pubkey: (0, utils_1.toPublicKey)(auctionExtended),
             isSigner: false,
             isWritable: false,
         },
     ];
     if (isPrintingType && masterEdition && reservationList) {
         keys.push({
-            pubkey: utils_1.toPublicKey(masterEdition),
+            pubkey: (0, utils_1.toPublicKey)(masterEdition),
             isSigner: false,
             isWritable: true,
         });
         keys.push({
-            pubkey: utils_1.toPublicKey(reservationList),
+            pubkey: (0, utils_1.toPublicKey)(reservationList),
             isSigner: false,
             isWritable: true,
         });
     }
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

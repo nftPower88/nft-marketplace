@@ -32,7 +32,7 @@ const deserialize_1 = require("./deserialize");
 const parsesrs_1 = require("./parsesrs");
 const AccountsContext = react_1.default.createContext(null);
 const useAccountsContext = () => {
-    const context = react_1.useContext(AccountsContext);
+    const context = (0, react_1.useContext)(AccountsContext);
     return context;
 };
 exports.useAccountsContext = useAccountsContext;
@@ -60,10 +60,10 @@ function wrapNativeAccount(pubkey, account) {
     };
 }
 const UseNativeAccount = () => {
-    const connection = connection_1.useConnection();
-    const { publicKey } = wallet_adapter_react_1.useWallet();
-    const [nativeAccount, setNativeAccount] = react_1.useState();
-    const updateCache = react_1.useCallback(account => {
+    const connection = (0, connection_1.useConnection)();
+    const { publicKey } = (0, wallet_adapter_react_1.useWallet)();
+    const [nativeAccount, setNativeAccount] = (0, react_1.useState)();
+    const updateCache = (0, react_1.useCallback)(account => {
         if (publicKey) {
             const wrapped = wrapNativeAccount(publicKey.toBase58(), account);
             if (wrapped !== undefined) {
@@ -74,7 +74,7 @@ const UseNativeAccount = () => {
             }
         }
     }, [publicKey]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         let subId = 0;
         const updateAccount = (account) => {
             if (account) {
@@ -107,31 +107,31 @@ const precacheUserTokenAccounts = async (connection, owner) => {
     PRECACHED_OWNERS.add(owner.toBase58());
     // user accounts are updated via ws subscription
     const accounts = await connection.getTokenAccountsByOwner(owner, {
-        programId: programIds_1.programIds().token,
+        programId: (0, programIds_1.programIds)().token,
     });
     accounts.value.forEach(info => {
         cache_1.cache.add(info.pubkey.toBase58(), info.account, parsesrs_1.TokenAccountParser);
     });
 };
 function AccountsProvider({ children = null }) {
-    const connection = connection_1.useConnection();
-    const { publicKey } = wallet_adapter_react_1.useWallet();
-    const [tokenAccounts, setTokenAccounts] = react_1.useState([]);
-    const [userAccounts, setUserAccounts] = react_1.useState([]);
+    const connection = (0, connection_1.useConnection)();
+    const { publicKey } = (0, wallet_adapter_react_1.useWallet)();
+    const [tokenAccounts, setTokenAccounts] = (0, react_1.useState)([]);
+    const [userAccounts, setUserAccounts] = (0, react_1.useState)([]);
     const { nativeAccount } = UseNativeAccount();
     const walletKey = publicKey === null || publicKey === void 0 ? void 0 : publicKey.toBase58();
-    const selectUserAccounts = react_1.useCallback(() => {
+    const selectUserAccounts = (0, react_1.useCallback)(() => {
         return cache_1.cache
             .byParser(parsesrs_1.TokenAccountParser)
             .map(id => cache_1.cache.get(id))
             .filter(a => a && a.info.owner.toBase58() === walletKey)
             .map(a => a);
     }, [walletKey]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         const accounts = selectUserAccounts().filter(a => a !== undefined);
         setUserAccounts(accounts);
     }, [nativeAccount, tokenAccounts, selectUserAccounts]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         const subs = [];
         cache_1.cache.emitter.onCache(args => {
             if (args.isNew && args.isActive) {
@@ -145,7 +145,7 @@ function AccountsProvider({ children = null }) {
             subs.forEach(id => connection.removeAccountChangeListener(id));
         };
     }, [connection]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         if (!connection || !publicKey) {
             setTokenAccounts([]);
         }
@@ -156,12 +156,12 @@ function AccountsProvider({ children = null }) {
             // This can return different types of accounts: token-account, mint, multisig
             // TODO: web3.js expose ability to filter.
             // this should use only filter syntax to only get accounts that are owned by user
-            const tokenSubID = connection.onProgramAccountChange(programIds_1.programIds().token, info => {
+            const tokenSubID = connection.onProgramAccountChange((0, programIds_1.programIds)().token, info => {
                 // TODO: fix type in web3.js
                 const id = info.accountId;
                 // TODO: do we need a better way to identify layout (maybe a enum identifing type?)
                 if (info.accountInfo.data.length === spl_token_1.AccountLayout.span) {
-                    const data = deserialize_1.deserializeAccount(info.accountInfo.data);
+                    const data = (0, deserialize_1.deserializeAccount)(info.accountInfo.data);
                     if (PRECACHED_OWNERS.has(data.owner.toBase58())) {
                         cache_1.cache.add(id, info.accountInfo, parsesrs_1.TokenAccountParser);
                         setTokenAccounts(selectUserAccounts());
@@ -180,17 +180,17 @@ function AccountsProvider({ children = null }) {
 }
 exports.AccountsProvider = AccountsProvider;
 function useNativeAccount() {
-    const context = react_1.useContext(AccountsContext);
+    const context = (0, react_1.useContext)(AccountsContext);
     return {
         account: context.nativeAccount,
     };
 }
 exports.useNativeAccount = useNativeAccount;
 function useMint(key) {
-    const connection = connection_1.useConnection();
-    const [mint, setMint] = react_1.useState();
+    const connection = (0, connection_1.useConnection)();
+    const [mint, setMint] = (0, react_1.useState)();
     const id = typeof key === 'string' ? key : key === null || key === void 0 ? void 0 : key.toBase58();
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         if (!id) {
             return;
         }
@@ -214,10 +214,10 @@ function useMint(key) {
 }
 exports.useMint = useMint;
 function useAccount(pubKey) {
-    const connection = connection_1.useConnection();
-    const [account, setAccount] = react_1.useState();
+    const connection = (0, connection_1.useConnection)();
+    const [account, setAccount] = (0, react_1.useState)();
     const key = pubKey === null || pubKey === void 0 ? void 0 : pubKey.toBase58();
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         const query = async () => {
             try {
                 if (!key) {

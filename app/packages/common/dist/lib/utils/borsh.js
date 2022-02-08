@@ -28,5 +28,5 @@ const extendBorsh = () => {
     };
 };
 exports.extendBorsh = extendBorsh;
-exports.extendBorsh();
+(0, exports.extendBorsh)();
 //# sourceMappingURL=borsh.js.map

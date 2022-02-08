@@ -55,7 +55,7 @@ const processAuctions = async ({ account, pubkey }, setter) => {
 };
 exports.processAuctions = processAuctions;
 const isOnBlackList = (pubkey) => AUCTION_BLACK_LIST.includes(pubkey);
-const isAuctionAccount = account => utils_1.pubkeyToString(account === null || account === void 0 ? void 0 : account.owner) === utils_1.AUCTION_ID;
+const isAuctionAccount = account => (0, utils_1.pubkeyToString)(account === null || account === void 0 ? void 0 : account.owner) === utils_1.AUCTION_ID;
 const isExtendedAuctionAccount = account => account.data.length === actions_1.MAX_AUCTION_DATA_EXTENDED_SIZE;
 const isBidderMetadataAccount = account => account.data.length === actions_1.BIDDER_METADATA_LEN;
 const isBidderPotAccount = account => account.data.length === actions_1.BIDDER_POT_LEN;

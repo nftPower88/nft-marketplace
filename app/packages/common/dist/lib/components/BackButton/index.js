@@ -9,7 +9,7 @@ const antd_1 = require("antd");
 const constants_1 = require("../../constants");
 const react_router_dom_1 = require("react-router-dom");
 const BackButton = () => {
-    const history = react_router_dom_1.useHistory();
+    const history = (0, react_router_dom_1.useHistory)();
     return (react_1.default.createElement(antd_1.Button, { type: "text", onClick: history.goBack }, constants_1.LABELS.GO_BACK_ACTION));
 };
 exports.BackButton = BackButton;

@@ -4,7 +4,7 @@ exports.GenericAccountParser = exports.TokenAccountParser = exports.MintParser =
 const deserialize_1 = require("./deserialize");
 const MintParser = (pubKey, info) => {
     const buffer = Buffer.from(info.data);
-    const data = deserialize_1.deserializeMint(buffer);
+    const data = (0, deserialize_1.deserializeMint)(buffer);
     const details = {
         pubkey: pubKey,
         account: {
@@ -21,7 +21,7 @@ const TokenAccountParser = (pubKey, info) => {
     // since your UI already logged that pubkey as a token account. Check for length.
     if (info.data.length > 0) {
         const buffer = Buffer.from(info.data);
-        const data = deserialize_1.deserializeAccount(buffer);
+        const data = (0, deserialize_1.deserializeAccount)(buffer);
         const details = {
             pubkey: pubKey,
             account: {

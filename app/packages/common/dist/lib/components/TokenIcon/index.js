@@ -11,11 +11,11 @@ const Identicon_1 = require("../Identicon");
 const TokenIcon = ({ mintAddress, size = 20, tokenMap, }) => {
     let icon = '';
     if (tokenMap) {
-        icon = utils_1.getTokenIcon(tokenMap, mintAddress);
+        icon = (0, utils_1.getTokenIcon)(tokenMap, mintAddress);
     }
     else {
-        const { tokenMap } = connection_1.useConnectionConfig();
-        icon = utils_1.getTokenIcon(tokenMap, mintAddress);
+        const { tokenMap } = (0, connection_1.useConnectionConfig)();
+        icon = (0, utils_1.getTokenIcon)(tokenMap, mintAddress);
     }
     if (icon) {
         return (react_1.default.createElement("img", { alt: "Token icon", key: icon, width: size.toString(), height: size.toString(), src: icon }));

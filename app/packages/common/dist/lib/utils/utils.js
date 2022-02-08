@@ -15,8 +15,8 @@ exports.formatPriceNumber = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 8,
 });
 function useLocalStorageState(key, defaultState) {
-    const localStorage = useLocalStorage_1.useLocalStorage();
-    const [state, setState] = react_1.useState(() => {
+    const localStorage = (0, useLocalStorage_1.useLocalStorage)();
+    const [state, setState] = (0, react_1.useState)(() => {
         // NOTE: Not sure if this is ok
         const storedState = localStorage.getItem(key);
         if (storedState) {
@@ -24,7 +24,7 @@ function useLocalStorageState(key, defaultState) {
         }
         return defaultState;
     });
-    const setLocalStorageState = react_1.useCallback(newState => {
+    const setLocalStorageState = (0, react_1.useCallback)(newState => {
         const changed = state !== newState;
         if (!changed) {
             return;
@@ -46,7 +46,7 @@ function useLocalStorageState(key, defaultState) {
 }
 exports.useLocalStorageState = useLocalStorageState;
 const findProgramAddress = async (seeds, programId) => {
-    const localStorage = useLocalStorage_1.useLocalStorage();
+    const localStorage = (0, useLocalStorage_1.useLocalStorage)();
     const key = 'pda-' +
         seeds.reduce((agg, item) => agg + item.toString('hex'), '') +
         programId.toString();
@@ -181,7 +181,7 @@ function formatTokenAmount(account, mint, rate = 1.0, prefix = '', suffix = '', 
     if (!account) {
         return '';
     }
-    return `${[prefix]}${exports.formatAmount(fromLamports(account, mint, rate), precision, abbr)}${suffix}`;
+    return `${[prefix]}${(0, exports.formatAmount)(fromLamports(account, mint, rate), precision, abbr)}${suffix}`;
 }
 exports.formatTokenAmount = formatTokenAmount;
 exports.formatUSD = new Intl.NumberFormat('en-US', {

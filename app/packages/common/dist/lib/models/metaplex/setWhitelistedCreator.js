@@ -6,32 +6,32 @@ const borsh_1 = require("borsh");
 const _1 = require(".");
 const utils_1 = require("../../utils");
 async function setWhitelistedCreator(creator, activated, admin, payer, instructions) {
-    const PROGRAM_IDS = utils_1.programIds();
+    const PROGRAM_IDS = (0, utils_1.programIds)();
     const store = PROGRAM_IDS.store;
     if (!store) {
         throw new Error('Store not initialized');
     }
-    const whitelistedCreatorPDAKey = await _1.getWhitelistedCreator(creator);
+    const whitelistedCreatorPDAKey = await (0, _1.getWhitelistedCreator)(creator);
     const value = new _1.SetWhitelistedCreatorArgs({ activated });
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(whitelistedCreatorPDAKey),
+            pubkey: (0, utils_1.toPublicKey)(whitelistedCreatorPDAKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(admin),
+            pubkey: (0, utils_1.toPublicKey)(admin),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(creator),
+            pubkey: (0, utils_1.toPublicKey)(creator),
             isSigner: false,
             isWritable: false,
         },
@@ -53,7 +53,7 @@ async function setWhitelistedCreator(creator, activated, admin, payer, instructi
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

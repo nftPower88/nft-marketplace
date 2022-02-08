@@ -7,71 +7,71 @@ const _1 = require(".");
 const actions_1 = require("../../actions");
 const utils_1 = require("../../utils");
 async function claimBid(acceptPayment, bidder, bidderPotToken, vault, tokenMint, instructions) {
-    const PROGRAM_IDS = utils_1.programIds();
+    const PROGRAM_IDS = (0, utils_1.programIds)();
     const store = PROGRAM_IDS.store;
     if (!store) {
         throw new Error('Store not initialized');
     }
-    const { auctionKey, auctionManagerKey } = await _1.getAuctionKeys(vault);
-    const bidderPotKey = await actions_1.getBidderPotKey({
+    const { auctionKey, auctionManagerKey } = await (0, _1.getAuctionKeys)(vault);
+    const bidderPotKey = await (0, actions_1.getBidderPotKey)({
         auctionProgramId: PROGRAM_IDS.auction,
         auctionKey,
         bidderPubkey: bidder,
     });
     const value = new _1.ClaimBidArgs();
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
-    const auctionExtendedKey = await actions_1.getAuctionExtended({
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
+    const auctionExtendedKey = await (0, actions_1.getAuctionExtended)({
         auctionProgramId: PROGRAM_IDS.auction,
         resource: vault,
     });
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(acceptPayment),
+            pubkey: (0, utils_1.toPublicKey)(acceptPayment),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderPotToken),
+            pubkey: (0, utils_1.toPublicKey)(bidderPotToken),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(bidderPotKey),
+            pubkey: (0, utils_1.toPublicKey)(bidderPotKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionManagerKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionManagerKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(bidder),
+            pubkey: (0, utils_1.toPublicKey)(bidder),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(tokenMint),
+            pubkey: (0, utils_1.toPublicKey)(tokenMint),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(store),
+            pubkey: (0, utils_1.toPublicKey)(store),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(PROGRAM_IDS.auction),
+            pubkey: (0, utils_1.toPublicKey)(PROGRAM_IDS.auction),
             isSigner: false,
             isWritable: false,
         },
@@ -86,14 +86,14 @@ async function claimBid(acceptPayment, bidder, bidderPotToken, vault, tokenMint,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionExtendedKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionExtendedKey),
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

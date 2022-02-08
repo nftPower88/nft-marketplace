@@ -6,41 +6,41 @@ const borsh_1 = require("borsh");
 const _1 = require(".");
 const utils_1 = require("../../utils");
 async function setAuctionCache(auctionCache, payer, auction, safetyDepositBox, auctionManager, page, instructions) {
-    const PROGRAM_IDS = utils_1.programIds();
+    const PROGRAM_IDS = (0, utils_1.programIds)();
     const store = PROGRAM_IDS.store;
     if (!store) {
         throw new Error('Store not initialized');
     }
     const value = new _1.SetAuctionCacheArgs();
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(auctionCache),
+            pubkey: (0, utils_1.toPublicKey)(auctionCache),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auction),
+            pubkey: (0, utils_1.toPublicKey)(auction),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDepositBox),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositBox),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionManager),
+            pubkey: (0, utils_1.toPublicKey)(auctionManager),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(store),
+            pubkey: (0, utils_1.toPublicKey)(store),
             isSigner: false,
             isWritable: false,
         },
@@ -62,7 +62,7 @@ async function setAuctionCache(auctionCache, payer, auction, safetyDepositBox, a
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

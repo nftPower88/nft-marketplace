@@ -12,8 +12,8 @@ const utils_1 = require("../../utils");
 const antd_1 = require("antd");
 const Settings_1 = require("../Settings");
 const CurrentUserBadge = (props) => {
-    const { wallet, publicKey } = wallet_adapter_react_1.useWallet();
-    const { account } = accounts_1.useNativeAccount();
+    const { wallet, publicKey } = (0, wallet_adapter_react_1.useWallet)();
+    const { account } = (0, accounts_1.useNativeAccount)();
     if (!wallet || !publicKey) {
         return null;
     }

@@ -25,10 +25,10 @@ const antd_1 = require("antd");
 const react_1 = __importStar(require("react"));
 const contexts_1 = require("../../contexts");
 const ConnectButton = ({ onClick, children, disabled, allowWalletChange, popoverPlacement, ...rest }) => {
-    const { wallet, connect, connected } = wallet_adapter_react_1.useWallet();
-    const { setVisible } = contexts_1.useWalletModal();
-    const open = react_1.useCallback(() => setVisible(true), [setVisible]);
-    const handleClick = react_1.useCallback(() => (wallet ? connect().catch(() => { }) : open()), [wallet, connect, open]);
+    const { wallet, connect, connected } = (0, wallet_adapter_react_1.useWallet)();
+    const { setVisible } = (0, contexts_1.useWalletModal)();
+    const open = (0, react_1.useCallback)(() => setVisible(true), [setVisible]);
+    const handleClick = (0, react_1.useCallback)(() => (wallet ? connect().catch(() => { }) : open()), [wallet, connect, open]);
     // only show if wallet selected or user connected
     if (!wallet || !allowWalletChange) {
         return (react_1.default.createElement(antd_1.Button, { ...rest, onClick: e => {

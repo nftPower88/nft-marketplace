@@ -169,80 +169,80 @@ exports.VAULT_SCHEMA = new Map([
     ],
 ]);
 const decodeVault = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.VAULT_SCHEMA, Vault, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.VAULT_SCHEMA, Vault, buffer);
 };
 exports.decodeVault = decodeVault;
 const decodeExternalPriceAccount = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.VAULT_SCHEMA, ExternalPriceAccount, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.VAULT_SCHEMA, ExternalPriceAccount, buffer);
 };
 exports.decodeExternalPriceAccount = decodeExternalPriceAccount;
 const decodeSafetyDeposit = (buffer) => {
-    return borsh_1.deserializeUnchecked(exports.VAULT_SCHEMA, SafetyDepositBox, buffer);
+    return (0, borsh_1.deserializeUnchecked)(exports.VAULT_SCHEMA, SafetyDepositBox, buffer);
 };
 exports.decodeSafetyDeposit = decodeSafetyDeposit;
 async function setVaultAuthority(vault, currentAuthority, newAuthority, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
     const data = Buffer.from([10]);
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(currentAuthority),
+            pubkey: (0, utils_1.toPublicKey)(currentAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(newAuthority),
+            pubkey: (0, utils_1.toPublicKey)(newAuthority),
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data: data,
     }));
 }
 exports.setVaultAuthority = setVaultAuthority;
 async function initVault(allowFurtherShareCreation, fractionalMint, redeemTreasury, fractionalTreasury, vault, vaultAuthority, pricingLookupAddress, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
-    const data = Buffer.from(borsh_1.serialize(exports.VAULT_SCHEMA, new InitVaultArgs({ allowFurtherShareCreation })));
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
+    const data = Buffer.from((0, borsh_1.serialize)(exports.VAULT_SCHEMA, new InitVaultArgs({ allowFurtherShareCreation })));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(fractionalMint),
+            pubkey: (0, utils_1.toPublicKey)(fractionalMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(redeemTreasury),
+            pubkey: (0, utils_1.toPublicKey)(redeemTreasury),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionalTreasury),
+            pubkey: (0, utils_1.toPublicKey)(fractionalTreasury),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vaultAuthority),
+            pubkey: (0, utils_1.toPublicKey)(vaultAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(pricingLookupAddress),
+            pubkey: (0, utils_1.toPublicKey)(pricingLookupAddress),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
@@ -254,66 +254,66 @@ async function initVault(allowFurtherShareCreation, fractionalMint, redeemTreasu
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data: data,
     }));
 }
 exports.initVault = initVault;
 async function getSafetyDepositBox(vault, tokenMint) {
-    const vaultProgramId = programIds_1.programIds().vault;
-    return (await utils_1.findProgramAddress([
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
+    return (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.VAULT_PREFIX),
-        utils_1.toPublicKey(vault).toBuffer(),
-        utils_1.toPublicKey(tokenMint).toBuffer(),
-    ], utils_1.toPublicKey(vaultProgramId)))[0];
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+        (0, utils_1.toPublicKey)(tokenMint).toBuffer(),
+    ], (0, utils_1.toPublicKey)(vaultProgramId)))[0];
 }
 exports.getSafetyDepositBox = getSafetyDepositBox;
 async function addTokenToInactiveVault(amount, tokenMint, tokenAccount, tokenStoreAccount, vault, vaultAuthority, payer, transferAuthority, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
     const safetyDepositBox = await getSafetyDepositBox(vault, tokenMint);
     const value = new AmountArgs({
         instruction: 1,
         amount,
     });
-    const data = Buffer.from(borsh_1.serialize(exports.VAULT_SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(exports.VAULT_SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(safetyDepositBox),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositBox),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(tokenAccount),
+            pubkey: (0, utils_1.toPublicKey)(tokenAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(tokenStoreAccount),
+            pubkey: (0, utils_1.toPublicKey)(tokenStoreAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vaultAuthority),
+            pubkey: (0, utils_1.toPublicKey)(vaultAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(transferAuthority),
+            pubkey: (0, utils_1.toPublicKey)(transferAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
@@ -330,183 +330,183 @@ async function addTokenToInactiveVault(amount, tokenMint, tokenAccount, tokenSto
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data,
     }));
 }
 exports.addTokenToInactiveVault = addTokenToInactiveVault;
 async function activateVault(numberOfShares, vault, fractionMint, fractionTreasury, vaultAuthority, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
-    const fractionMintAuthority = (await utils_1.findProgramAddress([
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
+    const fractionMintAuthority = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.VAULT_PREFIX),
-        utils_1.toPublicKey(vaultProgramId).toBuffer(),
-        utils_1.toPublicKey(vault).toBuffer(),
-    ], utils_1.toPublicKey(vaultProgramId)))[0];
+        (0, utils_1.toPublicKey)(vaultProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+    ], (0, utils_1.toPublicKey)(vaultProgramId)))[0];
     const value = new NumberOfShareArgs({ instruction: 2, numberOfShares });
-    const data = Buffer.from(borsh_1.serialize(exports.VAULT_SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(exports.VAULT_SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionMint),
+            pubkey: (0, utils_1.toPublicKey)(fractionMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionTreasury),
+            pubkey: (0, utils_1.toPublicKey)(fractionTreasury),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionMintAuthority),
+            pubkey: (0, utils_1.toPublicKey)(fractionMintAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(vaultAuthority),
+            pubkey: (0, utils_1.toPublicKey)(vaultAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data,
     }));
 }
 exports.activateVault = activateVault;
 async function combineVault(vault, outstandingShareTokenAccount, payingTokenAccount, fractionMint, fractionTreasury, redeemTreasury, newVaultAuthority, vaultAuthority, transferAuthority, externalPriceAccount, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
-    const burnAuthority = (await utils_1.findProgramAddress([
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
+    const burnAuthority = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.VAULT_PREFIX),
-        utils_1.toPublicKey(vaultProgramId).toBuffer(),
-        utils_1.toPublicKey(vault).toBuffer(),
-    ], utils_1.toPublicKey(vaultProgramId)))[0];
+        (0, utils_1.toPublicKey)(vaultProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+    ], (0, utils_1.toPublicKey)(vaultProgramId)))[0];
     const data = Buffer.from([3]);
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(outstandingShareTokenAccount),
+            pubkey: (0, utils_1.toPublicKey)(outstandingShareTokenAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(payingTokenAccount),
+            pubkey: (0, utils_1.toPublicKey)(payingTokenAccount),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionMint),
+            pubkey: (0, utils_1.toPublicKey)(fractionMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionTreasury),
+            pubkey: (0, utils_1.toPublicKey)(fractionTreasury),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(redeemTreasury),
+            pubkey: (0, utils_1.toPublicKey)(redeemTreasury),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(newVaultAuthority || vaultAuthority),
+            pubkey: (0, utils_1.toPublicKey)(newVaultAuthority || vaultAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(vaultAuthority),
+            pubkey: (0, utils_1.toPublicKey)(vaultAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(transferAuthority),
+            pubkey: (0, utils_1.toPublicKey)(transferAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(burnAuthority),
+            pubkey: (0, utils_1.toPublicKey)(burnAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(externalPriceAccount),
+            pubkey: (0, utils_1.toPublicKey)(externalPriceAccount),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data,
     }));
 }
 exports.combineVault = combineVault;
 async function withdrawTokenFromSafetyDepositBox(amount, destination, safetyDepositBox, storeKey, vault, fractionMint, vaultAuthority, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
-    const transferAuthority = (await utils_1.findProgramAddress([
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
+    const transferAuthority = (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.VAULT_PREFIX),
-        utils_1.toPublicKey(vaultProgramId).toBuffer(),
-        utils_1.toPublicKey(vault).toBuffer(),
-    ], utils_1.toPublicKey(vaultProgramId)))[0];
+        (0, utils_1.toPublicKey)(vaultProgramId).toBuffer(),
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+    ], (0, utils_1.toPublicKey)(vaultProgramId)))[0];
     const value = new AmountArgs({ instruction: 5, amount });
-    const data = Buffer.from(borsh_1.serialize(exports.VAULT_SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(exports.VAULT_SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(destination),
+            pubkey: (0, utils_1.toPublicKey)(destination),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(safetyDepositBox),
+            pubkey: (0, utils_1.toPublicKey)(safetyDepositBox),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(storeKey),
+            pubkey: (0, utils_1.toPublicKey)(storeKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(fractionMint),
+            pubkey: (0, utils_1.toPublicKey)(fractionMint),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vaultAuthority),
+            pubkey: (0, utils_1.toPublicKey)(vaultAuthority),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(transferAuthority),
+            pubkey: (0, utils_1.toPublicKey)(transferAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: programIds_1.programIds().token,
+            pubkey: (0, programIds_1.programIds)().token,
             isSigner: false,
             isWritable: false,
         },
@@ -518,37 +518,37 @@ async function withdrawTokenFromSafetyDepositBox(amount, destination, safetyDepo
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data,
     }));
 }
 exports.withdrawTokenFromSafetyDepositBox = withdrawTokenFromSafetyDepositBox;
 async function updateExternalPriceAccount(externalPriceAccountKey, externalPriceAccount, instructions) {
-    const vaultProgramId = programIds_1.programIds().vault;
+    const vaultProgramId = (0, programIds_1.programIds)().vault;
     const value = new UpdateExternalPriceAccountArgs({ externalPriceAccount });
-    const data = Buffer.from(borsh_1.serialize(exports.VAULT_SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(exports.VAULT_SCHEMA, value));
     console.log('Data', data);
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(externalPriceAccountKey),
+            pubkey: (0, utils_1.toPublicKey)(externalPriceAccountKey),
             isSigner: false,
             isWritable: true,
         },
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(vaultProgramId),
+        programId: (0, utils_1.toPublicKey)(vaultProgramId),
         data,
     }));
 }
 exports.updateExternalPriceAccount = updateExternalPriceAccount;
 async function getSafetyDepositBoxAddress(vault, tokenMint) {
-    const PROGRAM_IDS = programIds_1.programIds();
-    return (await utils_1.findProgramAddress([
+    const PROGRAM_IDS = (0, programIds_1.programIds)();
+    return (await (0, utils_1.findProgramAddress)([
         Buffer.from(exports.VAULT_PREFIX),
-        utils_1.toPublicKey(vault).toBuffer(),
-        utils_1.toPublicKey(tokenMint).toBuffer(),
-    ], utils_1.toPublicKey(PROGRAM_IDS.vault)))[0];
+        (0, utils_1.toPublicKey)(vault).toBuffer(),
+        (0, utils_1.toPublicKey)(tokenMint).toBuffer(),
+    ], (0, utils_1.toPublicKey)(PROGRAM_IDS.vault)))[0];
 }
 exports.getSafetyDepositBoxAddress = getSafetyDepositBoxAddress;
 //# sourceMappingURL=vault.js.map

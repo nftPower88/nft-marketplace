@@ -7,45 +7,45 @@ const _1 = require(".");
 const utils_1 = require("../../utils");
 const deprecatedStates_1 = require("./deprecatedStates");
 async function deprecatedInitAuctionManagerV1(vault, auctionManagerAuthority, payer, acceptPaymentAccount, store, settings, instructions) {
-    const PROGRAM_IDS = utils_1.programIds();
-    const { auctionKey, auctionManagerKey } = await _1.getAuctionKeys(vault);
+    const PROGRAM_IDS = (0, utils_1.programIds)();
+    const { auctionKey, auctionManagerKey } = await (0, _1.getAuctionKeys)(vault);
     const value = new deprecatedStates_1.DeprecatedInitAuctionManagerV1Args({
         settings,
     });
-    const data = Buffer.from(borsh_1.serialize(_1.SCHEMA, value));
+    const data = Buffer.from((0, borsh_1.serialize)(_1.SCHEMA, value));
     const keys = [
         {
-            pubkey: utils_1.toPublicKey(auctionManagerKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionManagerKey),
             isSigner: false,
             isWritable: true,
         },
         {
-            pubkey: utils_1.toPublicKey(vault),
+            pubkey: (0, utils_1.toPublicKey)(vault),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionKey),
+            pubkey: (0, utils_1.toPublicKey)(auctionKey),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(auctionManagerAuthority),
+            pubkey: (0, utils_1.toPublicKey)(auctionManagerAuthority),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(payer),
+            pubkey: (0, utils_1.toPublicKey)(payer),
             isSigner: true,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(acceptPaymentAccount),
+            pubkey: (0, utils_1.toPublicKey)(acceptPaymentAccount),
             isSigner: false,
             isWritable: false,
         },
         {
-            pubkey: utils_1.toPublicKey(store),
+            pubkey: (0, utils_1.toPublicKey)(store),
             isSigner: false,
             isWritable: false,
         },
@@ -62,7 +62,7 @@ async function deprecatedInitAuctionManagerV1(vault, auctionManagerAuthority, pa
     ];
     instructions.push(new web3_js_1.TransactionInstruction({
         keys,
-        programId: utils_1.toPublicKey(PROGRAM_IDS.metaplex),
+        programId: (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex),
         data,
     }));
 }

@@ -32,7 +32,7 @@ const hooks_1 = require("../hooks");
 const notifications_1 = require("../utils/notifications");
 const utils_1 = require("../utils/utils");
 const config_1 = __importDefault(require("next/config"));
-let nextConfig = config_1.default();
+let nextConfig = (0, config_1.default)();
 const publicRuntimeConfig = nextConfig.publicRuntimeConfig;
 exports.ENDPOINTS = [
     {
@@ -52,12 +52,12 @@ exports.ENDPOINTS = [
     },
     {
         name: 'testnet',
-        endpoint: web3_js_1.clusterApiUrl('testnet'),
+        endpoint: (0, web3_js_1.clusterApiUrl)('testnet'),
         ChainId: spl_token_registry_1.ENV.Testnet,
     },
     {
         name: 'devnet',
-        endpoint: web3_js_1.clusterApiUrl('devnet'),
+        endpoint: (0, web3_js_1.clusterApiUrl)('devnet'),
         ChainId: spl_token_registry_1.ENV.Devnet,
     },
 ];
@@ -73,16 +73,16 @@ const ConnectionContext = react_1.default.createContext({
 });
 function ConnectionProvider({ children = undefined, }) {
     var _a, _b;
-    const searchParams = hooks_1.useQuerySearch();
+    const searchParams = (0, hooks_1.useQuerySearch)();
     const network = searchParams.get('network');
     const queryEndpoint = network && ((_a = exports.ENDPOINTS.find(({ name }) => name.startsWith(network))) === null || _a === void 0 ? void 0 : _a.endpoint);
-    const [savedEndpoint, setEndpoint] = utils_1.useLocalStorageState('connectionEndpoint', exports.ENDPOINTS[0].endpoint);
+    const [savedEndpoint, setEndpoint] = (0, utils_1.useLocalStorageState)('connectionEndpoint', exports.ENDPOINTS[0].endpoint);
     const endpoint = queryEndpoint || savedEndpoint;
-    const connection = react_1.useMemo(() => new web3_js_1.Connection(endpoint, { commitment: 'recent', confirmTransactionInitialTimeout: DEFAULT_CONNECTION_TIMEOUT }), [endpoint]);
+    const connection = (0, react_1.useMemo)(() => new web3_js_1.Connection(endpoint, { commitment: 'recent', confirmTransactionInitialTimeout: DEFAULT_CONNECTION_TIMEOUT }), [endpoint]);
     const env = ((_b = exports.ENDPOINTS.find(end => end.endpoint === endpoint)) === null || _b === void 0 ? void 0 : _b.name) || exports.ENDPOINTS[0].name;
-    const [tokens, setTokens] = react_1.useState([]);
-    const [tokenMap, setTokenMap] = react_1.useState(new Map());
-    react_1.useEffect(() => {
+    const [tokens, setTokens] = (0, react_1.useState)([]);
+    const [tokenMap, setTokenMap] = (0, react_1.useState)(new Map());
+    (0, react_1.useEffect)(() => {
         // fetch token files
         new spl_token_registry_1.TokenListProvider().resolve().then(container => {
             var _a;
@@ -102,13 +102,13 @@ function ConnectionProvider({ children = undefined, }) {
     // The websocket library solana/web3.js uses closes its websocket connection when the subscription list
     // is empty after opening its first time, preventing subsequent subscriptions from receiving responses.
     // This is a hack to prevent the list from every getting empty
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         const id = connection.onAccountChange(web3_js_1.Keypair.generate().publicKey, () => { });
         return () => {
             connection.removeAccountChangeListener(id);
         };
     }, [connection]);
-    react_1.useEffect(() => {
+    (0, react_1.useEffect)(() => {
         const id = connection.onSlotChange(() => null);
         return () => {
             connection.removeSlotChangeListener(id);
@@ -125,11 +125,11 @@ function ConnectionProvider({ children = undefined, }) {
 }
 exports.ConnectionProvider = ConnectionProvider;
 function useConnection() {
-    return react_1.useContext(ConnectionContext).connection;
+    return (0, react_1.useContext)(ConnectionContext).connection;
 }
 exports.useConnection = useConnection;
 function useConnectionConfig() {
-    const context = react_1.useContext(ConnectionContext);
+    const context = (0, react_1.useContext)(ConnectionContext);
     return {
         endpoint: context.endpoint,
         setEndpoint: context.setEndpoint,
@@ -192,11 +192,11 @@ async function sendTransactionsWithManualRetry(connection, wallet, instructions,
             tries = 0;
         try {
             if (instructions.length === 1) {
-                await exports.sendTransactionWithRetry(connection, wallet, instructions[0], filteredSigners[0], 'single');
+                await (0, exports.sendTransactionWithRetry)(connection, wallet, instructions[0], filteredSigners[0], 'single');
                 stopPoint = 1;
             }
             else {
-                stopPoint = await exports.sendTransactions(connection, wallet, instructions, filteredSigners, SequenceType.StopOnFailure, 'single');
+                stopPoint = await (0, exports.sendTransactions)(connection, wallet, instructions, filteredSigners, SequenceType.StopOnFailure, 'single');
             }
         }
         catch (e) {
@@ -308,8 +308,8 @@ const sendTransaction = async (connection, wallet, instructions, signers, awaitC
             throw new Error('Timed out awaiting confirmation on transaction');
         slot = (confirmation === null || confirmation === void 0 ? void 0 : confirmation.slot) || 0;
         if (confirmation === null || confirmation === void 0 ? void 0 : confirmation.err) {
-            const errors = await exports.getErrorForTransaction(connection, txid);
-            notifications_1.notify({
+            const errors = await (0, exports.getErrorForTransaction)(connection, txid);
+            (0, notifications_1.notify)({
                 message: 'Transaction failed...',
                 description: (react_1.default.createElement(react_1.default.Fragment, null,
                     errors.map((err, i) => (react_1.default.createElement("div", { key: i }, err))),
@@ -360,7 +360,7 @@ const DEFAULT_TIMEOUT = 30000;
 async function sendSignedTransaction({ signedTransaction, connection, }) {
     const rawTransaction = signedTransaction.serialize();
     let slot = 0;
-    const txid = await web3_js_1.sendAndConfirmRawTransaction(connection, rawTransaction, {
+    const txid = await (0, web3_js_1.sendAndConfirmRawTransaction)(connection, rawTransaction, {
         skipPreflight: true,
         commitment: 'confirmed'
     });
@@ -462,7 +462,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
                     }
                 }
             })();
-            return utils_1.sleep(2000);
+            return (0, utils_1.sleep)(2000);
         }
     });
     //@ts-ignore

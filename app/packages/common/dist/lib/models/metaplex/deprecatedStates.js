@@ -135,13 +135,13 @@ class BidRedemptionTicketV1 {
 }
 exports.BidRedemptionTicketV1 = BidRedemptionTicketV1;
 async function getSafetyDepositBoxValidationTicket(auctionManager, safetyDepositBox) {
-    const PROGRAM_IDS = utils_1.programIds();
-    return (await utils_1.findProgramAddress([
+    const PROGRAM_IDS = (0, utils_1.programIds)();
+    return (await (0, utils_1.findProgramAddress)([
         Buffer.from(_1.METAPLEX_PREFIX),
-        utils_1.toPublicKey(PROGRAM_IDS.metaplex).toBuffer(),
-        utils_1.toPublicKey(auctionManager).toBuffer(),
-        utils_1.toPublicKey(safetyDepositBox).toBuffer(),
-    ], utils_1.toPublicKey(PROGRAM_IDS.metaplex)))[0];
+        (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex).toBuffer(),
+        (0, utils_1.toPublicKey)(auctionManager).toBuffer(),
+        (0, utils_1.toPublicKey)(safetyDepositBox).toBuffer(),
+    ], (0, utils_1.toPublicKey)(PROGRAM_IDS.metaplex)))[0];
 }
 exports.getSafetyDepositBoxValidationTicket = getSafetyDepositBoxValidationTicket;
 exports.DEPRECATED_SCHEMA = new Map([

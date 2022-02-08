@@ -9,8 +9,8 @@ const processMetaData = async ({ account, pubkey }, setter) => {
         return;
     try {
         if (isMetadataV1Account(account)) {
-            const metadata = actions_1.decodeMetadata(account.data);
-            if (isValidHttpUrl_1.isValidHttpUrl(metadata.data.uri)) {
+            const metadata = (0, actions_1.decodeMetadata)(account.data);
+            if ((0, isValidHttpUrl_1.isValidHttpUrl)(metadata.data.uri)) {
                 const parsedAccount = {
                     pubkey,
                     account,
@@ -21,7 +21,7 @@ const processMetaData = async ({ account, pubkey }, setter) => {
             }
         }
         if (isEditionV1Account(account)) {
-            const edition = actions_1.decodeEdition(account.data);
+            const edition = (0, actions_1.decodeEdition)(account.data);
             const parsedAccount = {
                 pubkey,
                 account,
@@ -30,7 +30,7 @@ const processMetaData = async ({ account, pubkey }, setter) => {
             setter('editions', pubkey, parsedAccount);
         }
         if (isMasterEditionAccount(account)) {
-            const masterEdition = actions_1.decodeMasterEdition(account.data);
+            const masterEdition = (0, actions_1.decodeMasterEdition)(account.data);
             if (isMasterEditionV1(masterEdition)) {
                 const parsedAccount = {
                     pubkey,
@@ -57,7 +57,7 @@ const processMetaData = async ({ account, pubkey }, setter) => {
     }
 };
 exports.processMetaData = processMetaData;
-const isMetadataAccount = (account) => account && utils_1.pubkeyToString(account.owner) === utils_1.METADATA_PROGRAM_ID;
+const isMetadataAccount = (account) => account && (0, utils_1.pubkeyToString)(account.owner) === utils_1.METADATA_PROGRAM_ID;
 const isMetadataV1Account = (account) => account.data[0] === actions_1.MetadataKey.MetadataV1;
 const isEditionV1Account = (account) => account.data[0] === actions_1.MetadataKey.EditionV1;
 const isMasterEditionAccount = (account) => account.data[0] === actions_1.MetadataKey.MasterEditionV1 ||

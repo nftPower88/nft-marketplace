@@ -15,7 +15,7 @@ const EtherscanLink = (props) => {
         return null;
     }
     const length = (_a = props.length) !== null && _a !== void 0 ? _a : 9;
-    return (react_1.default.createElement("a", { href: `https://etherscan.io/${type}/${address}`, target: "_blank", rel: "noopener noreferrer", title: address }, code ? (react_1.default.createElement(antd_1.Typography.Text, { code: true }, utils_1.shortenAddress(address, length))) : (utils_1.shortenAddress(address, length))));
+    return (react_1.default.createElement("a", { href: `https://etherscan.io/${type}/${address}`, target: "_blank", rel: "noopener noreferrer", title: address }, code ? (react_1.default.createElement(antd_1.Typography.Text, { code: true }, (0, utils_1.shortenAddress)(address, length))) : ((0, utils_1.shortenAddress)(address, length))));
 };
 exports.EtherscanLink = EtherscanLink;
 //# sourceMappingURL=index.js.map
