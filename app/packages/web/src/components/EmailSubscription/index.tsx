@@ -37,7 +37,7 @@ export const EmailSubscription = () => {
               style={{ width: '470px' }}
               required
               type="email"
-              placeholder="Enter your email to get the latest updates from The Queendom"
+              placeholder="Enter your email to get the latest"
               bordered={false}
               className={theme === Theme.Light ? 'inputWhite' : 'inputBlack'}
             />
