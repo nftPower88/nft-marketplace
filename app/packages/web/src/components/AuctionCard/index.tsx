@@ -800,12 +800,12 @@ export const AuctionCard = ({
     >
       {!isAuctionManagerAuthorityNotWalletOwner ? (
         canEndInstantSale ? (
-          <Button onClick={endInstantSale}>End Sale & Claim Item</Button>
+          /*  <Button onClick={endInstantSale}>End Sale & Claim Item</Button> */ ''
         ) : (
-          <Button onClick={endInstantSale}>Claim Item</Button>
+          /*  <Button onClick={endInstantSale}>Claim Item</Button> */ ''
         )
       ) : auctionView.myBidderPot ? (
-        <Button onClick={instantFiatSale}>Claim Purchase</Button>
+        /*  <Button onClick={instantFiatSale}>Claim Purchase</Button> */ ''
       ) : (
         <currentCheckout.processPayment />
       )}
@@ -960,7 +960,11 @@ export const AuctionCard = ({
               padding: '0 10px 0 10px',
             }}
           >
-            <Text>Or pay with card</Text>
+            {isAuctionManagerAuthorityNotWalletOwner ? (
+              <Text>Or pay with card</Text>
+            ) : (
+              ''
+            )}
           </Space>
           {showStartAuctionBtn
             ? startAuctionBtn
