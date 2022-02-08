@@ -7,16 +7,22 @@ interface Props {
   show: boolean;
   hide: (value: any) => void;
   id: string;
+  placement: 'top' | 'bottom' | 'right' | 'left';
 }
 
-const DrawerWrapper: React.FC<Props> = ({ show, hide, id }: Props) => {
+const DrawerWrapper: React.FC<Props> = ({
+  show,
+  hide,
+  id,
+  placement,
+}: Props) => {
   const promisedModal = new Promise(resolve =>
     resolve(<CheckOutModal show={show} hide={hide} id={id} />),
   );
 
   return (
     <Drawer
-      placement="right"
+      placement={placement}
       closable={false}
       onClose={hide}
       visible={show}
