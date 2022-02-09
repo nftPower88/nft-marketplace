@@ -76,7 +76,7 @@ exports.ENDPOINTS = [
         ChainId: spl_token_registry_1.ENV.Devnet,
     },
 ];
-const DEFAULT = exports.ENDPOINTS[4].endpoint;
+const DEFAULT = exports.ENDPOINTS[0].endpoint;
 const DEFAULT_CONNECTION_TIMEOUT = 300 * 1000;
 const ConnectionContext = react_1.default.createContext({
     endpoint: DEFAULT,
@@ -319,7 +319,7 @@ const sendTransaction = async (connection, wallet, instructions, signers, awaitC
         // );
     }
     if (!includesFeePayer) {
-        transaction.feePayer = wallet.publicKey;
+        // transaction.feePayer = wallet.publicKey;
         transaction = await wallet.signTransaction(transaction);
     }
     const rawTransaction = transaction.serialize();
@@ -363,7 +363,7 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
     console.log(`signedTransaction2; signature: ${transaction.signature}`);
     if (!includesFeePayer) {
         // console.log(`store paying for transaction?: ${wallet.publicKey}`);
-        transaction.feePayer = wallet.publicKey;
+        // transaction.feePayer = wallet.publicKey;
         transaction = await wallet.signTransaction(transaction);
     }
     if (beforeSend) {

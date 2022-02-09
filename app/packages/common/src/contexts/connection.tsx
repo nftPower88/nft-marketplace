@@ -452,7 +452,7 @@ export const sendTransaction = async (
     // );
   }
   if (!includesFeePayer) {
-    transaction.feePayer = wallet.publicKey;
+    // transaction.feePayer = wallet.publicKey;
     transaction = await wallet.signTransaction(transaction);
   }
 
@@ -531,7 +531,7 @@ export const sendTransactionWithRetry = async (
 
   if (!includesFeePayer) {
     // console.log(`store paying for transaction?: ${wallet.publicKey}`);
-    transaction.feePayer = wallet.publicKey;
+    // transaction.feePayer = wallet.publicKey;
     transaction = await wallet.signTransaction(transaction);
   }
 
