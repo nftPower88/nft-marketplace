@@ -148,6 +148,7 @@ module.exports = withPlugins(plugins, {
     subdomain: nextVars['subdomain'],
     publicSolanaNetwork: getSolanaNetwork(),
     publicSolanaRpcHost: getSolanaRpcHost(),
+    publicSolanaLabel: nextVars['publicSolanaLabel'],
     publicArweaveCdn: nextVars['publicArweaveCdn'],
     publicGoogleAnalyticsId: nextVars['publicGoogleAnalyticsId'],
     publicBigStore: nextVars['publicBigStore'],

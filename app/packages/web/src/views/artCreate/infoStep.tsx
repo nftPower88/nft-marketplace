@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { IMetadataExtension } from '@oyster/common';
 import { Button, Col, Form, Input, InputNumber, Row, Space } from 'antd';

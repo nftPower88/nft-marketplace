@@ -26,64 +26,70 @@ const antd_1 = require("antd");
 const react_1 = __importStar(require("react"));
 const components_1 = require("../components");
 const utils_1 = require("../utils");
-const react_router_dom_1 = require("react-router-dom");
 const { Panel } = antd_1.Collapse;
-exports.WalletModalContext = react_1.createContext({
-    visible: false,
-    setVisible: () => { },
-});
+exports.WalletModalContext = react_1.createContext({});
 function useWalletModal() {
     return react_1.useContext(exports.WalletModalContext);
 }
 exports.useWalletModal = useWalletModal;
 const WalletModal = () => {
-    const { wallets, select } = wallet_adapter_react_1.useWallet();
+    const { wallets, wallet: selected, select } = wallet_adapter_react_1.useWallet();
     const { visible, setVisible } = useWalletModal();
+    const [showWallets, setShowWallets] = react_1.useState(false);
     const close = react_1.useCallback(() => {
         setVisible(false);
-    }, [setVisible]);
+        setShowWallets(false);
+    }, [setVisible, setShowWallets]);
     const phatomWallet = react_1.useMemo(() => wallet_adapter_wallets_1.getPhantomWallet(), []);
-    return (
-    // <MetaplexModal title="Pick a wallet to connect to Queendom" centered visible={visible} onCancel={close} bodyStyle={{borderRadius:'5px',boxShadow:'2px 5px 10px'}}>
-    react_1.default.createElement(components_1.MetaplexModal, { centered: true, visible: visible, onCancel: close, closable: false },
-        react_1.default.createElement("h4", { className: "mb-3" }, "Pick a wallet to connect to Queendom"),
-        react_1.default.createElement(antd_1.Button, { type: "link", className: "metaplex-button-jumbo d-flex", size: "large", onClick: () => {
+    return (react_1.default.createElement(components_1.MetaplexModal, { title: "Connect Wallet", visible: visible, onCancel: close },
+        react_1.default.createElement("span", { style: {
+                color: 'rgba(255, 255, 255, 0.75)',
+                fontSize: '14px',
+                lineHeight: '14px',
+                fontFamily: 'GraphikWeb',
+                letterSpacing: '0.02em',
+                marginBottom: 14,
+            } }, "RECOMMENDED"),
+        react_1.default.createElement(antd_1.Button, { className: "phantom-button metaplex-button", onClick: () => {
+                console.log(phatomWallet.name);
                 select(phatomWallet.name);
                 close();
             } },
-            react_1.default.createElement("img", { src: phatomWallet === null || phatomWallet === void 0 ? void 0 : phatomWallet.icon }),
-            react_1.default.createElement("h4", { style: { paddingLeft: '2px' }, className: "ms-4 pt-1" }, "Connect to Phantom")),
-        react_1.default.createElement(antd_1.Collapse, { ghost: true, expandIcon: panelProps => panelProps.isActive ? (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "gray", xmlns: "http://www.w3.org/2000/svg" },
-                react_1.default.createElement("path", { d: "M15 7.5L10 12.5L5 7.5", stroke: "gray", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }))) : (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "gray", xmlns: "http://www.w3.org/2000/svg" },
-                react_1.default.createElement("path", { d: "M7.5 5L12.5 10L7.5 15", stroke: "gray", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }))) },
-            react_1.default.createElement(Panel, { header: react_1.default.createElement("strong", { className: "ms-4" }, "Other Wallet"), key: "1" },
-                react_1.default.createElement(antd_1.Space, { wrap: true }, wallets.map((wallet, idx) => {
-                    if (wallet.name === 'Phantom')
-                        return null;
-                    return (react_1.default.createElement(antd_1.Button, { key: idx, onClick: () => {
-                            select(wallet.name);
-                            close();
-                        } },
-                        "Connect to ",
-                        wallet.name));
-                }))))));
+            react_1.default.createElement("img", { src: phatomWallet === null || phatomWallet === void 0 ? void 0 : phatomWallet.icon, style: { width: '1.2rem' } }),
+            "\u00A0Connect to Phantom"),
+        react_1.default.createElement(antd_1.Collapse, { ghost: true, expandIcon: panelProps => panelProps.isActive ? (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                react_1.default.createElement("path", { d: "M15 7.5L10 12.5L5 7.5", stroke: "white", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }))) : (react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                react_1.default.createElement("path", { d: "M7.5 5L12.5 10L7.5 15", stroke: "white", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }))) },
+            react_1.default.createElement(Panel, { header: react_1.default.createElement("span", { style: {
+                        fontWeight: 600,
+                        fontSize: '16px',
+                        lineHeight: '16px',
+                        letterSpacing: '-0.01em',
+                        color: 'rgba(255, 255, 255, 255)',
+                    } }, "Other Wallets"), key: "1" }, wallets.map((wallet, idx) => {
+                if (wallet.name === 'Phantom')
+                    return null;
+                return (react_1.default.createElement(antd_1.Button, { key: idx, className: "metaplex-button w100", style: {
+                        marginBottom: 5,
+                    }, onClick: () => {
+                        select(wallet.name);
+                        close();
+                    } },
+                    "Connect to ",
+                    wallet.name));
+            })))));
 };
 exports.WalletModal = WalletModal;
 const WalletModalProvider = ({ children, }) => {
     const { publicKey } = wallet_adapter_react_1.useWallet();
     const [connected, setConnected] = react_1.useState(!!publicKey);
     const [visible, setVisible] = react_1.useState(false);
-    const history = react_router_dom_1.useHistory();
     react_1.useEffect(() => {
         if (publicKey) {
             const base58 = publicKey.toBase58();
             const keyToDisplay = base58.length > 20
                 ? `${base58.substring(0, 7)}.....${base58.substring(base58.length - 7, base58.length)}`
                 : base58;
-            if (localStorage.getItem('click-signin') === 'yes') {
-                history.push('/signinconfirm');
-                localStorage.removeItem('click-signin');
-            }
             utils_1.notify({
                 message: 'Wallet update',
                 description: 'Connected to wallet ' + keyToDisplay,
@@ -111,6 +117,14 @@ const WalletProvider = ({ children }) => {
     const wallets = react_1.useMemo(() => [
         wallet_adapter_wallets_1.getPhantomWallet(),
         wallet_adapter_wallets_1.getSolflareWallet(),
+        // getSlopeWallet(),
+        // getTorusWallet({
+        //   options: {
+        //     // @FIXME: this should be changed for Metaplex, and by each Metaplex storefront
+        //     clientId:
+        //       'BOM5Cl7PXgE9Ylq1Z1tqzhpydY0RVr8k90QQ85N7AKI5QGSrr9iDC-3rvmy0K_hF0JfpLMiXoDhta68JwcxS1LQ',
+        //   },
+        // }),
         wallet_adapter_wallets_1.getLedgerWallet(),
         wallet_adapter_wallets_1.getSolongWallet(),
         wallet_adapter_wallets_1.getMathWallet(),
@@ -123,7 +137,7 @@ const WalletProvider = ({ children }) => {
             description: error.message,
         });
     }, []);
-    return (react_1.default.createElement(wallet_adapter_react_1.WalletProvider, { wallets: wallets, onError: onError, autoConnect: true },
+    return (react_1.default.createElement(wallet_adapter_react_1.WalletProvider, { wallets: wallets, onError: onError, autoConnect: false },
         react_1.default.createElement(exports.WalletModalProvider, null, children)));
 };
 exports.WalletProvider = WalletProvider;

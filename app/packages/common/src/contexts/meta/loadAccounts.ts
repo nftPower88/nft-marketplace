@@ -212,7 +212,7 @@ export const loadMetadataForUsers = async (
   return state;
 };
 
-export const loadStoreIndexers = async (
+export const pullYourMetadata = async (
   connection: Connection,
 ): Promise<MetaState> => {
   const state: MetaState = getEmptyMetaState();

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { CheckOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
   AuctionState,
@@ -263,6 +265,7 @@ const BidLine = (props: {
     getTwitterHandle(connection, bidder);
   }, [bidderTwitterHandle]);
 
+   // @ts-ignore
   return (
     <Row wrap={false} align="middle" className="metaplex-fullwidth">
       <Col span={9}>

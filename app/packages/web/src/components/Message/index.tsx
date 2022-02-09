@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Identicon } from '@oyster/common';
 import React from 'react';
 import { useTheme } from '../../contexts/themecontext';

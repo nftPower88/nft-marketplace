@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadMultipleAccounts = exports.initMetadata = exports.metadataByMintUpdater = exports.processingAccounts = exports.makeSetter = exports.loadMetadataForCreator = exports.loadMetadataAndEditionsBySafetyDepositBoxes = exports.loadAuction = exports.loadBidsForAuction = exports.loadSafeteyDepositBoxesForVaults = exports.loadArtwork = exports.querySafetyDepositBoxByVault = exports.loadMetaDataAndEditionsForCreators = exports.loadPrizeTrackingTickets = exports.loadAuctionsForAuctionManagers = exports.loadAuctionManagers = exports.loadCreators = exports.loadPayoutTickets = exports.loadVaultsAndContentForAuthority = exports.loadAccounts = exports.loadStoreIndexers = exports.loadMetadataForUsers = void 0;
+exports.loadMultipleAccounts = exports.initMetadata = exports.metadataByMintUpdater = exports.processingAccounts = exports.makeSetter = exports.loadMetadataForCreator = exports.loadMetadataAndEditionsBySafetyDepositBoxes = exports.loadAuction = exports.loadBidsForAuction = exports.loadSafeteyDepositBoxesForVaults = exports.loadArtwork = exports.querySafetyDepositBoxByVault = exports.loadMetaDataAndEditionsForCreators = exports.loadPrizeTrackingTickets = exports.loadAuctionsForAuctionManagers = exports.loadAuctionManagers = exports.loadCreators = exports.loadPayoutTickets = exports.loadVaultsAndContentForAuthority = exports.loadAccounts = exports.pullYourMetadata = exports.loadMetadataForUsers = void 0;
 const lodash_1 = require("lodash");
 const ids_1 = require("../../utils/ids");
 const utils_1 = require("../../utils");
@@ -118,13 +118,13 @@ const loadMetadataForUsers = async (connection, userTokenAccounts, whitelistedCr
     return state;
 };
 exports.loadMetadataForUsers = loadMetadataForUsers;
-const loadStoreIndexers = async (connection) => {
+const pullYourMetadata = async (connection) => {
     const state = getEmptyMetaState_1.getEmptyMetaState();
     const updateState = exports.makeSetter(state);
     await queryStoreIndexer(connection, updateState);
     return state;
 };
-exports.loadStoreIndexers = loadStoreIndexers;
+exports.pullYourMetadata = pullYourMetadata;
 const loadAccounts = async (connection, ownerAddress) => {
     const state = getEmptyMetaState_1.getEmptyMetaState();
     const updateState = exports.makeSetter(state);

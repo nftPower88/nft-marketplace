@@ -185,6 +185,7 @@ export const CurrentUserBadge = (props: {
   }
   const balance = (account?.lamports || 0) / LAMPORTS_PER_SOL;
   const balanceInUSD = balance * solPrice;
+  //@ts-ignore
   const { ownerAddress } = useStore();
 
   let name = props.showAddress ? shortenAddress(`${publicKey}`) : '';
@@ -196,6 +197,7 @@ export const CurrentUserBadge = (props: {
   const image = unknownWallet.image ? (
     <img src={unknownWallet.image} />
   ) : (
+    // @ts-ignore
     <Identicon address={publicKey?.toBase58()} size={22} />
   );
 
@@ -283,9 +285,9 @@ export const CurrentUserBadge = (props: {
 };
 
 export const Cog = ({ buttonType }: { buttonType?: ButtonProps['type'] }) => {
-  const { endpoint, setEndpoint } = useConnectionConfig();
-  const { setVisible } = useWalletModal();
-  const open = useCallback(() => setVisible(true), [setVisible]);
+  // const { endpoint, setEndpoint } = useConnectionConfig();
+  // const { setVisible } = useWalletModal();
+  // const open = useCallback(() => setVisible(true), [setVisible]);
   const history = useHistory();
 
   return (

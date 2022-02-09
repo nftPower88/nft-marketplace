@@ -1,26 +1,36 @@
+<<<<<<< HEAD
 import { ENV as ChainId, TokenInfo } from '@solana/spl-token-registry';
 import { Blockhash, Commitment, Connection, FeeCalculator, Keypair, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { ReactNode } from 'react';
+=======
+/// <reference types="react" />
+import { TokenInfo, ENV as ChainId } from '@solana/spl-token-registry';
+import { Keypair, Commitment, Connection, Transaction, TransactionInstruction, Blockhash, FeeCalculator } from '@solana/web3.js';
+>>>>>>> c1fc8cbd5d1634b06d2baa8f4c82e1de8693f054
 import { WalletSigner } from './wallet';
 interface BlockhashAndFeeCalculator {
     blockhash: Blockhash;
     feeCalculator: FeeCalculator;
 }
-export declare type ENV = 'mainnet-beta (Triton)' | 'mainnet-beta (Triton Staging)' | 'mainnet-beta (Solana)' | 'mainnet-beta (Serum)' | 'testnet' | 'devnet' | 'localnet' | 'lending';
-export declare const ENDPOINTS: {
-    name: ENV;
+export declare type ENDPOINT_NAME = 'mainnet-beta (Triton)' | 'mainnet-beta (Triton Staging)' | 'mainnet-beta (Solana)' | 'mainnet-beta (Serum)' | 'mainnet-beta' | 'testnet' | 'devnet' | 'localnet' | 'lending';
+export declare type ENV = ENDPOINT_NAME;
+declare type EndpointMap = {
+    name: ENDPOINT_NAME;
     endpoint: string;
     ChainId: ChainId;
-}[];
-export declare function ConnectionProvider({ children, }: {
-    children: ReactNode;
+};
+export declare const ENDPOINTS: Array<EndpointMap>;
+export declare function ConnectionProvider({ children }: {
+    children: any;
 }): JSX.Element;
 export declare function useConnection(): Connection;
 export declare function useConnectionConfig(): {
-    endpoint: string;
+    setEndpointMap: (val: string) => void;
     setEndpoint: (val: string) => void;
-    env: ENV;
-    tokens: TokenInfo[];
+    endpointMap: EndpointMap;
+    endpoint: string;
+    env: ENDPOINT_NAME;
+    tokens: Map<string, TokenInfo>;
     tokenMap: Map<string, TokenInfo>;
 };
 export declare const getErrorForTransaction: (connection: Connection, txid: string) => Promise<string[]>;
@@ -30,7 +40,9 @@ export declare enum SequenceType {
     StopOnFailure = 2
 }
 export declare function sendTransactionsWithManualRetry(connection: Connection, wallet: WalletSigner, instructions: TransactionInstruction[][], signers: Keypair[][]): Promise<void>;
+export declare const sendTransactionsInChunks: (connection: Connection, wallet: WalletSigner, instructionSet: TransactionInstruction[][], signersSet: Keypair[][], sequenceType: SequenceType | undefined, commitment: Commitment | undefined, timeout: number | undefined, batchSize: number) => Promise<number>;
 export declare const sendTransactions: (connection: Connection, wallet: WalletSigner, instructionSet: TransactionInstruction[][], signersSet: Keypair[][], sequenceType?: SequenceType, commitment?: Commitment, successCallback?: (txid: string, ind: number) => void, failCallback?: (reason: string, ind: number) => boolean, block?: BlockhashAndFeeCalculator | undefined) => Promise<number>;
+export declare const sendTransactionsWithRecentBlock: (connection: Connection, wallet: WalletSigner, instructionSet: TransactionInstruction[][], signersSet: Keypair[][], commitment?: Commitment) => Promise<number>;
 export declare const sendTransaction: (connection: Connection, wallet: WalletSigner, instructions: TransactionInstruction[], signers: Keypair[], awaitConfirmation?: boolean, commitment?: Commitment, includesFeePayer?: boolean, block?: BlockhashAndFeeCalculator | undefined) => Promise<{
     txid: string;
     slot: number;

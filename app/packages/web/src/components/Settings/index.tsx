@@ -13,7 +13,7 @@ export const Settings = () => {
     <div>
       Network:{' '}
       <Select onSelect={setEndpoint} value={endpoint}>
-        {ENDPOINTS.map(({ name, endpoint }) => (
+        {ENDPOINTS.map(({ endpoint, name }) => (
           <Select.Option value={endpoint} key={endpoint}>
             {name}
           </Select.Option>

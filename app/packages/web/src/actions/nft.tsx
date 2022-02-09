@@ -6,7 +6,7 @@ import {
   createMint,
   Creator,
   Data,
-  ENV,
+  ENDPOINT_NAME,
   findProgramAddress,
   notify,
   programIds,
@@ -49,7 +49,7 @@ export type PinFileResponse = {
 export const mintNFT = async (
   connection: Connection,
   wallet: WalletSigner | undefined,
-  env: ENV,
+  env: ENDPOINT_NAME,
   files: File[],
   metadata: {
     name: string;

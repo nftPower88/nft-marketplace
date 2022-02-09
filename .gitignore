@@ -49,6 +49,7 @@ app/lerna-debug.log
 app/packages/web/public/video/
 
 # map files
+
 app/packages/common/dist/tsconfig.tsbuildinfo
 app/packages/common/dist/lib/components/ConnectButton/index.js.map
 app/packages/common/dist/lib/contexts/meta/meta.d.ts.map

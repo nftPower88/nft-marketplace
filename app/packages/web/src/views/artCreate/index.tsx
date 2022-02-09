@@ -59,6 +59,7 @@ export const ArtCreateView = () => {
     properties: {
       files: [],
       category: MetadataCategory.Image,
+      // @ts-ignore
       story: '',
       item_id: '',
     },
@@ -108,7 +109,9 @@ export const ArtCreateView = () => {
       attributes: attributes.attributes,
       external_url: attributes.external_url,
       properties: {
+        // @ts-ignore
         story: attributes.properties.story,
+        // @ts-ignore
         item_id: attributes.properties.item_id,
         files: attributes.properties.files,
         category: attributes.properties?.category,

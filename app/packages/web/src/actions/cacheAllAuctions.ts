@@ -13,7 +13,7 @@ import {
   WalletSigner,
   AuctionCache,
   loadSafeteyDepositBoxesForVaults,
-  loadStoreIndexers,
+  // loadStoreIndexers,
 } from '@oyster/common';
 import { cacheAuctionIndexer } from './cacheAuctionIndexer';
 import { buildListWhileNonZero } from '../hooks';
@@ -31,7 +31,7 @@ export async function cacheAllAuctions(
   );
   const { safetyDepositBoxesByVaultAndIndex } =
     await loadSafeteyDepositBoxesForVaults(connection, vaultPubKeys);
-  let storeIndex = [...storeIndexer];
+  const storeIndex = [...storeIndexer];
   for (const auctionManager of auctionManagers) {
     if (auctionManager.info.key !== MetaplexKey.AuctionManagerV2) {
       return;
@@ -80,8 +80,8 @@ export async function cacheAllAuctions(
       'max',
     );
 
-    const { storeIndexer } = await loadStoreIndexers(connection);
+    // const { storeIndexer } = await loadStoreIndexers(connection);
 
-    storeIndex = storeIndexer;
+    // storeIndex = storeIndexer;
   }
 }
