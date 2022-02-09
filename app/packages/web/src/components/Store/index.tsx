@@ -46,7 +46,7 @@ export function AnalyticsProvider(props: { children: React.ReactNode }) {
 
   // user pubkey / id
   const pubkey = publicKey?.toBase58() || '';
-  const endpointName = ENDPOINTS.find(e => e.url === endpoint.url)?.name;
+  const endpointName = ENDPOINTS.find(e => e.endpoint === endpoint)?.name;
   useEffect(() => {
     // const isStoreOwner = ownerAddress === publicKey?.toBase58();
 

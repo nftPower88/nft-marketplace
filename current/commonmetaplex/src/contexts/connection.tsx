@@ -121,13 +121,13 @@ export function ConnectionProvider({ children }: { children: any }) {
 
   const endpoint = maybeEndpoint || DEFAULT_ENDPOINT;
 
-  const { current: connection } = useRef(new Connection(endpoint.url));
+  const { current: connection } = useRef(new Connection(endpoint));
 
   const [tokens, setTokens] = useState<Map<string, TokenInfo>>(new Map());
   const [tokenMap, setTokenMap] = useState<Map<string, TokenInfo>>(new Map());
 
   const env =
-    ENDPOINTS.find(end => end.url === endpoint.url)?.name || ENDPOINTS[0].name;
+    ENDPOINTS.find(end => end.url === endpoint)?.name || ENDPOINTS[0].name;
 
   useEffect(() => {
     function fetchTokens() {

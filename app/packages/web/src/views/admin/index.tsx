@@ -378,9 +378,9 @@ function InnerAdminView({
   }
 
   const { endpoint } = useConnectionConfig();
-  const endpointName = ENDPOINTS.find(e => e.url === endpoint.url)?.name;
-  const endpointUrl = ENDPOINTS.find(e => e.url === endpoint.url)?.url;
-  const endpointId = ENDPOINTS.find(e => e.url === endpoint.url)?.chainId;
+  const endpointName = ENDPOINTS.find(e => e.endpoint === endpoint)?.name;
+  const endpointUrl = ENDPOINTS.find(e => e.endpoint === endpoint)?.endpoint;
+  const endpointId = ENDPOINTS.find(e => e.endpoint === endpoint)?.ChainId;
 
   const { storefront, storeAddress } = useStore();
   const storeConfigData: DataType[] = [

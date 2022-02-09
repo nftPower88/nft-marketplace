@@ -22,13 +22,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactions = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
-=======
 exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactionsWithRecentBlock = exports.sendTransactions = exports.sendTransactionsInChunks = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
 const react_1 = __importStar(require("react"));
 const utils_1 = require("../utils");
->>>>>>> eval/oyster2
 const spl_token_registry_1 = require("@solana/spl-token-registry");
 const wallet_adapter_base_1 = require("@solana/wallet-adapter-base");
 const web3_js_1 = require("@solana/web3.js");
@@ -36,12 +32,7 @@ const utils_2 = require("../utils/utils");
 const notifications_1 = require("../utils/notifications");
 const ExplorerLink_1 = require("../components/ExplorerLink");
 const hooks_1 = require("../hooks");
-<<<<<<< HEAD
-const notifications_1 = require("../utils/notifications");
-const utils_1 = require("../utils/utils");
 const cusper_1 = require("@metaplex-foundation/cusper");
-=======
->>>>>>> eval/oyster2
 const config_1 = __importDefault(require("next/config"));
 const cusper = cusper_1.initCusper();
 const logs = [
@@ -521,7 +512,6 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
     let transaction = new web3_js_1.Transaction({ feePayer: wallet.publicKey });
     instructions.forEach(instruction => transaction.add(instruction));
     transaction.recentBlockhash = (block || (await connection.getRecentBlockhash(commitment))).blockhash;
-<<<<<<< HEAD
     showError();
     console.log(`signedTransaction2; feePayer: ${transaction.feePayer}`);
     console.log(`signedTransaction2; instructions: ${transaction.instructions}`);
@@ -531,37 +521,6 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
     if (!includesFeePayer) {
         // console.log(`store paying for transaction?: ${wallet.publicKey}`);
         // transaction.feePayer = wallet.publicKey;
-=======
-    console.log(`sendTransactionWithRetry; instructions2: ${instructions}`);
-    console.log(`sendTransactionWithRetry; transaction: ${transaction}`);
-    if (includesFeePayer) {
-        // transaction.setSigners(...signers.map(s => s.publicKey));
-        transaction.partialSign(...signers);
-    }
-    else {
-        signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
-        transaction.setSigners(
-        // fee payed by the wallet owner
-        wallet.publicKey, ...signers.map(s => s.publicKey));
-    }
-    console.log(`sendTransactionWithRetry; signers2: ${signers}`);
-    console.log(`sendTransactionWithRetry; transaction2: ${transaction}`);
-    if (signers.length > 0) {
-        console.log(`sendTransactionWithRetry; signers.length: ${signers.length}`);
-        console.log(`sendTransactionWithRetry; signers: ${signers}`);
-        signers.forEach(s => console.log(`signer: ${s.publicKey}; `));
-        // transaction.partialSign(...signers);
-        transaction.setSigners(
-        // fee payed by the wallet owner
-        wallet.publicKey, ...signers.map(s => s.publicKey));
-    }
-    if (!includesFeePayer) {
-        console.log(`sendTransactionWithRetry feePayer; ${transaction.feePayer}`);
-        console.log(`sendTransactionWithRetry instructions; ${transaction.instructions}`);
-        console.log(`sendTransactionWithRetry nonceInfo; ${transaction.nonceInfo}`);
-        console.log(`sendTransactionWithRetry recentBlockhash; ${transaction.recentBlockhash}`);
-        console.log(`sendTransactionWithRetry signatures; ${transaction.signatures}`);
->>>>>>> eval/oyster2
         transaction = await wallet.signTransaction(transaction);
         let isVerifiedSignature = transaction.verifySignatures();
         console.log(`The signatures were verifed: ${isVerifiedSignature}`);
@@ -572,7 +531,6 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
         console.log(`sendTransactionWithRetry; pre-beforeSend`);
         beforeSend();
     }
-    console.log(`sendTransactionWithRetry; transaction3: ${transaction}`);
     const { txid, slot } = await sendSignedTransaction({
         connection,
         signedTransaction: transaction,
@@ -589,18 +547,13 @@ const getUnixTs = () => {
     return new Date().getTime() / 1000;
 };
 exports.getUnixTs = getUnixTs;
-<<<<<<< HEAD
-const DEFAULT_TIMEOUT = 30000;
+const DEFAULT_TIMEOUT = 15000;
 async function sendSignedTransaction({ signedTransaction, connection, timeout = DEFAULT_TIMEOUT, }) {
     console.log(`sendSignedTransaction; feePayer: ${signedTransaction.feePayer}`);
     console.log(`sendSignedTransaction; instructions: ${signedTransaction.instructions}`);
     console.log(`sendSignedTransaction; nonceInfo: ${signedTransaction.nonceInfo}`);
     console.log(`sendSignedTransaction; recentBlockhash: ${signedTransaction.recentBlockhash}`);
     console.log(`sendSignedTransaction; signature: ${signedTransaction.signature}`);
-=======
-const DEFAULT_TIMEOUT = 15000;
-async function sendSignedTransaction({ signedTransaction, connection, timeout = DEFAULT_TIMEOUT, }) {
->>>>>>> eval/oyster2
     const rawTransaction = signedTransaction.serialize();
     const startTime = exports.getUnixTs();
     let slot = 0;
@@ -614,11 +567,7 @@ async function sendSignedTransaction({ signedTransaction, connection, timeout = 
             connection.sendRawTransaction(rawTransaction, {
                 skipPreflight: true,
             });
-<<<<<<< HEAD
-            await utils_1.sleep(500);
-=======
             await utils_2.sleep(500);
->>>>>>> eval/oyster2
         }
     })();
     try {
@@ -751,11 +700,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
                     }
                 }
             })();
-<<<<<<< HEAD
-            await utils_1.sleep(2000);
-=======
             await utils_2.sleep(2000);
->>>>>>> eval/oyster2
         }
     });
     //@ts-ignore

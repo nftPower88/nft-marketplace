@@ -90,10 +90,10 @@ function ConnectionProvider({ children }) {
         }
     }
     const endpoint = maybeEndpoint || DEFAULT_ENDPOINT;
-    const { current: connection } = react_1.useRef(new web3_js_1.Connection(endpoint.url));
+    const { current: connection } = react_1.useRef(new web3_js_1.Connection(endpoint));
     const [tokens, setTokens] = react_1.useState(new Map());
     const [tokenMap, setTokenMap] = react_1.useState(new Map());
-    const env = ((_a = exports.ENDPOINTS.find(end => end.url === endpoint.url)) === null || _a === void 0 ? void 0 : _a.name) || exports.ENDPOINTS[0].name;
+    const env = ((_a = exports.ENDPOINTS.find(end => end.url === endpoint)) === null || _a === void 0 ? void 0 : _a.name) || exports.ENDPOINTS[0].name;
     react_1.useEffect(() => {
         function fetchTokens() {
             return utils_1.getTokenListContainerPromise().then(container => {

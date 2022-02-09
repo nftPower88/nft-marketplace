@@ -6,7 +6,7 @@ export interface WalletModalContextState {
 }
 export declare const WalletModalContext: React.Context<WalletModalContextState>;
 export declare function useWalletModal(): WalletModalContextState;
-export declare const WalletModal: () => JSX.Element;
+export declare const WalletModal: FC;
 export declare const WalletModalProvider: FC<{
     children: ReactNode;
 }>;
