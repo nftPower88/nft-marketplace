@@ -1,5 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import {
+  MetaplexOverlay,
+  MetaplexModal,
   useStore,
   loadMetadataForCreator,
   useConnection,
@@ -185,10 +187,9 @@ export const AuctionListView = () => {
         <div className="d-flex">
           <h3 className="me-2 me-sm-3 d-none d-sm-block">Creators: </h3>
           <Select
-            className="mb-2"
+            className="mb-2 select_artists"
             onChange={handleChange}
             defaultValue="All"
-            style={{ width: '30rem' }}
           >
             <Option value={'initial'}>All</Option>
             {creators.map((m, idx) => {
@@ -255,7 +256,7 @@ export const AuctionListView = () => {
           <Spin indicator={<LoadingOutlined />} />
         </div>
       )}
-      {showModal && (
+      {/* {showModal && (
         <DrawerWrapper
           id={itemId}
           hide={() => setShowModal(false)}
@@ -263,7 +264,24 @@ export const AuctionListView = () => {
           show={showModal && mobileMode}
           mobileMode={mobileMode}
         />
-      )}
+        
+      )} */}
+      <MetaplexModal
+        maskClosable={true}
+        closable={false}
+        onCancel={() => setShowModal(false)}
+        visible={showModal && mobileMode}
+      >
+        <div className="p-2">
+          <CheckOutModal
+            mobile={mobileMode}
+            show={showModal}
+            id={itemId}
+            hide={() => setShowModal(false)}
+          />
+        </div>
+      </MetaplexModal>
+
       {showModal && (
         <DrawerWrapper
           id={itemId}

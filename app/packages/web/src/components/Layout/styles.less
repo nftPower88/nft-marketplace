@@ -1,13 +1,15 @@
 #metaplex-layout-content {
-  margin: 0 auto;
+  margin: 10px auto;
   // padding: @content-padding;
   box-sizing: border-box;
   width: 100%;
+  padding: 0 15px;
   max-width: (@content-max-width + 2 * @content-padding);
   // Clip the content, primarily to hide overflow from the homepage banner backdrop
   overflow: hidden;
   margin-top: 60px;
   @media screen and (min-width: 576px) {
     margin-top: 75px;
+    padding: 0 5px;
   }
 }

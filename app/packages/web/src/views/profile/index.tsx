@@ -136,7 +136,7 @@ export const ProfileView = () => {
           </span>
           <span className="followSpan">
             <InfoCircleFilled className="infoIcon" />
-            followering
+            following{' '}
           </span>
         </div>
         <div className="infoButtons">

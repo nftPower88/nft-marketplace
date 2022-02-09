@@ -18,9 +18,9 @@ const DrawerWrapper: React.FC<Props> = ({
   placement,
   mobileMode,
 }: Props) => {
-  const promisedModal = new Promise(resolve =>
-    resolve(<CheckOutModal show={show} hide={hide} id={id} />),
-  );
+  // const promisedModal = new Promise(resolve =>
+  //   resolve(<CheckOutModal show={show} hide={hide} id={id} />),
+  // );
 
   return (
     <Drawer
