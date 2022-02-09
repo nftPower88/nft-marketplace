@@ -37,7 +37,7 @@ import {
   fromLamports,
   useMint,
   PriceFloorType,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { ArtType } from '../../types';
 import { LoadingOutlined } from '@ant-design/icons';

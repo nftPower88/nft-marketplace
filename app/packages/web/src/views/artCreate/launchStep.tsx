@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { IMetadataExtension, MAX_METADATA_LEN } from '@oyster/commonmetaplex';
+import { IMetadataExtension, MAX_METADATA_LEN } from '@oyster/common';
 import { MintLayout } from '@solana/spl-token';
 import { Connection } from '@solana/web3.js';
 import { Button, Col, Row, Spin, Statistic, Space } from 'antd';

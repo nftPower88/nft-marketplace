@@ -30,7 +30,7 @@ import {
   SafetyDepositConfig,
   WinningConfigType,
   AuctionViewItem,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { merge, take, drop } from 'lodash';
 import { Connection } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';

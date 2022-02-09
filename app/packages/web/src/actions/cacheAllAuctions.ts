@@ -14,7 +14,7 @@ import {
   AuctionCache,
   loadSafeteyDepositBoxesForVaults,
   loadStoreIndexers,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { cacheAuctionIndexer } from './cacheAuctionIndexer';
 import { buildListWhileNonZero } from '../hooks';
 

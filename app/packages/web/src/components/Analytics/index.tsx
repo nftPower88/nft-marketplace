@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { ENDPOINTS, useConnectionConfig, useStore } from '@oyster/commonmetaplex';
+import { ENDPOINTS, useConnectionConfig, useStore } from '@oyster/common';
 import { useLocation } from 'react-router';
 import { useSolPrice } from '../../contexts';
 import getConfig from 'next/config';

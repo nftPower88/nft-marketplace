@@ -1,5 +1,5 @@
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
-import { MetadataCategory, MetadataFile, pubkeyToString } from '@oyster/commonmetaplex';
+import { MetadataCategory, MetadataFile, pubkeyToString } from '@oyster/common';
 import { PublicKey } from '@solana/web3.js';
 import { Image } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';

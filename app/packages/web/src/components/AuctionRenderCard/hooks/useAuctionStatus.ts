@@ -3,7 +3,7 @@ import {
   fromLamports,
   useMint,
   PriceFloorType,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import {
   AuctionView,
   AuctionViewState,

@@ -5,7 +5,7 @@ import { Row, Col, Typography, Modal, Tabs, Input, List } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { TokenInfo } from "@solana/spl-token-registry";
 import { SolCircle } from "../Custom";
-import { MetaplexModal, shortenAddress, toPublicKey } from "@oyster/commonmetaplex";
+import { MetaplexModal, shortenAddress, toPublicKey } from "@oyster/common";
 
 const { Search } = Input;
 

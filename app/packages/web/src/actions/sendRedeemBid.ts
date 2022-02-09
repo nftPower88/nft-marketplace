@@ -23,7 +23,7 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { AccountLayout, MintLayout, Token } from '@solana/spl-token';
 import { AuctionView } from '../hooks';
@@ -42,12 +42,12 @@ import {
   getPrizeTrackingTicket,
   BidRedemptionTicket,
   AuctionViewItem,
-} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
-import { claimBid } from '@oyster/commonmetaplex/dist/lib/models/metaplex/claimBid';
-import { approve } from '@oyster/commonmetaplex/dist/lib/models/account';
-import { createTokenAccount } from '@oyster/commonmetaplex/dist/lib/actions/account';
+} from '@oyster/common/dist/lib/models/metaplex/index';
+import { claimBid } from '@oyster/common/dist/lib/models/metaplex/claimBid';
+import { approve } from '@oyster/common/dist/lib/models/account';
+import { createTokenAccount } from '@oyster/common/dist/lib/actions/account';
 import { setupCancelBid } from './cancelBid';
-import { deprecatedPopulateParticipationPrintingAccount } from '@oyster/commonmetaplex/dist/lib/models/metaplex/deprecatedPopulateParticipationPrintingAccount';
+import { deprecatedPopulateParticipationPrintingAccount } from '@oyster/common/dist/lib/models/metaplex/deprecatedPopulateParticipationPrintingAccount';
 import { setupPlaceBid } from './sendPlaceBid';
 import { claimUnusedPrizes } from './claimUnusedPrizes';
 import { createMintAndAccountWithOne } from './createMintAndAccountWithOne';

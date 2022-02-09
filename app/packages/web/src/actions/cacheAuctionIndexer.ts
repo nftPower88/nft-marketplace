@@ -1,19 +1,15 @@
 import { Keypair, TransactionInstruction } from '@solana/web3.js';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
-import {
-  ParsedAccount,
-  StringPublicKey,
-  WalletSigner,
-} from '@oyster/commonmetaplex';
-import { getSafetyDepositBoxAddress } from '@oyster/commonmetaplex/dist/lib/actions/vault';
+import { ParsedAccount, StringPublicKey, WalletSigner } from '@oyster/common';
+import { getSafetyDepositBoxAddress } from '@oyster/common/dist/lib/actions/vault';
 import {
   StoreIndexer,
   getStoreIndexer,
   getAuctionCache,
   MAX_INDEXED_ELEMENTS,
-} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
-import { setStoreIndex } from '@oyster/commonmetaplex/dist/lib/models/metaplex/setStoreIndex';
-import { setAuctionCache } from '@oyster/commonmetaplex/dist/lib/models/metaplex/setAuctionCache';
+} from '@oyster/common/dist/lib/models/metaplex/index';
+import { setStoreIndex } from '@oyster/common/dist/lib/models/metaplex/setStoreIndex';
+import { setAuctionCache } from '@oyster/common/dist/lib/models/metaplex/setAuctionCache';
 import BN from 'bn.js';
 
 // This command caches an auction at position 0, page 0, and moves everything up

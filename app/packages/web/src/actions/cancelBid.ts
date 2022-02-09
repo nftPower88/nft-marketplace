@@ -12,14 +12,14 @@ import {
   StringPublicKey,
   WalletSigner,
   toPublicKey,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { AccountLayout } from '@solana/spl-token';
 import { TransactionInstruction, Keypair, Connection } from '@solana/web3.js';
 import { AuctionView } from '../hooks';
 import {
   BidRedemptionTicket,
   PrizeTrackingTicket,
-} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
+} from '@oyster/common/dist/lib/models/metaplex/index';
 import { claimUnusedPrizes } from './claimUnusedPrizes';
 import { setupPlaceBid } from './sendPlaceBid';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';

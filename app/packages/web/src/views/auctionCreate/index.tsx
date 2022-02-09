@@ -18,12 +18,12 @@ import {
   processAuctions,
   VAULT_ID,
   processVaultData,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import Bugsnag from '@bugsnag/browser';
 import {
   AmountRange,
   WinningConfigType,
-} from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
+} from '@oyster/common/dist/lib/models/metaplex/index';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { LAMPORTS_PER_SOL, SystemProgram } from '@solana/web3.js';
 import { Button, Col, Row, Space, Steps } from 'antd';
@@ -49,7 +49,7 @@ import { PriceAuction } from './priceAuction';
 import { ReviewStep } from './reviewStep';
 import { TierTableStep } from './tierTableStep';
 import { WaitingStep } from './waitingStep';
-import { useStore } from '@oyster/commonmetaplex';
+import { useStore } from '@oyster/common';
 const { Step } = Steps;
 const { ZERO } = constants;
 

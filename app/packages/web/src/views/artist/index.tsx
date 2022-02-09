@@ -3,7 +3,7 @@ import {
   loadMetadataForCreator,
   useConnection,
   MetaplexModal,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { Col, Divider, Row, Spin, Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Select } from 'antd';
-import { contexts } from '@oyster/commonmetaplex';
+import { contexts } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 const { ENDPOINTS, useConnectionConfig } = contexts.Connection;

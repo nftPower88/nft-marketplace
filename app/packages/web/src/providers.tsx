@@ -4,13 +4,13 @@ import {
   StoreProvider,
   WalletProvider,
   MetaProvider,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import React, { FC } from 'react';
 import { ConfettiProvider } from './components/Confetti';
 import { AppLayout } from './components/Layout';
 import { LoaderProvider } from './components/Loader';
 import { CoingeckoProvider } from './contexts/coingecko';
-import { Storefront } from '@oyster/commonmetaplex';
+import { Storefront } from '@oyster/common';
 import { AnalyticsProvider } from './components/Analytics';
 import getConfig from 'next/config';
 

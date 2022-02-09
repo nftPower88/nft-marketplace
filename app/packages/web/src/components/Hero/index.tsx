@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Button, Typography, Space } from 'antd';
-import { MetaplexOverlay } from '@oyster/commonmetaplex';
+import { MetaplexOverlay } from '@oyster/common';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Link } from 'react-router-dom';

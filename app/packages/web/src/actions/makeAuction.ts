@@ -7,11 +7,11 @@ import {
   StringPublicKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import {
   AUCTION_PREFIX,
   createAuction,
-} from '@oyster/commonmetaplex/dist/lib/actions/auction';
+} from '@oyster/common/dist/lib/actions/auction';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 
 // This command makes an auction

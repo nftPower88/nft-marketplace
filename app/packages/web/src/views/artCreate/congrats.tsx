@@ -1,4 +1,4 @@
-import { ArrowButton, StringPublicKey } from '@oyster/commonmetaplex';
+import { ArrowButton, StringPublicKey } from '@oyster/common';
 import { Button, Space } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';

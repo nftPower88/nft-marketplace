@@ -1,4 +1,4 @@
-import { WRAPPED_SOL_MINT } from '@oyster/commonmetaplex';
+import { WRAPPED_SOL_MINT } from '@oyster/common';
 
 export * from './labels';
 export * from './style';

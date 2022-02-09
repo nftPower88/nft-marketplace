@@ -13,7 +13,7 @@ import {
   toPublicKey,
   WalletSigner,
   querySafetyDepositBoxByVault,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 
 import BN from 'bn.js';
 import { closeVault } from './closeVault';

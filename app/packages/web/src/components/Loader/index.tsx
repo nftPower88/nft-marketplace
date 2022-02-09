@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { useMeta, useStore } from '@oyster/commonmetaplex';
+import { useMeta, useStore } from '@oyster/common';
 import { Spin } from 'antd';
 import React, { FC } from 'react';
 

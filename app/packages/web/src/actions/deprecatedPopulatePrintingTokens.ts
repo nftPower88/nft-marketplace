@@ -9,7 +9,7 @@ import {
   MetadataKey,
   toPublicKey,
   WalletSigner,
-} from '@oyster/commonmetaplex';
+} from '@oyster/common';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import BN from 'bn.js';
 import { SafetyDepositInstructionTemplate } from './addTokensToVault';

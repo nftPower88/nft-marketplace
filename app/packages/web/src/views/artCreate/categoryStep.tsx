@@ -1,4 +1,4 @@
-import { MetadataCategory } from '@oyster/commonmetaplex';
+import { MetadataCategory } from '@oyster/common';
 import { Button, Row, Col, Space } from 'antd';
 import React from 'react';
 

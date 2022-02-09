@@ -1,5 +1,5 @@
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { Creator, MetadataKey, WinningConfigType } from '@oyster/commonmetaplex';
+import { Creator, MetadataKey, WinningConfigType } from '@oyster/common';
 import { Button, Card, Checkbox, Input, Select, Space } from 'antd';
 import React from 'react';
 import { Tier, TieredAuctionState } from '.';
