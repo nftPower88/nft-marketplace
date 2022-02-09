@@ -4,7 +4,7 @@ import {
   fromLamports,
   PriceFloorType,
   useMint,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { Col, Row, Typography } from 'antd';
 import React from 'react';
 import { AuctionView, AuctionViewState, useBidsForAuction } from '../../hooks';

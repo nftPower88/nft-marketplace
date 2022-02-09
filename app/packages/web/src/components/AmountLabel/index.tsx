@@ -1,4 +1,4 @@
-import { formatUSD } from '@oyster/common';
+import { formatUSD } from '@oyster/commonmetaplex';
 import { Space, Statistic } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSolPrice } from '../../contexts';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar } from 'antd';
 import { Artist } from '../../types';
-import { Identicon } from '@oyster/common';
+import { Identicon } from '@oyster/commonmetaplex';
 
 // TODO: remove size?
 const MetaAvatarItem = (props: {

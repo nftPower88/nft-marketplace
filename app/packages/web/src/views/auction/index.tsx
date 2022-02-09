@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { CheckOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
   AuctionState,
@@ -19,8 +21,8 @@ import {
   processMetaplexAccounts,
   VAULT_ID,
   processVaultData,
-} from '@oyster/common';
-import { AuctionViewItem } from '@oyster/common/dist/lib/models/metaplex/index';
+} from '@oyster/commonmetaplex';
+import { AuctionViewItem } from '@oyster/commonmetaplex/dist/lib/models/metaplex/index';
 import { getHandleAndRegistryKey } from '@solana/spl-name-service';
 import { MintInfo } from '@solana/spl-token';
 import { Link } from 'react-router-dom';
@@ -263,6 +265,7 @@ const BidLine = (props: {
     getTwitterHandle(connection, bidder);
   }, [bidderTwitterHandle]);
 
+   // @ts-ignore
   return (
     <Row wrap={false} align="middle" className="metaplex-fullwidth">
       <Col span={9}>

@@ -11,7 +11,7 @@ import {
   MetaplexOverlay,
   useConnection,
   useUserAccounts,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { useArt } from '../../hooks';
 import { mintEditionsToWallet } from '../../actions/mintEditionsIntoWallet';
 import { ArtType } from '../../types';

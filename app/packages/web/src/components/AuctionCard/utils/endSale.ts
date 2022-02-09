@@ -6,7 +6,7 @@ import {
   sendTransactions,
   SequenceType,
   TokenAccount,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import {
   Connection,

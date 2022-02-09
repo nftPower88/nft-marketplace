@@ -116,7 +116,7 @@ export const MessageView = () => {
               type="text"
               onFocus={() => setFocus(true)}
               onBlur={() => setFocus(false)}
-              className="message-insert"
+              className={`message-insert ${theme === 'Light' ? 'message-insert-light' : 'message-insert-dark'}`}
               placeholder="Type a message"
               // value={text}
               style={theme === 'Light' ? { color: 'black', borderColor: 'black' } : { color: 'white', borderColor: 'white', outline: 'none' }}
@@ -132,7 +132,7 @@ export const MessageView = () => {
             <div
               style={{
                 position: 'absolute',
-                right: 50,
+                right: 15,
                 bottom: 85,
                 display: 'flex'
               }}
@@ -142,7 +142,7 @@ export const MessageView = () => {
                   borderRadius: '50%',
                   border: 'none',
                   textAlign: 'center',
-                  backgroundColor: `${theme === 'Light' ? 'rgb(200,200,200)' : 'rbg(75,75,75)'}`,
+                  backgroundColor: `${theme === 'Light' ? 'rgb(200,200,200)' : 'rgb(75,75,75)'}`,
                   padding: "8px 12px"
                 }}
                 onClick={() => {
@@ -152,7 +152,7 @@ export const MessageView = () => {
                   scrollDiv.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
                 }}
               >
-                <ArrowDownOutlined />
+                <ArrowDownOutlined style={{ color: `${theme === 'Light' ? 'black' : 'white'}` }} />
               </button>
             </div>
           }

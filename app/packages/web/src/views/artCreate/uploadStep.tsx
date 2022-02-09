@@ -2,7 +2,7 @@ import {
   IMetadataExtension,
   MetadataCategory,
   MetadataFile,
-} from '@oyster/common';
+} from '@oyster/commonmetaplex';
 import { Button, Space, Typography, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { getLast } from '../../utils/utils';
