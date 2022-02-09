@@ -668,6 +668,13 @@ function InnerAdminView({
 }
 
 const ManageUser = () => {
+  interface DataType {
+    key: React.Key;
+    avatar: string;
+    name: string;
+    role: string;
+  }
+
   const columns = [
     {
       title: 'Avatar',
@@ -694,19 +701,19 @@ const ManageUser = () => {
       title: 'Message',
       dataIndex: '',
       key: 'message',
-      render: () =>
+      render: (v: string, obj: DataType) =>
         <>
-          <Button shape='round' className='user-btn'>Message</Button>
+          <Button shape='round' className='user-btn' onClick={() => handleMessage(obj)}>Message</Button>
         </>,
     },
     {
       title: 'Hide / Block',
       dataIndex: '',
       key: 'x',
-      render: () =>
+      render: (v: string, obj: DataType) =>
         <>
-          <Button shape='round' className='me-2 user-btn'>Hide</Button>
-          <Button shape='round' className='user-btn'>Block</Button>
+          <Button shape='round' className='me-2 user-btn' onClick={() => handleHide(obj)}>Hide</Button>
+          <Button shape='round' className='user-btn' onClick={() => handleBlock(obj)}>Block</Button>
         </>,
     },
   ];
@@ -737,6 +744,18 @@ const ManageUser = () => {
       role: 'users',
     },
   ];
+
+  const handleHide = (obj: DataType) => {
+    console.log('hide ', obj)
+  }
+
+  const handleBlock = (obj: DataType) => {
+    console.log('block', obj)
+  } 
+
+  const handleMessage = (obj: DataType) => {
+    console.log('message', obj)
+  }
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
