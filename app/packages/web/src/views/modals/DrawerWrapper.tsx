@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import CheckOutModal from './CheckOutModal';
 import { Drawer } from 'antd';
 import React from 'react';

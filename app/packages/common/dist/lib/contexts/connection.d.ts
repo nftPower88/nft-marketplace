@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-import { ENV as ChainId, TokenInfo } from '@solana/spl-token-registry';
-import { Blockhash, Commitment, Connection, FeeCalculator, Keypair, Transaction, TransactionInstruction } from '@solana/web3.js';
-import { ReactNode } from 'react';
-=======
 /// <reference types="react" />
 import { TokenInfo, ENV as ChainId } from '@solana/spl-token-registry';
 import { Keypair, Commitment, Connection, Transaction, TransactionInstruction, Blockhash, FeeCalculator } from '@solana/web3.js';
->>>>>>> c1fc8cbd5d1634b06d2baa8f4c82e1de8693f054
 import { WalletSigner } from './wallet';
 interface BlockhashAndFeeCalculator {
     blockhash: Blockhash;
