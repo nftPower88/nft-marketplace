@@ -3,6 +3,7 @@ import {
   useWallet,
   WalletProvider as BaseWalletProvider,
 } from '@solana/wallet-adapter-react';
+import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 import {
   getLedgerWallet,
   getMathWallet,
@@ -24,6 +25,7 @@ import React, {
 } from 'react';
 import { MetaplexModal } from '../components';
 import { notify } from '../utils';
+import { MyWalletAdapter } from './wallet/MyWalletAdapter';
 const { Panel } = Collapse;
 
 export interface WalletModalContextState {
@@ -178,6 +180,17 @@ export const WalletModalProvider: FC<{ children: ReactNode }> = ({
   );
 };
 
+export declare enum WalletName {
+  Ledger = "Ledger",
+  MathWallet = "MathWallet",
+  Phantom = "Phantom",
+  Solflare = "Solflare",
+  SolflareWeb = "Solflare (Web)",
+  Sollet = "Sollet",
+  Solong = "Solong",
+  Torus = "Torus"
+}
+
 export const WalletProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const wallets = useMemo(
     () => [
@@ -187,6 +200,12 @@ export const WalletProvider: FC<{ children: ReactNode }> = ({ children }) => {
       getSolongWallet(),
       getMathWallet(),
       getSolletWallet(),
+      {
+        name: WalletName.Ledger,
+        url: 'https://solflare.com',
+        icon: `https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/icons/phantom.svg`,
+        adapter: () => new SolflareWalletAdapter()
+      }
     ],
     [],
   );

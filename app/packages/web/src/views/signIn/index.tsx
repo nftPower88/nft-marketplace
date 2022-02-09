@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Row, Col, Layout, Input } from 'antd';
 import { MetaplexOverlay, MetaplexModal, ConnectButton } from '@oyster/common';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { ContextProvider } from '../../contextsProvider/ContextProvider';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Keypair } from "@solana/web3.js";
 import emailjs from '@emailjs/browser';
@@ -119,6 +121,9 @@ export const SignInView = () => {
                 <h1 className="bold_text title_text">
                   Welcome! Let's begin with your wallet.
                 </h1>
+                <ContextProvider>
+                  <WalletMultiButton className="btn btn-ghost mr-2" />
+                </ContextProvider>
                 <ConnectButton
                   className="bold_text"
                   type="primary"
