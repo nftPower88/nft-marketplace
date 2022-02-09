@@ -1,0 +1,65 @@
+.template-container {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--color-text);
+
+    .template-header {
+        text-align: center;
+
+        img {
+            width: 300px;
+            height: 35px;
+        }
+
+    }
+
+    .tempate-divider {
+        margin: 30px 0 15px;
+        border-bottom: 2px solid var(--color-accent);
+    }
+
+    .main-container {
+        max-width: 600px;
+        margin: 0 auto 215px;
+
+        p {
+            text-align: center;
+        }
+
+        .pay-info-container {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .summary-container {
+            font-size: 14px;
+
+            .list-container {
+                font-size: 14px;
+                background-color: var(--color-base-bold);
+                padding: 30px;
+            }
+        }
+
+    }
+
+    .template-footer {
+
+        p:nth-child(1) {
+            margin-bottom: 0 !important;
+            text-align: center;
+
+            span {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+
+        p:nth-child(3) {
+            text-align: center;
+            font-weight: bold;
+        }
+    }
+}
+

@@ -20,3 +20,4 @@ export { MessageView } from './message';
 export { ProfileView } from './profile';
 export { EditProfileView } from './editProfile';
 export { SettingView } from './setting';
+export { TempView } from './temp';
