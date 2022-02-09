@@ -795,6 +795,7 @@ export const AuctionCard = ({
   // Conduct an instant sale
   const instantFiatSaleBtn = (
     <Space
+      style={{ display: 'flex', justifyContent: 'center' }}
       align="center"
       onLoad={canEndInstantSale ? endInstantSale : instantFiatSale}
     >
@@ -951,15 +952,7 @@ export const AuctionCard = ({
             </Button>
           )}
           <hr />
-          <Space
-            className="ant-card"
-            style={{
-              position: 'absolute',
-              top: 68,
-              left: 140,
-              padding: '0 10px 0 10px',
-            }}
-          >
+          <Space className="ant-card pay_with_text">
             {isAuctionManagerAuthorityNotWalletOwner ? (
               <Text>Or pay with card</Text>
             ) : (

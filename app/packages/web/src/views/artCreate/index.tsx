@@ -76,7 +76,7 @@ export const ArtCreateView = () => {
     },
   );
   const isActivatedCreator = Object.values(activatedCreators).some(e => {
-    console.log(`${e.info.address} - ${publicKey?.toBase58()}`);
+    // console.log(`${e.info.address} - ${publicKey?.toBase58()}`);
     return e.info.address === publicKey?.toBase58();
   });
 

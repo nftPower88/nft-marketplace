@@ -499,17 +499,19 @@ export class Checkout extends React.Component<
 
   displayPaymentForm = () => {
     return (
-      <Space className="metaplex-fullwidth" direction="vertical" align="center">
+      <Space
+        className="metaplex-fullwidth modal_container"
+        direction="vertical"
+        align="center"
+      >
         <Space
-          className="metaplex-space-align-stretch modal_container ant-card"
+          className="metaplex-space-align-stretch  ant-card"
           direction="vertical"
         >
           <Layout>
-            <div className="modal_content">
-              <Elements stripe={this.stripe!}>
-                <this.doPayment />
-              </Elements>
-            </div>
+            <Elements stripe={this.stripe!}>
+              <this.doPayment />
+            </Elements>
           </Layout>
         </Space>
       </Space>

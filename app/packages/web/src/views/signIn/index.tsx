@@ -16,7 +16,7 @@ export const SignInView = () => {
   const { connected, publicKey } = useWallet();
   const history = useHistory();
 
-  console.log('sign in = ', connected, publicKey);
+  // console.log('sign in = ', connected, publicKey);
   connected && history.push('/signinconfirm');
 
   const [showForm, setShowForm] = useState(true);

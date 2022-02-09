@@ -223,7 +223,7 @@ export const AuctionListView = () => {
           // const creator = useCreators(m)
           const creatorAdress =
             m.thumbnail.metadata.info.data.creators![0].address;
-          console.log(creatorAdress, '||', globalAdress);
+          // console.log(creatorAdress, '||', globalAdress);
           // console.log(creator, 'this is the creator')
           if (m.auction.info.state !== 2 && creatorAdress === globalAdress)
             return (
