@@ -15,7 +15,7 @@ export const SignInConfirmView = () => {
 
   return (
     <div className="signin-confirm-container">
-      <p>Welcom back</p>
+      <p>Welcome back</p>
       <p>@queendom!</p>
       <div className="signin-confirm-address-container">
         <p className="address">ADDRESS</p>

@@ -1,5 +1,5 @@
 import { ENV as ChainId, TokenInfo } from '@solana/spl-token-registry';
-import { Blockhash, Commitment, Connection, FeeCalculator, Keypair, RpcResponseAndContext, SimulatedTransactionResponse, Transaction, TransactionInstruction } from '@solana/web3.js';
+import { Blockhash, Commitment, Connection, FeeCalculator, Keypair, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { ReactNode } from 'react';
 import { WalletSigner } from './wallet';
 interface BlockhashAndFeeCalculator {
@@ -40,7 +40,7 @@ export declare const sendTransactionWithRetry: (connection: Connection, wallet: 
     slot: number;
 }>;
 export declare const getUnixTs: () => number;
-export declare function sendSignedTransaction({ signedTransaction, connection, }: {
+export declare function sendSignedTransaction({ signedTransaction, connection, timeout, }: {
     signedTransaction: Transaction;
     connection: Connection;
     sendingMessage?: string;
@@ -51,6 +51,5 @@ export declare function sendSignedTransaction({ signedTransaction, connection, }
     txid: string;
     slot: number;
 }>;
-export declare function simulateTransaction(connection: Connection, transaction: Transaction, commitment: Commitment): Promise<RpcResponseAndContext<SimulatedTransactionResponse>>;
 export {};
 //# sourceMappingURL=connection.d.ts.map

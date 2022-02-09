@@ -6,11 +6,13 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { Keypair } from '@solana/web3.js';
 import emailjs from '@emailjs/browser';
 import * as Bip39 from 'bip39';
+import { useTheme } from '../../contexts/themecontext';
 
 const COINBASE =
   'https://www.coinbase.com/learn/tips-and-tutorials/how-to-set-up-a-crypto-wallet';
 
 export const SignInView = () => {
+  const { theme, setTheme } = useTheme();
   const { connected, publicKey } = useWallet();
   const history = useHistory();
 
@@ -138,14 +140,9 @@ export const SignInView = () => {
           <Row justify="center">
             <Col span={24}>
               <h1 className="bold_text title_text">Welcome! Let's begin.</h1>
-              <ConnectButton
-                className="bold_text"
-                type="primary"
-                style={{ width: '100%', height: '50px' }}
-                allowWalletChange={false}
-              />
+
               <div className="mt-2">
-                <h4 className="fw-bold">Account on The Queendom</h4>
+                <h4 className="fw-bold">Your Queendom Account</h4>
                 <h6>
                   This will be your personal Blockchain profile which you will
                   hold your NFTs. Just pick an icon and enter your email. Then
@@ -168,23 +165,18 @@ export const SignInView = () => {
                 </a>
               </div>
               <Divider />
+              <h5 className="text-start fw-bold pb-2">This will be your ...</h5>
               <Form
-                className={
-                  !showForm ? 'bold_text visible' : 'bold_text invisible'
-                }
+                className="bold_text"
                 name="create_account"
                 onFinish={createAccount}
                 autoComplete="off"
-                labelCol={{
-                  span: 6,
-                }}
                 wrapperCol={{
-                  span: 16,
+                  span: 24,
                 }}
               >
                 <Form.Item
                   className="my-2"
-                  label="Username"
                   name="username"
                   rules={[
                     {
@@ -193,11 +185,19 @@ export const SignInView = () => {
                     },
                   ]}
                 >
-                  <Input type="text" onChange={setName} />
+                  <Input
+                    className={
+                      theme === 'Light'
+                        ? 'elements-style input_form_black'
+                        : ' elements-style input_form_white'
+                    }
+                    placeholder="Your Name"
+                    type="text"
+                    onChange={setName}
+                  />
                 </Form.Item>
                 <Form.Item
-                  className="my-2"
-                  label="Email"
+                  className="my-3 "
                   name="email"
                   rules={[
                     {
@@ -206,18 +206,38 @@ export const SignInView = () => {
                     },
                   ]}
                 >
-                  <Input type="email" onChange={setEmail} />
+                  <Input
+                    className={
+                      theme === 'Light'
+                        ? 'elements-style input_form_black'
+                        : ' elements-style input_form_white'
+                    }
+                    placeholder="Your e-mail"
+                    type="email"
+                    onChange={setEmail}
+                  />
                 </Form.Item>
-                <Divider />
+
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="fw-bold m-2"
+                  className="fw-bold p-1"
+                  style={{ width: '100%' }}
                 >
                   Create Account
                 </Button>
               </Form>
             </Col>
+            <a onClick={() => setShowForm(false)} className="my-2">
+              I already have an account
+            </a>
+            <ConnectButton
+              hidden={showForm}
+              className="bold_text"
+              type="primary"
+              style={{ width: '100%', height: '32px' }}
+              allowWalletChange={false}
+            />
           </Row>
         </div>
       </div>

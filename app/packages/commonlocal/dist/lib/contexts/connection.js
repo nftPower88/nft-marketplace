@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.simulateTransaction = exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactions = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
+exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactions = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
 const spl_token_registry_1 = require("@solana/spl-token-registry");
 const wallet_adapter_base_1 = require("@solana/wallet-adapter-base");
 const web3_js_1 = require("@solana/web3.js");
@@ -31,8 +31,23 @@ const ExplorerLink_1 = require("../components/ExplorerLink");
 const hooks_1 = require("../hooks");
 const notifications_1 = require("../utils/notifications");
 const utils_1 = require("../utils/utils");
+const cusper_1 = require("@metaplex-foundation/cusper");
 const config_1 = __importDefault(require("next/config"));
-let nextConfig = (0, config_1.default)();
+const cusper = cusper_1.initCusper();
+const logs = [
+    'Program CwrqeMj2U8tFr1Rhkgwc84tpAsqbt9pTt2a4taoTADPr invoke [1]',
+    'Program log: Custom program error: 0x07D0',
+];
+function showError(err) {
+    try {
+        const error = { ...new Error('Test error'), logs };
+        cusper.throwError(error);
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
+let nextConfig = config_1.default();
 const publicRuntimeConfig = nextConfig.publicRuntimeConfig;
 exports.ENDPOINTS = [
     {
@@ -228,6 +243,11 @@ const sendTransactions = async (connection, wallet, instructionSet, signersSet, 
         wallet.publicKey, ...signers.map(s => s.publicKey));
         if (signers.length > 0) {
             transaction.partialSign(...signers);
+            // transaction.setSigners(
+            //   // fee payed by the wallet owner
+            //   wallet.publicKey,
+            //   ...signers.map(s => s.publicKey),
+            // );
         }
         unsignedTxns.push(transaction);
     }
@@ -236,6 +256,7 @@ const sendTransactions = async (connection, wallet, instructionSet, signersSet, 
     const breakEarlyObject = { breakEarly: false, i: 0 };
     console.log('Signed txns length', signedTxns.length, 'vs handed in length', instructionSet.length);
     for (let i = 0; i < signedTxns.length; i++) {
+        console.log(`signedTransaction ${i}: ${signedTxns[i]}`);
         const signedTxnPromise = sendSignedTransaction({
             connection,
             signedTransaction: signedTxns[i],
@@ -291,8 +312,14 @@ const sendTransaction = async (connection, wallet, instructions, signers, awaitC
     }
     if (signers.length > 0) {
         transaction.partialSign(...signers);
+        // transaction.setSigners(
+        //   // fee payed by the wallet owner
+        //   wallet.publicKey,
+        //   ...signers.map(s => s.publicKey),
+        // );
     }
     if (!includesFeePayer) {
+        // transaction.feePayer = wallet.publicKey;
         transaction = await wallet.signTransaction(transaction);
     }
     const rawTransaction = transaction.serialize();
@@ -328,18 +355,15 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
     let transaction = new web3_js_1.Transaction();
     instructions.forEach(instruction => transaction.add(instruction));
     transaction.recentBlockhash = (block || (await connection.getRecentBlockhash(commitment))).blockhash;
-    if (includesFeePayer) {
-        transaction.setSigners(...signers.map(s => s.publicKey));
-    }
-    else {
-        transaction.setSigners(
-        // fee payed by the wallet owner
-        wallet.publicKey, ...signers.map(s => s.publicKey));
-    }
-    if (signers.length > 0) {
-        transaction.partialSign(...signers);
-    }
+    showError();
+    console.log(`signedTransaction2; feePayer: ${transaction.feePayer}`);
+    console.log(`signedTransaction2; instructions: ${transaction.instructions}`);
+    console.log(`signedTransaction2; nonceInfo: ${transaction.nonceInfo}`);
+    console.log(`signedTransaction2; recentBlockhash: ${transaction.recentBlockhash}`);
+    console.log(`signedTransaction2; signature: ${transaction.signature}`);
     if (!includesFeePayer) {
+        // console.log(`store paying for transaction?: ${wallet.publicKey}`);
+        // transaction.feePayer = wallet.publicKey;
         transaction = await wallet.signTransaction(transaction);
     }
     if (beforeSend) {
@@ -357,17 +381,65 @@ const getUnixTs = () => {
 };
 exports.getUnixTs = getUnixTs;
 const DEFAULT_TIMEOUT = 30000;
-async function sendSignedTransaction({ signedTransaction, connection, }) {
+async function sendSignedTransaction({ signedTransaction, connection, timeout = DEFAULT_TIMEOUT, }) {
+    console.log(`sendSignedTransaction; feePayer: ${signedTransaction.feePayer}`);
+    console.log(`sendSignedTransaction; instructions: ${signedTransaction.instructions}`);
+    console.log(`sendSignedTransaction; nonceInfo: ${signedTransaction.nonceInfo}`);
+    console.log(`sendSignedTransaction; recentBlockhash: ${signedTransaction.recentBlockhash}`);
+    console.log(`sendSignedTransaction; signature: ${signedTransaction.signature}`);
     const rawTransaction = signedTransaction.serialize();
+    const startTime = exports.getUnixTs();
     let slot = 0;
-    const txid = await (0, web3_js_1.sendAndConfirmRawTransaction)(connection, rawTransaction, {
+    const txid = await connection.sendRawTransaction(rawTransaction, {
         skipPreflight: true,
-        commitment: 'confirmed'
     });
-    const confirmation = await connection.getConfirmedTransaction(txid, 'confirmed');
-    if (confirmation) {
-        slot = confirmation.slot;
+    console.log('Started awaiting confirmation for', txid);
+    let done = false;
+    (async () => {
+        while (!done && exports.getUnixTs() - startTime < timeout) {
+            connection.sendRawTransaction(rawTransaction, {
+                skipPreflight: true,
+            });
+            await utils_1.sleep(500);
+        }
+    })();
+    try {
+        const confirmation = await awaitTransactionSignatureConfirmation(txid, timeout, connection, 'recent', true);
+        if (!confirmation)
+            throw new Error('Timed out awaiting confirmation on transaction');
+        if (confirmation.err) {
+            console.error(confirmation.err);
+            throw new Error('Transaction failed: Custom instruction error');
+        }
+        slot = (confirmation === null || confirmation === void 0 ? void 0 : confirmation.slot) || 0;
     }
+    catch (err) {
+        console.error('Timeout Error caught', err);
+        if (err.timeout) {
+            throw new Error('Timed out awaiting confirmation on transaction');
+        }
+        let simulateResult = null;
+        try {
+            simulateResult = (await simulateTransaction(connection, signedTransaction, 'single')).value;
+        }
+        catch (e) { }
+        if (simulateResult && simulateResult.err) {
+            if (simulateResult.logs) {
+                for (let i = simulateResult.logs.length - 1; i >= 0; --i) {
+                    const line = simulateResult.logs[i];
+                    if (line.startsWith('Program log: ')) {
+                        throw new Error('Transaction failed: ' + line.slice('Program log: '.length));
+                    }
+                }
+            }
+            throw new Error(JSON.stringify(simulateResult.err));
+        }
+        // throw new Error('Transaction failed');
+    }
+    finally {
+        done = true;
+    }
+    console.log('Latency', txid, exports.getUnixTs() - startTime);
     return { txid, slot };
 }
 exports.sendSignedTransaction = sendSignedTransaction;
@@ -389,7 +461,6 @@ async function simulateTransaction(connection, transaction, commitment) {
     }
     return res.result;
 }
-exports.simulateTransaction = simulateTransaction;
 async function awaitTransactionSignatureConfirmation(txid, timeout, connection, commitment = 'recent', queryStatus = false) {
     let done = false;
     let status = {
@@ -398,7 +469,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
         err: null,
     };
     let subId = 0;
-    status = await new Promise((resolve, reject) => {
+    status = await new Promise(async (resolve, reject) => {
         setTimeout(() => {
             if (done) {
                 return;
@@ -462,7 +533,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
                     }
                 }
             })();
-            return (0, utils_1.sleep)(2000);
+            await utils_1.sleep(2000);
         }
     });
     //@ts-ignore
