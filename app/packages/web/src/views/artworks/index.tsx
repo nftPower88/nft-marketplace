@@ -42,6 +42,9 @@ export const ArtworksView = () => {
       </div>
     );
   }
+  if (ownedMetadata.length === 0) {
+    return <h3>You have no arts collection</h3>;
+  }
 
   return (
     <>

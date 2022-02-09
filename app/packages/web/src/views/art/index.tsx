@@ -6,7 +6,17 @@ import {
   loadMultipleAccounts,
 } from '@oyster/common';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Button, Col, Divider, List, Row, Skeleton, Space, Tag, Typography } from 'antd';
+import {
+  Button,
+  Col,
+  Divider,
+  List,
+  Row,
+  Skeleton,
+  Space,
+  Tag,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { sendSignMetadata } from '../../actions/sendSignMetadata';
@@ -99,9 +109,7 @@ export const ArtView = () => {
           <Row>
             <Col span={6}>
               <Text>Royalties</Text>
-              <div>
-                {((art.seller_fee_basis_points || 0) / 100).toFixed(2)}%
-              </div>
+              <h4>{((art.seller_fee_basis_points || 0) / 100).toFixed(2)}%</h4>
             </Col>
             <Col span={12}>
               <ViewOn id={id} />
@@ -113,9 +121,9 @@ export const ArtView = () => {
                 <Space direction="horizontal" key={idx}>
                   <MetaAvatar creators={[creator]} size={64} />
                   <div>
-                    <span>
+                    <h4>
                       {creator.name || shortenAddress(creator.address || '')}
-                    </span>
+                    </h4>
                     <div>
                       {!creator.verified &&
                         (creator.address === pubkey ? (
@@ -125,20 +133,28 @@ export const ArtView = () => {
                               setValidating(true);
 
                               try {
-                                const txid = await sendSignMetadata(connection, wallet, id);
+                                const txid = await sendSignMetadata(
+                                  connection,
+                                  wallet,
+                                  id,
+                                );
 
-                                const tx = await connection.getTransaction(txid, {
-                                  commitment: 'confirmed',
-                                });
+                                const tx = await connection.getTransaction(
+                                  txid,
+                                  {
+                                    commitment: 'confirmed',
+                                  },
+                                );
 
-                                const keys = tx?.transaction.message.accountKeys || [];
+                                const keys =
+                                  tx?.transaction.message.accountKeys || [];
 
                                 const patch = await loadMultipleAccounts(
                                   connection,
                                   keys.map(k => k.toBase58()),
                                   'confirmed',
                                 );
-                                
+
                                 patchState(patch);
                               } catch (e) {
                                 console.error(e);
@@ -162,12 +178,12 @@ export const ArtView = () => {
           </Space>
           <div>
             <Text>Edition</Text>
-            <div>{badge}</div>
+            <h4>{badge}</h4>
           </div>
           {art.type === ArtType.Master && (
             <div>
               <Text>Max Supply</Text>
-              <div>{maxSupply}</div>
+              <h4>{maxSupply}</h4>
             </div>
           )}
           {/* <Button
@@ -208,8 +224,8 @@ export const ArtView = () => {
         <Divider />
         {art.creators?.find(c => !c.verified) && unverified}
         <br />
-        <div>ABOUT THE CREATION</div>
-        <div>{description}</div>
+        <h3>ABOUT THE CREATION</h3>
+        <h4>{description}</h4>
         <br />
         {/*
               TODO: add info about artist
@@ -228,8 +244,11 @@ export const ArtView = () => {
                 return (
                   <List.Item key={i}>
                     <List.Item.Meta
-                      title={<Text type="secondary"> {attribute.trait_type} </Text>}
-                      description={<Text> {attribute.value} </Text>} />
+                      title={
+                        <Text type="secondary"> {attribute.trait_type} </Text>
+                      }
+                      description={<Text> {attribute.value} </Text>}
+                    />
                   </List.Item>
                 );
               })}
