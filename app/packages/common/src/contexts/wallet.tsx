@@ -25,9 +25,9 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { notify } from '../utils';
 import { MetaplexModal } from '../components';
-
+import { notify } from '../utils';
+import { useHistory } from 'react-router-dom';
 const { Panel } = Collapse;
 
 export interface WalletModalContextState {

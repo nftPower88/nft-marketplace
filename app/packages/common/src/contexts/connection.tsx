@@ -16,6 +16,7 @@ import {
   Blockhash,
   FeeCalculator,
 } from '@solana/web3.js';
+import nacl from "tweetnacl";
 import { chunks, sleep, useLocalStorageState } from '../utils/utils';
 import { notify } from '../utils/notifications';
 import { ExplorerLink } from '../components/ExplorerLink';
@@ -350,7 +351,7 @@ export const sendTransactionsInChunks = async (
   instructionsChunk = chunks(instructionSet, batchSize);
   signersChunk = chunks(signersSet, batchSize);
 
-  for (let c = 0; c < instructionsChunk.length; c++) {
+  for (let c = 0; c < instructionsChunk.length; c++) {  
     const unsignedTxns: Transaction[] = [];
 
     for (let i = 0; i < instructionsChunk[c].length; i++) {
@@ -359,15 +360,20 @@ export const sendTransactionsInChunks = async (
       if (instructions.length === 0) {
         continue;
       }
+      // const transaction = new Transaction();
       const transaction = new Transaction();
       const block = await connection.getRecentBlockhash(commitment);
+      console.log(`sendTransactionsInChunks(${c}/${i}): ${block}`)
+      instructions.forEach(instruction => console.log(`instruction: ${instruction}`));
 
       instructions.forEach(instruction => transaction.add(instruction));
       transaction.recentBlockhash = block.blockhash;
+      // signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
+      // signers.forEach(signer => transaction.addSignature(wallet.publicKey, signer.publicKey));
       transaction.setSigners(
         // fee payed by the wallet owner
         wallet.publicKey,
-        ...signers.map(s => s.publicKey),
+        ...signers.map(s => s.publicKey)
       );
       if (signers.length > 0) {
         transaction.partialSign(...signers);
@@ -375,6 +381,7 @@ export const sendTransactionsInChunks = async (
       unsignedTxns.push(transaction);
     }
 
+    console.log(`wallet signer: ${wallet.publicKey}`);
     const signedTxns = await wallet.signAllTransactions(unsignedTxns);
 
     const breakEarlyObject = { breakEarly: false, i: 0 };
@@ -533,6 +540,8 @@ export const sendTransactionsWithRecentBlock = async (
     const transaction = new Transaction();
     instructions.forEach(instruction => transaction.add(instruction));
     transaction.recentBlockhash = block.blockhash;
+
+    signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
     transaction.setSigners(
       // fee payed by the wallet owner
       wallet.publicKey,
@@ -599,12 +608,14 @@ export const sendTransaction = async (
   ).blockhash;
 
   if (includesFeePayer) {
-    transaction.setSigners(...signers.map(s => s.publicKey));
+    // transaction.setSigners(...signers.map(s => s.publicKey));
+    transaction.partialSign(...signers);
   } else {
+    signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
     transaction.setSigners(
       // fee payed by the wallet owner
       wallet.publicKey,
-      ...signers.map(s => s.publicKey),
+      ...signers.map(s => s.publicKey)
     );
   }
 
@@ -672,14 +683,14 @@ export const sendTransactionWithRetry = async (
 ) => {
   if (!wallet.publicKey) throw new WalletNotConnectedError();
 
-  console.log(`sendTransactionWithRetry; wallet: ${wallet}`)
+  console.log(`sendTransactionWithRetry; wallet: ${wallet.publicKey}`)
   console.log(`sendTransactionWithRetry; instructions: ${instructions}`)
-  console.log(`sendTransactionWithRetry; signers: ${signers}`)
+  console.log(`sendTransactionWithRetry; signers: ${signers.flat}`)
   console.log(`sendTransactionWithRetry; commitment: ${commitment}`)
-  console.log(`sendTransactionWithRetry; includesFeePayer: ${includesFeePayer}`)
+  console.log(`sendTransactionWithRetry; includesFeePayer: ${includesFeePayer.valueOf}`)
 
 
-  let transaction = new Transaction();
+  let transaction = new Transaction({ feePayer: wallet.publicKey});
   instructions.forEach(instruction => transaction.add(instruction));
   transaction.recentBlockhash = (
     block || (await connection.getRecentBlockhash(commitment))
@@ -689,12 +700,14 @@ export const sendTransactionWithRetry = async (
   console.log(`sendTransactionWithRetry; transaction: ${transaction}`)
 
   if (includesFeePayer) {
-    transaction.setSigners(...signers.map(s => s.publicKey));
+    // transaction.setSigners(...signers.map(s => s.publicKey));
+    transaction.partialSign(...signers);
   } else {
-    transaction.setSigners(
+    signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
+      transaction.setSigners(
       // fee payed by the wallet owner
       wallet.publicKey,
-      ...signers.map(s => s.publicKey),
+      ...signers.map(s => s.publicKey)
     );
   }
 
@@ -703,15 +716,32 @@ export const sendTransactionWithRetry = async (
   if (signers.length > 0) {
     console.log(`sendTransactionWithRetry; signers.length: ${signers.length}`)
     console.log(`sendTransactionWithRetry; signers: ${signers}`)
-    transaction.partialSign(...signers);
+    signers.forEach(s => console.log(`signer: ${s.publicKey}; `));
+    // transaction.partialSign(...signers);
+    transaction.setSigners(
+      // fee payed by the wallet owner
+      wallet.publicKey,
+      ...signers.map(s => s.publicKey)
+    );
   }
   if (!includesFeePayer) {
-    console.log(`sendTransactionWithRetry; pre-sign`)
+    console.log(`sendTransactionWithRetry feePayer; ${transaction.feePayer}`)
+    console.log(`sendTransactionWithRetry instructions; ${transaction.instructions}`)
+    console.log(`sendTransactionWithRetry nonceInfo; ${transaction.nonceInfo}`)
+    console.log(`sendTransactionWithRetry recentBlockhash; ${transaction.recentBlockhash}`)
+    console.log(`sendTransactionWithRetry signatures; ${transaction.signatures}`)
+    
     transaction = await wallet.signTransaction(transaction);
+
+    let isVerifiedSignature = transaction.verifySignatures();
+    console.log(`The signatures were verifed: ${isVerifiedSignature}`)
+    
     console.log(`sendTransactionWithRetry; post-sign`)
   }
 
+  console.log(`sendTransactionWithRetry; pre-beforeSend`)
   if (beforeSend) {
+    console.log(`sendTransactionWithRetry; pre-beforeSend`)
     beforeSend();
   }
 
@@ -720,6 +750,10 @@ export const sendTransactionWithRetry = async (
     connection,
     signedTransaction: transaction,
   });
+  // const { txid, slot } = await sendSignedTransaction({
+  //   connection,
+  //   signedTransaction: transaction,
+  // });
   console.log(`sendTransactionWithRetry; txid: ${txid}`)
 
   return { txid, slot };

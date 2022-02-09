@@ -407,6 +407,7 @@ export const AuctionCard = ({
       if (instantSalePrice && (allowBidToPublic || allowBidToAuctionOwner)) {
         let bidTxid: string | undefined;
 
+        console.log(`starting bid for ${auctionView}`);
         try {
           console.log('sendPlaceBid');
           const { amount, txid } = await sendPlaceBid(

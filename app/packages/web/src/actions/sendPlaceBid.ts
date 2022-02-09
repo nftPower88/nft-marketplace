@@ -39,15 +39,15 @@ export async function sendPlaceBid(
   amount: number | BN,
   commitment?: Commitment,
 ) {
-  console.log(`wallet: ${wallet}`);
-  console.log(`bidderTokenAccount: ${bidderTokenAccount}`);
-  console.log(`auctionView: ${auctionView}`);
-  console.log(`accountsByMint: ${auctionView}`);
-  console.log(`amount: ${amount}`);
+  console.log(`sendPlaceBid; wallet: ${wallet}`);
+  console.log(`sendPlaceBid; bidderTokenAccount: ${bidderTokenAccount}`);
+  console.log(`sendPlaceBid; auctionView: ${auctionView}`);
+  console.log(`sendPlaceBid; accountsByMint: ${auctionView}`);
+  console.log(`sendPlaceBid; amount: ${amount}`);
   const signers: Keypair[][] = [];
-  console.log(`signers: ${signers}`);
+  console.log(`sendPlaceBid; signers: ${signers}`);
   const instructions: TransactionInstruction[][] = [];
-  console.log(`In instructions: ${instructions}`);
+  console.log(`sendPlaceBid; In instructions: ${instructions}`);
   const bid = await setupPlaceBid(
     connection,
     wallet,
@@ -58,8 +58,8 @@ export async function sendPlaceBid(
     instructions,
     signers,
   );
-  console.log(`bid: ${bid}`);
-  console.log(`Out instructions: ${instructions}`);
+  console.log(`sendPlaceBid; bid: ${bid}`);
+  console.log(`sendPlaceBid; Out instructions: ${instructions}`);
 
   const { txid } = await sendTransactionWithRetry(
     connection,
@@ -68,9 +68,9 @@ export async function sendPlaceBid(
     signers[0],
     commitment,
   );
-  console.log(`txid: ${txid}`);
-  console.log(`instructions[0]: ${instructions[0]}`);
-  console.log(`signers[0]: ${signers[0]}`);
+  console.log(`sendPlaceBid; txid: ${txid}`);
+  console.log(`sendPlaceBid; instructions[0]: ${instructions[0]}`);
+  console.log(`sendPlaceBid; signers[0]: ${signers[0]}`);
 
   if (commitment) {
     await connection.confirmTransaction(txid, commitment);
@@ -94,6 +94,14 @@ export async function setupPlaceBid(
   overallInstructions: TransactionInstruction[][],
   overallSigners: Keypair[][],
 ): Promise<BN> {
+  console.log(`setupPlaceBid; wallet: ${wallet}`);
+  console.log(`setupPlaceBid; bidderTokenAccount: ${bidderTokenAccount}`);
+  console.log(`setupPlaceBid; auctionView: ${auctionView}`);
+  console.log(`setupPlaceBid; accountsByMint: ${accountsByMint}`);
+  console.log(`setupPlaceBid; amount: ${amount}`);
+  console.log(`setupPlaceBid; overallInstructions: ${overallInstructions}`);
+  console.log(`setupPlaceBid; overallSigners: ${overallSigners}`);
+
   if (!wallet.publicKey) throw new WalletNotConnectedError();
 
   let signers: Keypair[] = [];

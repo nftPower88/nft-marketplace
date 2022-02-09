@@ -259,10 +259,15 @@ const sendTransactionsInChunks = async (connection, wallet, instructionSet, sign
             if (instructions.length === 0) {
                 continue;
             }
+            // const transaction = new Transaction();
             const transaction = new web3_js_1.Transaction();
             const block = await connection.getRecentBlockhash(commitment);
+            console.log(`sendTransactionsInChunks(${c}/${i}): ${block}`);
+            instructions.forEach(instruction => console.log(`instruction: ${instruction}`));
             instructions.forEach(instruction => transaction.add(instruction));
             transaction.recentBlockhash = block.blockhash;
+            // signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
+            // signers.forEach(signer => transaction.addSignature(wallet.publicKey, signer.publicKey));
             transaction.setSigners(
             // fee payed by the wallet owner
             wallet.publicKey, ...signers.map(s => s.publicKey));
@@ -271,6 +276,7 @@ const sendTransactionsInChunks = async (connection, wallet, instructionSet, sign
             }
             unsignedTxns.push(transaction);
         }
+        console.log(`wallet signer: ${wallet.publicKey}`);
         const signedTxns = await wallet.signAllTransactions(unsignedTxns);
         const breakEarlyObject = { breakEarly: false, i: 0 };
         console.log('Signed txns length', signedTxns.length, 'vs handed in length', instructionSet.length);
@@ -384,6 +390,7 @@ const sendTransactionsWithRecentBlock = async (connection, wallet, instructionSe
         const transaction = new web3_js_1.Transaction();
         instructions.forEach(instruction => transaction.add(instruction));
         transaction.recentBlockhash = block.blockhash;
+        signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
         transaction.setSigners(
         // fee payed by the wallet owner
         wallet.publicKey, ...signers.map(s => s.publicKey));
@@ -425,9 +432,11 @@ const sendTransaction = async (connection, wallet, instructions, signers, awaitC
     instructions.forEach(instruction => transaction.add(instruction));
     transaction.recentBlockhash = (block || (await connection.getRecentBlockhash(commitment))).blockhash;
     if (includesFeePayer) {
-        transaction.setSigners(...signers.map(s => s.publicKey));
+        // transaction.setSigners(...signers.map(s => s.publicKey));
+        transaction.partialSign(...signers);
     }
     else {
+        signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
         transaction.setSigners(
         // fee payed by the wallet owner
         wallet.publicKey, ...signers.map(s => s.publicKey));
@@ -468,20 +477,22 @@ exports.sendTransaction = sendTransaction;
 const sendTransactionWithRetry = async (connection, wallet, instructions, signers, commitment = 'singleGossip', includesFeePayer = false, block, beforeSend) => {
     if (!wallet.publicKey)
         throw new wallet_adapter_base_1.WalletNotConnectedError();
-    console.log(`sendTransactionWithRetry; wallet: ${wallet}`);
+    console.log(`sendTransactionWithRetry; wallet: ${wallet.publicKey}`);
     console.log(`sendTransactionWithRetry; instructions: ${instructions}`);
-    console.log(`sendTransactionWithRetry; signers: ${signers}`);
+    console.log(`sendTransactionWithRetry; signers: ${signers.flat}`);
     console.log(`sendTransactionWithRetry; commitment: ${commitment}`);
-    console.log(`sendTransactionWithRetry; includesFeePayer: ${includesFeePayer}`);
-    let transaction = new web3_js_1.Transaction();
+    console.log(`sendTransactionWithRetry; includesFeePayer: ${includesFeePayer.valueOf}`);
+    let transaction = new web3_js_1.Transaction({ feePayer: wallet.publicKey });
     instructions.forEach(instruction => transaction.add(instruction));
     transaction.recentBlockhash = (block || (await connection.getRecentBlockhash(commitment))).blockhash;
     console.log(`sendTransactionWithRetry; instructions2: ${instructions}`);
     console.log(`sendTransactionWithRetry; transaction: ${transaction}`);
     if (includesFeePayer) {
-        transaction.setSigners(...signers.map(s => s.publicKey));
+        // transaction.setSigners(...signers.map(s => s.publicKey));
+        transaction.partialSign(...signers);
     }
     else {
+        signers.forEach(signer => console.log(wallet.publicKey, signer, signer.publicKey));
         transaction.setSigners(
         // fee payed by the wallet owner
         wallet.publicKey, ...signers.map(s => s.publicKey));
@@ -491,14 +502,26 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
     if (signers.length > 0) {
         console.log(`sendTransactionWithRetry; signers.length: ${signers.length}`);
         console.log(`sendTransactionWithRetry; signers: ${signers}`);
-        transaction.partialSign(...signers);
+        signers.forEach(s => console.log(`signer: ${s.publicKey}; `));
+        // transaction.partialSign(...signers);
+        transaction.setSigners(
+        // fee payed by the wallet owner
+        wallet.publicKey, ...signers.map(s => s.publicKey));
     }
     if (!includesFeePayer) {
-        console.log(`sendTransactionWithRetry; pre-sign`);
+        console.log(`sendTransactionWithRetry feePayer; ${transaction.feePayer}`);
+        console.log(`sendTransactionWithRetry instructions; ${transaction.instructions}`);
+        console.log(`sendTransactionWithRetry nonceInfo; ${transaction.nonceInfo}`);
+        console.log(`sendTransactionWithRetry recentBlockhash; ${transaction.recentBlockhash}`);
+        console.log(`sendTransactionWithRetry signatures; ${transaction.signatures}`);
         transaction = await wallet.signTransaction(transaction);
+        let isVerifiedSignature = transaction.verifySignatures();
+        console.log(`The signatures were verifed: ${isVerifiedSignature}`);
         console.log(`sendTransactionWithRetry; post-sign`);
     }
+    console.log(`sendTransactionWithRetry; pre-beforeSend`);
     if (beforeSend) {
+        console.log(`sendTransactionWithRetry; pre-beforeSend`);
         beforeSend();
     }
     console.log(`sendTransactionWithRetry; transaction3: ${transaction}`);
@@ -506,6 +529,10 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
         connection,
         signedTransaction: transaction,
     });
+    // const { txid, slot } = await sendSignedTransaction({
+    //   connection,
+    //   signedTransaction: transaction,
+    // });
     console.log(`sendTransactionWithRetry; txid: ${txid}`);
     return { txid, slot };
 };
