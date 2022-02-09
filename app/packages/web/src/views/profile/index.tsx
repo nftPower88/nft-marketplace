@@ -96,18 +96,23 @@ export const ProfileView = () => {
   const { connected, publicKey } = useWallet();
   const history = useHistory();
 
-  !connected && history.push('/');
-
   const location: any = useLocation();
   const [public_key, setPublickKey] = useState('');
 
   useEffect(() => {
     (async () => {
-      location.state &&
-        location.state.publicKey &&
-        setPublickKey(location.state.publicKey);
+      if (!connected) {
+        if (location.state && location.state.publicKey)
+          setPublickKey(location.state.publicKey);
+        else
+          history.push('/');
+      }
     })();
   }, [location]);
+
+  const shortPublicKey = (key) => {
+    return key.slice(0, 10) + ' ... ' + key.slice(-10)
+  }
 
   return (
     <div className="profile-page-container">
@@ -119,14 +124,12 @@ export const ProfileView = () => {
       <div className="infoContainer">
         <div className="address desktop-show">
           <img src="/Ethereum-Logo.svg" />
-          {publicKey?.toBase58()}
+          {publicKey?.toBase58() ? publicKey?.toBase58() : public_key}
         </div>
 
         <div className="address mobile-show">
           <img src="/Ethereum-Logo.svg" />
-          {publicKey?.toBase58().slice(0, 10) +
-            ' ... ' +
-            publicKey?.toBase58().slice(-10)}
+          {publicKey?.toBase58() ? shortPublicKey(publicKey?.toBase58()) : shortPublicKey(public_key)}
         </div>
 
         <div className="follow">
