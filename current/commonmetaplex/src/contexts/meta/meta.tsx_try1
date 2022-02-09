@@ -1,0 +1,139 @@
+// @ts-nocheck
+
+import { merge, uniqWith } from 'lodash';
+// import React, { ReactNode, useContext, useEffect, useState } from 'react';
+// import { useConnection } from '../connection';
+// import { useStore } from '../store';
+// import { getEmptyMetaState } from './getEmptyMetaState';
+// import { loadAccounts } from './loadAccounts';
+import { loadAccountsNoWallet } from './loadAccountsNoWallet';
+import { ParsedAccount } from '../accounts/types';
+import { Metadata } from '../../actions';
+// import { MetaContextState, MetaState } from './types';
+// import { useWallet } from "@solana/wallet-adapter-react";
+
+import React, {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+import { queryExtendedMetadata } from './queryExtendedMetadata';
+import { getEmptyMetaState } from './getEmptyMetaState';
+import {
+  limitedLoadAccounts,
+  loadAccounts,
+  pullYourMetadata,
+  USE_SPEED_RUN,
+} from './loadAccounts';
+import { MetaContextState, MetaState } from './types';
+import { useConnection } from '../connection';
+import { useStore } from '../store';
+import { AuctionData, BidderMetadata, BidderPot } from '../../actions';
+import {
+  pullAuctionSubaccounts,
+  pullPage,
+  pullPayoutTickets,
+  pullStoreMetadata,
+  pullPacks,
+  pullPack,
+} from '.';
+import { StringPublicKey, TokenAccount, useUserAccounts } from '../..';
+  
+// const MetaContext = React.createContext<MetaContextState>({
+//   ...getEmptyMetaState(),
+//   isLoading: false,
+//   patchState: () => {
+//     throw new Error('unreachable');
+//   },
+// });
+
+const MetaContext = React.createContext<MetaContextState>({
+  ...getEmptyMetaState(),
+  isLoading: false,
+  isFetching: false,
+  patchState: () => {
+    throw new Error('unreachable');
+  },
+  update: () => [AuctionData, BidderMetadata, BidderPot],
+});
+
+export function MetaProvider({ children = null }: { children: ReactNode }) {
+  const connection = useConnection();
+  const { isReady, storeAddress, ownerAddress } = useStore();
+  const { publicKey } = useWallet();
+
+  const [state, setState] = useState<MetaState>(getEmptyMetaState());
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const patchState: MetaContextState['patchState'] = (
+    ...args: Partial<MetaState>[]
+  ) => {
+    setState(current => {
+      const newState = merge({}, current, ...args, { store: current.store });
+
+      const currentMetdata = current.metadata ?? [];
+      const nextMetadata = args.reduce((memo, { metadata = [] }) => {
+        return [...memo, ...metadata];
+      }, [] as ParsedAccount<Metadata>[]);
+
+      newState.metadata = uniqWith(
+        [...currentMetdata, ...nextMetadata],
+        (a, b) => a.pubkey === b.pubkey,
+      );
+
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (!storeAddress || !ownerAddress) {
+        if (isReady) {
+          setIsLoading(false);
+        }
+        return;
+      } else if (!state.store) {
+        setIsLoading(true);
+      }
+
+      const nextState = await loadAccounts(connection, ownerAddress);
+      setState(nextState);
+      // if (publicKey) {
+      //   const nextState = await loadAccounts(connection, ownerAddress);
+      //   setState(nextState);
+      // } else {
+      //   const nextState = await loadAccountsNoWallet(connection, ownerAddress);
+      //   setState(nextState);        
+      // }
+      // if (publicKey) {
+      //   const nextState = await loadAccounts(connection, ownerAddress);
+      //   setState(nextState);
+      // }
+
+      setIsLoading(false);
+    })();
+  }, [storeAddress, isReady, ownerAddress]);
+
+  return (
+    <MetaContext.Provider
+      value={{
+        ...state,
+        patchState,
+        isLoading,
+      }}
+    >
+      {children}
+    </MetaContext.Provider>
+  );
+}
+
+export const useMeta = () => {
+  const context = useContext(MetaContext);
+  return context;
+};

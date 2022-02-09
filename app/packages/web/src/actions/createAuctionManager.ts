@@ -715,9 +715,15 @@ async function validateBoxes(
         safetyDeposits[i].draft.metadata.info.mint,
       );
     }
-    const edition: StringPublicKey = await getEdition(
+    let edition: StringPublicKey = '';
+    const editionResult: StringPublicKey = await getEdition(
       safetyDeposits[i].draft.metadata.info.mint,
     );
+    if (editionResult) {
+      edition = editionResult;
+    } else {
+      edition = '';
+    }
 
     const whitelistedCreator = safetyDeposits[i].draft.metadata.info.data
       .creators
