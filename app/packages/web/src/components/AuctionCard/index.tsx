@@ -418,6 +418,7 @@ export const AuctionCard = ({
             instantSalePrice,
             'confirmed',
           );
+          console.log(txid, amount);
           setLastBid({ amount });
           bidTxid = txid;
           track('instant_sale_bid_submitted', {

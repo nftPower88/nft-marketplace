@@ -22,15 +22,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.simulateTransaction = exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactions = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
+exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactionsWithRecentBlock = exports.sendTransactions = exports.sendTransactionsInChunks = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
+const react_1 = __importStar(require("react"));
+const utils_1 = require("../utils");
 const spl_token_registry_1 = require("@solana/spl-token-registry");
 const wallet_adapter_base_1 = require("@solana/wallet-adapter-base");
 const web3_js_1 = require("@solana/web3.js");
-const react_1 = __importStar(require("react"));
+const utils_2 = require("../utils/utils");
+const notifications_1 = require("../utils/notifications");
 const ExplorerLink_1 = require("../components/ExplorerLink");
 const hooks_1 = require("../hooks");
-const notifications_1 = require("../utils/notifications");
-const utils_1 = require("../utils/utils");
 const config_1 = __importDefault(require("next/config"));
 let nextConfig = config_1.default();
 const publicRuntimeConfig = nextConfig.publicRuntimeConfig;
@@ -61,67 +62,101 @@ exports.ENDPOINTS = [
         ChainId: spl_token_registry_1.ENV.Devnet,
     },
 ];
-const DEFAULT = exports.ENDPOINTS[0].endpoint;
+const DEFAULT_ENDPOINT = exports.ENDPOINTS[0];
 const DEFAULT_CONNECTION_TIMEOUT = 300 * 1000;
 const ConnectionContext = react_1.default.createContext({
-    endpoint: DEFAULT,
+    setEndpointMap: () => { },
     setEndpoint: () => { },
-    connection: new web3_js_1.Connection(DEFAULT, { commitment: 'recent', confirmTransactionInitialTimeout: DEFAULT_CONNECTION_TIMEOUT }),
+    connection: new web3_js_1.Connection(DEFAULT_ENDPOINT.endpoint, 'recent'),
+    endpointMap: DEFAULT_ENDPOINT,
     env: exports.ENDPOINTS[0].name,
-    tokens: [],
+    endpoint: DEFAULT_ENDPOINT.endpoint,
+    tokens: new Map(),
     tokenMap: new Map(),
 });
-function ConnectionProvider({ children = undefined, }) {
-    var _a, _b;
+function ConnectionProvider({ children }) {
+    var _a;
     const searchParams = hooks_1.useQuerySearch();
-    const network = searchParams.get('network');
-    const queryEndpoint = network && ((_a = exports.ENDPOINTS.find(({ name }) => name.startsWith(network))) === null || _a === void 0 ? void 0 : _a.endpoint);
-    const [savedEndpoint, setEndpoint] = utils_1.useLocalStorageState('connectionEndpoint', exports.ENDPOINTS[0].endpoint);
-    const endpoint = queryEndpoint || savedEndpoint;
-    const connection = react_1.useMemo(() => new web3_js_1.Connection(endpoint, { commitment: 'recent', confirmTransactionInitialTimeout: DEFAULT_CONNECTION_TIMEOUT }), [endpoint]);
-    const env = ((_b = exports.ENDPOINTS.find(end => end.endpoint === endpoint)) === null || _b === void 0 ? void 0 : _b.name) || exports.ENDPOINTS[0].name;
-    const [tokens, setTokens] = react_1.useState([]);
+    const [networkStorage, setNetworkStorage] = 
+    // @ts-ignore
+    utils_2.useLocalStorageState('network', DEFAULT_ENDPOINT.name);
+    const networkParam = searchParams.get('network');
+    const [savedEndpoint, setEndpointMap] = utils_2.useLocalStorageState('connectionEndpoint', exports.ENDPOINTS[0].endpoint);
+    const setEndpoint = setEndpointMap;
+    let maybeEndpoint;
+    if (networkParam) {
+        let endpointParam = exports.ENDPOINTS.find(({ name }) => name === networkParam);
+        if (endpointParam) {
+            maybeEndpoint = endpointParam;
+        }
+    }
+    if (networkStorage && !(maybeEndpoint === null || maybeEndpoint === void 0 ? void 0 : maybeEndpoint.endpoint)) {
+        let endpointStorage = exports.ENDPOINTS.find(({ name }) => name === networkStorage);
+        if (endpointStorage) {
+            maybeEndpoint = endpointStorage;
+        }
+    }
+    const endpointMap = maybeEndpoint || DEFAULT_ENDPOINT;
+    const endpoint = (maybeEndpoint === null || maybeEndpoint === void 0 ? void 0 : maybeEndpoint.endpoint) || DEFAULT_ENDPOINT.endpoint;
+    const { current: connection } = react_1.useRef(new web3_js_1.Connection(endpointMap.endpoint));
+    const [tokens, setTokens] = react_1.useState(new Map());
     const [tokenMap, setTokenMap] = react_1.useState(new Map());
+    const env = ((_a = exports.ENDPOINTS.find(end => end.endpoint === endpointMap.endpoint)) === null || _a === void 0 ? void 0 : _a.name) || exports.ENDPOINTS[0].name;
     react_1.useEffect(() => {
-        // fetch token files
-        new spl_token_registry_1.TokenListProvider().resolve().then(container => {
-            var _a;
-            const list = container
-                .excludeByTag('nft')
-                .filterByChainId(((_a = exports.ENDPOINTS.find(end => end.endpoint === endpoint)) === null || _a === void 0 ? void 0 : _a.ChainId) ||
-                spl_token_registry_1.ENV.MainnetBeta)
-                .getList();
-            const knownMints = [...list].reduce((map, item) => {
-                map.set(item.address, item);
-                return map;
-            }, new Map());
-            setTokenMap(knownMints);
-            setTokens(list);
-        });
-    }, [env]);
-    // The websocket library solana/web3.js uses closes its websocket connection when the subscription list
-    // is empty after opening its first time, preventing subsequent subscriptions from receiving responses.
-    // This is a hack to prevent the list from every getting empty
+        function fetchTokens() {
+            return utils_1.getTokenListContainerPromise().then(container => {
+                const list = container
+                    .excludeByTag('nft')
+                    .filterByChainId(endpointMap.ChainId)
+                    .getList();
+                const knownMints = [...list].reduce((map, item) => {
+                    map.set(item.address, item);
+                    return map;
+                }, new Map());
+                const map = new Map(list.map(item => [item.address, item]));
+                setTokenMap(knownMints);
+                setTokens(map);
+            });
+        }
+        fetchTokens();
+    }, []);
+    react_1.useEffect(() => {
+        function updateNetworkInLocalStorageIfNeeded() {
+            if (networkStorage !== endpointMap.name) {
+                setNetworkStorage(endpointMap.name);
+            }
+        }
+        updateNetworkInLocalStorageIfNeeded();
+    }, []);
+    // solana/web3.js closes its websocket connection when the subscription list
+    // is empty after opening for the first time, preventing subsequent
+    // subscriptions from receiving responses.
+    // This is a hack to prevent the list from ever being empty.
     react_1.useEffect(() => {
         const id = connection.onAccountChange(web3_js_1.Keypair.generate().publicKey, () => { });
         return () => {
             connection.removeAccountChangeListener(id);
         };
-    }, [connection]);
+    }, []);
     react_1.useEffect(() => {
         const id = connection.onSlotChange(() => null);
         return () => {
             connection.removeSlotChangeListener(id);
         };
-    }, [connection]);
-    return (react_1.default.createElement(ConnectionContext.Provider, { value: {
-            endpoint,
+    }, []);
+    const contextValue = react_1.default.useMemo(() => {
+        return {
+            setEndpointMap,
             setEndpoint,
+            endpointMap,
+            endpoint,
             connection,
             tokens,
             tokenMap,
             env,
-        } }, children));
+        };
+    }, [tokens]);
+    return (react_1.default.createElement(ConnectionContext.Provider, { value: contextValue }, children));
 }
 exports.ConnectionProvider = ConnectionProvider;
 function useConnection() {
@@ -131,8 +166,10 @@ exports.useConnection = useConnection;
 function useConnectionConfig() {
     const context = react_1.useContext(ConnectionContext);
     return {
-        endpoint: context.endpoint,
+        setEndpointMap: context.setEndpointMap,
         setEndpoint: context.setEndpoint,
+        endpointMap: context.endpointMap,
+        endpoint: context.endpoint,
         env: context.env,
         tokens: context.tokens,
         tokenMap: context.tokenMap,
@@ -172,7 +209,7 @@ async function sendTransactionsWithManualRetry(connection, wallet, instructions,
     let stopPoint = 0;
     let tries = 0;
     let lastInstructionsLength = null;
-    const toRemoveSigners = {};
+    let toRemoveSigners = {};
     instructions = instructions.filter((instr, i) => {
         if (instr.length > 0) {
             return true;
@@ -207,7 +244,65 @@ async function sendTransactionsWithManualRetry(connection, wallet, instructions,
     }
 }
 exports.sendTransactionsWithManualRetry = sendTransactionsWithManualRetry;
-const sendTransactions = async (connection, wallet, instructionSet, signersSet, sequenceType = SequenceType.Parallel, commitment = 'singleGossip', successCallback = () => { }, failCallback = () => false, block) => {
+const sendTransactionsInChunks = async (connection, wallet, instructionSet, signersSet, sequenceType = SequenceType.Parallel, commitment = 'singleGossip', timeout = 120000, batchSize) => {
+    if (!wallet.publicKey)
+        throw new wallet_adapter_base_1.WalletNotConnectedError();
+    let instructionsChunk = [instructionSet];
+    let signersChunk = [signersSet];
+    instructionsChunk = utils_2.chunks(instructionSet, batchSize);
+    signersChunk = utils_2.chunks(signersSet, batchSize);
+    for (let c = 0; c < instructionsChunk.length; c++) {
+        const unsignedTxns = [];
+        for (let i = 0; i < instructionsChunk[c].length; i++) {
+            const instructions = instructionsChunk[c][i];
+            const signers = signersChunk[c][i];
+            if (instructions.length === 0) {
+                continue;
+            }
+            const transaction = new web3_js_1.Transaction();
+            const block = await connection.getRecentBlockhash(commitment);
+            instructions.forEach(instruction => transaction.add(instruction));
+            transaction.recentBlockhash = block.blockhash;
+            transaction.setSigners(
+            // fee payed by the wallet owner
+            wallet.publicKey, ...signers.map(s => s.publicKey));
+            if (signers.length > 0) {
+                transaction.partialSign(...signers);
+            }
+            unsignedTxns.push(transaction);
+        }
+        const signedTxns = await wallet.signAllTransactions(unsignedTxns);
+        const breakEarlyObject = { breakEarly: false, i: 0 };
+        console.log('Signed txns length', signedTxns.length, 'vs handed in length', instructionSet.length);
+        for (let i = 0; i < signedTxns.length; i++) {
+            const signedTxnPromise = sendSignedTransaction({
+                connection,
+                signedTransaction: signedTxns[i],
+                timeout,
+            });
+            signedTxnPromise.catch(reason => {
+                // @ts-ignore
+                if (sequenceType === SequenceType.StopOnFailure) {
+                    breakEarlyObject.breakEarly = true;
+                    breakEarlyObject.i = i;
+                }
+            });
+            try {
+                await signedTxnPromise;
+            }
+            catch (e) {
+                console.log('Caught failure', e);
+                if (breakEarlyObject.breakEarly) {
+                    console.log('Died on ', breakEarlyObject.i);
+                    return breakEarlyObject.i; // Return the txn we failed on by index
+                }
+            }
+        }
+    }
+    return instructionSet.length;
+};
+exports.sendTransactionsInChunks = sendTransactionsInChunks;
+const sendTransactions = async (connection, wallet, instructionSet, signersSet, sequenceType = SequenceType.Parallel, commitment = 'singleGossip', successCallback = (txid, ind) => { }, failCallback = (txid, ind) => false, block) => {
     if (!wallet.publicKey)
         throw new wallet_adapter_base_1.WalletNotConnectedError();
     const unsignedTxns = [];
@@ -220,7 +315,7 @@ const sendTransactions = async (connection, wallet, instructionSet, signersSet, 
         if (instructions.length === 0) {
             continue;
         }
-        const transaction = new web3_js_1.Transaction();
+        let transaction = new web3_js_1.Transaction();
         instructions.forEach(instruction => transaction.add(instruction));
         transaction.recentBlockhash = block.blockhash;
         transaction.setSigners(
@@ -233,7 +328,7 @@ const sendTransactions = async (connection, wallet, instructionSet, signersSet, 
     }
     const signedTxns = await wallet.signAllTransactions(unsignedTxns);
     const pendingTxns = [];
-    const breakEarlyObject = { breakEarly: false, i: 0 };
+    let breakEarlyObject = { breakEarly: false, i: 0 };
     console.log('Signed txns length', signedTxns.length, 'vs handed in length', instructionSet.length);
     for (let i = 0; i < signedTxns.length; i++) {
         const signedTxnPromise = sendSignedTransaction({
@@ -241,13 +336,12 @@ const sendTransactions = async (connection, wallet, instructionSet, signersSet, 
             signedTransaction: signedTxns[i],
         });
         signedTxnPromise
-            .then(({ txid }) => {
-            console.log(`Instructions set ${i} succeeded. Transaction Id ${txid}`);
+            .then(({ txid, slot }) => {
             successCallback(txid, i);
         })
-            .catch((e) => {
-            failCallback(e.message, i);
-            console.log(`Instructions set ${i} failed.`);
+            .catch(reason => {
+            // @ts-ignore
+            failCallback(signedTxns[i], i);
             if (sequenceType === SequenceType.StopOnFailure) {
                 breakEarlyObject.breakEarly = true;
                 breakEarlyObject.i = i;
@@ -275,6 +369,55 @@ const sendTransactions = async (connection, wallet, instructionSet, signersSet, 
     return signedTxns.length;
 };
 exports.sendTransactions = sendTransactions;
+const sendTransactionsWithRecentBlock = async (connection, wallet, instructionSet, signersSet, commitment = 'singleGossip') => {
+    if (!wallet.publicKey)
+        throw new wallet_adapter_base_1.WalletNotConnectedError();
+    const unsignedTxns = [];
+    for (let i = 0; i < instructionSet.length; i++) {
+        const instructions = instructionSet[i];
+        const signers = signersSet[i];
+        if (instructions.length === 0) {
+            continue;
+        }
+        const block = await connection.getRecentBlockhash(commitment);
+        await utils_2.sleep(1200);
+        const transaction = new web3_js_1.Transaction();
+        instructions.forEach(instruction => transaction.add(instruction));
+        transaction.recentBlockhash = block.blockhash;
+        transaction.setSigners(
+        // fee payed by the wallet owner
+        wallet.publicKey, ...signers.map(s => s.publicKey));
+        if (signers.length > 0) {
+            transaction.partialSign(...signers);
+        }
+        unsignedTxns.push(transaction);
+    }
+    const signedTxns = await wallet.signAllTransactions(unsignedTxns);
+    const breakEarlyObject = { breakEarly: false, i: 0 };
+    console.log('Signed txns length', signedTxns.length, 'vs handed in length', instructionSet.length);
+    for (let i = 0; i < signedTxns.length; i++) {
+        const signedTxnPromise = sendSignedTransaction({
+            connection,
+            signedTransaction: signedTxns[i],
+        });
+        signedTxnPromise.catch(() => {
+            breakEarlyObject.breakEarly = true;
+            breakEarlyObject.i = i;
+        });
+        try {
+            await signedTxnPromise;
+        }
+        catch (e) {
+            console.log('Caught failure', e);
+            if (breakEarlyObject.breakEarly) {
+                console.log('Died on ', breakEarlyObject.i);
+                return breakEarlyObject.i; // Return the txn we failed on by index
+            }
+        }
+    }
+    return signedTxns.length;
+};
+exports.sendTransactionsWithRecentBlock = sendTransactionsWithRecentBlock;
 const sendTransaction = async (connection, wallet, instructions, signers, awaitConfirmation = true, commitment = 'singleGossip', includesFeePayer = false, block) => {
     if (!wallet.publicKey)
         throw new wallet_adapter_base_1.WalletNotConnectedError();
@@ -296,7 +439,7 @@ const sendTransaction = async (connection, wallet, instructions, signers, awaitC
         transaction = await wallet.signTransaction(transaction);
     }
     const rawTransaction = transaction.serialize();
-    const options = {
+    let options = {
         skipPreflight: true,
         commitment,
     };
@@ -312,7 +455,7 @@ const sendTransaction = async (connection, wallet, instructions, signers, awaitC
             notifications_1.notify({
                 message: 'Transaction failed...',
                 description: (react_1.default.createElement(react_1.default.Fragment, null,
-                    errors.map((err, i) => (react_1.default.createElement("div", { key: i }, err))),
+                    errors.map(err => (react_1.default.createElement("div", null, err))),
                     react_1.default.createElement(ExplorerLink_1.ExplorerLink, { address: txid, type: "transaction" }))),
                 type: 'error',
             });
@@ -325,9 +468,16 @@ exports.sendTransaction = sendTransaction;
 const sendTransactionWithRetry = async (connection, wallet, instructions, signers, commitment = 'singleGossip', includesFeePayer = false, block, beforeSend) => {
     if (!wallet.publicKey)
         throw new wallet_adapter_base_1.WalletNotConnectedError();
+    console.log(`sendTransactionWithRetry; wallet: ${wallet}`);
+    console.log(`sendTransactionWithRetry; instructions: ${instructions}`);
+    console.log(`sendTransactionWithRetry; signers: ${signers}`);
+    console.log(`sendTransactionWithRetry; commitment: ${commitment}`);
+    console.log(`sendTransactionWithRetry; includesFeePayer: ${includesFeePayer}`);
     let transaction = new web3_js_1.Transaction();
     instructions.forEach(instruction => transaction.add(instruction));
     transaction.recentBlockhash = (block || (await connection.getRecentBlockhash(commitment))).blockhash;
+    console.log(`sendTransactionWithRetry; instructions2: ${instructions}`);
+    console.log(`sendTransactionWithRetry; transaction: ${transaction}`);
     if (includesFeePayer) {
         transaction.setSigners(...signers.map(s => s.publicKey));
     }
@@ -336,19 +486,27 @@ const sendTransactionWithRetry = async (connection, wallet, instructions, signer
         // fee payed by the wallet owner
         wallet.publicKey, ...signers.map(s => s.publicKey));
     }
+    console.log(`sendTransactionWithRetry; signers2: ${signers}`);
+    console.log(`sendTransactionWithRetry; transaction2: ${transaction}`);
     if (signers.length > 0) {
+        console.log(`sendTransactionWithRetry; signers.length: ${signers.length}`);
+        console.log(`sendTransactionWithRetry; signers: ${signers}`);
         transaction.partialSign(...signers);
     }
     if (!includesFeePayer) {
+        console.log(`sendTransactionWithRetry; pre-sign`);
         transaction = await wallet.signTransaction(transaction);
+        console.log(`sendTransactionWithRetry; post-sign`);
     }
     if (beforeSend) {
         beforeSend();
     }
+    console.log(`sendTransactionWithRetry; transaction3: ${transaction}`);
     const { txid, slot } = await sendSignedTransaction({
         connection,
         signedTransaction: transaction,
     });
+    console.log(`sendTransactionWithRetry; txid: ${txid}`);
     return { txid, slot };
 };
 exports.sendTransactionWithRetry = sendTransactionWithRetry;
@@ -356,18 +514,61 @@ const getUnixTs = () => {
     return new Date().getTime() / 1000;
 };
 exports.getUnixTs = getUnixTs;
-const DEFAULT_TIMEOUT = 30000;
-async function sendSignedTransaction({ signedTransaction, connection, }) {
+const DEFAULT_TIMEOUT = 15000;
+async function sendSignedTransaction({ signedTransaction, connection, timeout = DEFAULT_TIMEOUT, }) {
     const rawTransaction = signedTransaction.serialize();
+    const startTime = exports.getUnixTs();
     let slot = 0;
-    const txid = await web3_js_1.sendAndConfirmRawTransaction(connection, rawTransaction, {
+    const txid = await connection.sendRawTransaction(rawTransaction, {
         skipPreflight: true,
-        commitment: 'confirmed'
     });
-    const confirmation = await connection.getConfirmedTransaction(txid, 'confirmed');
-    if (confirmation) {
-        slot = confirmation.slot;
+    console.log('Started awaiting confirmation for', txid);
+    let done = false;
+    (async () => {
+        while (!done && exports.getUnixTs() - startTime < timeout) {
+            connection.sendRawTransaction(rawTransaction, {
+                skipPreflight: true,
+            });
+            await utils_2.sleep(500);
+        }
+    })();
+    try {
+        const confirmation = await awaitTransactionSignatureConfirmation(txid, timeout, connection, 'recent', true);
+        if (!confirmation)
+            throw new Error('Timed out awaiting confirmation on transaction');
+        if (confirmation.err) {
+            console.error(confirmation.err);
+            throw new Error('Transaction failed: Custom instruction error');
+        }
+        slot = (confirmation === null || confirmation === void 0 ? void 0 : confirmation.slot) || 0;
     }
+    catch (err) {
+        console.error('Timeout Error caught', err);
+        if (err.timeout) {
+            throw new Error('Timed out awaiting confirmation on transaction');
+        }
+        let simulateResult = null;
+        try {
+            simulateResult = (await simulateTransaction(connection, signedTransaction, 'single')).value;
+        }
+        catch (e) { }
+        if (simulateResult && simulateResult.err) {
+            if (simulateResult.logs) {
+                for (let i = simulateResult.logs.length - 1; i >= 0; --i) {
+                    const line = simulateResult.logs[i];
+                    if (line.startsWith('Program log: ')) {
+                        throw new Error('Transaction failed: ' + line.slice('Program log: '.length));
+                    }
+                }
+            }
+            throw new Error(JSON.stringify(simulateResult.err));
+        }
+        // throw new Error('Transaction failed');
+    }
+    finally {
+        done = true;
+    }
+    console.log('Latency', txid, exports.getUnixTs() - startTime);
     return { txid, slot };
 }
 exports.sendSignedTransaction = sendSignedTransaction;
@@ -389,7 +590,6 @@ async function simulateTransaction(connection, transaction, commitment) {
     }
     return res.result;
 }
-exports.simulateTransaction = simulateTransaction;
 async function awaitTransactionSignatureConfirmation(txid, timeout, connection, commitment = 'recent', queryStatus = false) {
     let done = false;
     let status = {
@@ -398,7 +598,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
         err: null,
     };
     let subId = 0;
-    status = await new Promise((resolve, reject) => {
+    status = await new Promise(async (resolve, reject) => {
         setTimeout(() => {
             if (done) {
                 return;
@@ -462,7 +662,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
                     }
                 }
             })();
-            return utils_1.sleep(2000);
+            await utils_2.sleep(2000);
         }
     });
     //@ts-ignore
