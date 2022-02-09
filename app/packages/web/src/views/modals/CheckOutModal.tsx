@@ -62,7 +62,7 @@ interface Props {
   show: boolean;
   hide: (value: any) => void;
   id: string;
-  mobile: boolean;
+  mobile?: boolean;
 }
 
 const CheckOutModal: React.FC<Props> = ({ show, hide, id, mobile }: Props) => {

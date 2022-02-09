@@ -22,13 +22,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactions = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
-=======
 exports.sendSignedTransaction = exports.getUnixTs = exports.sendTransactionWithRetry = exports.sendTransaction = exports.sendTransactionsWithRecentBlock = exports.sendTransactions = exports.sendTransactionsInChunks = exports.sendTransactionsWithManualRetry = exports.SequenceType = exports.getErrorForTransaction = exports.useConnectionConfig = exports.useConnection = exports.ConnectionProvider = exports.ENDPOINTS = void 0;
 const react_1 = __importStar(require("react"));
 const utils_1 = require("../utils");
->>>>>>> c1fc8cbd5d1634b06d2baa8f4c82e1de8693f054
 const spl_token_registry_1 = require("@solana/spl-token-registry");
 const wallet_adapter_base_1 = require("@solana/wallet-adapter-base");
 const web3_js_1 = require("@solana/web3.js");
@@ -592,10 +588,6 @@ const getUnixTs = () => {
     return new Date().getTime() / 1000;
 };
 exports.getUnixTs = getUnixTs;
-<<<<<<< HEAD
-const DEFAULT_TIMEOUT = 30000;
-async function sendSignedTransaction({ signedTransaction, connection, timeout = DEFAULT_TIMEOUT, }) {
-=======
 const DEFAULT_TIMEOUT = 15000;
 async function sendSignedTransaction({ signedTransaction, connection, timeout = DEFAULT_TIMEOUT, }) {
     console.log(`sendSignedTransaction; feePayer: ${signedTransaction.feePayer}`);
@@ -603,7 +595,6 @@ async function sendSignedTransaction({ signedTransaction, connection, timeout = 
     console.log(`sendSignedTransaction; nonceInfo: ${signedTransaction.nonceInfo}`);
     console.log(`sendSignedTransaction; recentBlockhash: ${signedTransaction.recentBlockhash}`);
     console.log(`sendSignedTransaction; signature: ${signedTransaction.signature}`);
->>>>>>> c1fc8cbd5d1634b06d2baa8f4c82e1de8693f054
     const rawTransaction = signedTransaction.serialize();
     const startTime = exports.getUnixTs();
     let slot = 0;
@@ -617,11 +608,7 @@ async function sendSignedTransaction({ signedTransaction, connection, timeout = 
             connection.sendRawTransaction(rawTransaction, {
                 skipPreflight: true,
             });
-<<<<<<< HEAD
-            await utils_1.sleep(500);
-=======
             await utils_2.sleep(500);
->>>>>>> c1fc8cbd5d1634b06d2baa8f4c82e1de8693f054
         }
     })();
     try {
@@ -754,11 +741,7 @@ async function awaitTransactionSignatureConfirmation(txid, timeout, connection, 
                     }
                 }
             })();
-<<<<<<< HEAD
-            await utils_1.sleep(2000);
-=======
             await utils_2.sleep(2000);
->>>>>>> c1fc8cbd5d1634b06d2baa8f4c82e1de8693f054
         }
     });
     //@ts-ignore
