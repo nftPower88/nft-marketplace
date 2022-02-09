@@ -62,9 +62,10 @@ interface Props {
   show: boolean;
   hide: (value: any) => void;
   id: string;
+  mobile: boolean;
 }
 
-const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
+const CheckOutModal: React.FC<Props> = ({ show, hide, id, mobile }: Props) => {
   const { publicRuntimeConfig } = getConfig();
   const { loading, auction } = useAuction(id);
   const connection = useConnection();
@@ -109,7 +110,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
   const [tryShow, setTryShow] = useState<boolean>(true);
   const [portShow, setPortShow] = useState<boolean>(true);
   const [tradeShow, setTradeShow] = useState<boolean>(true);
-  const [detailShow, setDetailShow] = useState<boolean>(false);
+  const [detailShow, setDetailShow] = useState<boolean>(true);
   const [showAuction, setShowAuction] = useState<boolean>(true);
   const [reloadAuction, setReloadAuction] = useState<boolean>(false);
 
@@ -391,7 +392,150 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
           </Col>
         )}
         <Divider />
-        <Col span={24}>
+        <Col span={24} hidden={!mobile}>
+          <h3 style={{ fontWeight: 900 }}>How to use</h3>
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setCaptureShow(!captureShow)}
+          >
+            <h4>
+              <CameraOutlined />
+            </h4>
+            <h4>Capture it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined
+                  className={captureShow ? '' : 'rotate_button'}
+                />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={captureShow}>
+            <h5>Capture Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setShowcaseShow(!showcaseShow)}
+          >
+            <h4>
+              <FundProjectionScreenOutlined />
+            </h4>
+            <h4>Showcase it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined
+                  className={showcaseShow ? '' : 'rotate_button'}
+                />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={showcaseShow}>
+            <h5>Showcase Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setTryShow(!tryShow)}
+          >
+            <h4>
+              <ThunderboltOutlined />
+            </h4>
+            <h4>Try it on</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined className={tryShow ? '' : 'rotate_button'} />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={tryShow}>
+            <h5>Try it Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setPortShow(!portShow)}
+          >
+            <h4>
+              <BlockOutlined />
+            </h4>
+            <h4>Port it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined
+                  className={portShow ? '' : 'rotate_button'}
+                />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={portShow}>
+            <h5>Port it Captions</h5>
+          </div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setTradeShow(!tradeShow)}
+          >
+            <h4>
+              <TransactionOutlined />
+            </h4>
+            <h4>Trade it</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined
+                  className={tradeShow ? '' : 'rotate_button'}
+                />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={tradeShow} className="p-1"></div>
+          <hr />
+          <Row
+            justify="space-between"
+            align="middle"
+            onClick={() => setDetailShow(!detailShow)}
+          >
+            <h4>
+              <TransactionOutlined />
+            </h4>
+            <h4>Details</h4>
+            <div>
+              <h4>
+                <CaretDownOutlined
+                  className={detailShow ? '' : 'rotate_button'}
+                />
+              </h4>
+            </div>
+          </Row>
+          <div hidden={detailShow} className="p-1">
+            <h5>
+              Blockchain :{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {publicRuntimeConfig.publicSolanaNetwork}
+              </span>{' '}
+            </h5>
+            <h5>
+              Creator :{' '}
+              <span style={{ textDecoration: 'underline' }}>
+                {art.creators![0].address}
+              </span>{' '}
+            </h5>
+            <h5>
+              Asset :{' '}
+              <span style={{ textDecoration: 'underline' }}>{art.mint}</span>{' '}
+            </h5>
+            <div className="text-center">
+              <ViewOn id={id} />
+            </div>
+          </div>
+          <hr />
+        </Col>
+        <Col span={24} hidden={mobile}>
           <h3 style={{ fontWeight: 900 }}>How to use</h3>
           <Row
             justify="space-between"
@@ -404,7 +548,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h4 style={{ marginRight: '250px' }}>Capture it</h4>
             <div>
               <h4>
-                <CaretDownOutlined />
+                <CaretDownOutlined
+                  className={captureShow ? '' : 'rotate_button'}
+                />
               </h4>
             </div>
           </Row>
@@ -423,7 +569,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h4 style={{ marginRight: '240px' }}>Showcase it</h4>
             <div>
               <h4>
-                <CaretDownOutlined />
+                <CaretDownOutlined
+                  className={showcaseShow ? '' : 'rotate_button'}
+                />
               </h4>
             </div>
           </Row>
@@ -442,7 +590,7 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h4 style={{ marginRight: '270px' }}>Try it on</h4>
             <div>
               <h4>
-                <CaretDownOutlined />
+                <CaretDownOutlined className={tryShow ? '' : 'rotate_button'} />
               </h4>
             </div>
           </Row>
@@ -461,7 +609,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h4 style={{ marginRight: '282px' }}>Port it</h4>
             <div>
               <h4>
-                <CaretDownOutlined />
+                <CaretDownOutlined
+                  className={portShow ? '' : 'rotate_button'}
+                />
               </h4>
             </div>
           </Row>
@@ -480,7 +630,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h4 style={{ marginRight: '270px' }}>Trade it</h4>
             <div>
               <h4>
-                <CaretDownOutlined />
+                <CaretDownOutlined
+                  className={tradeShow ? '' : 'rotate_button'}
+                />
               </h4>
             </div>
           </Row>
@@ -497,7 +649,9 @@ const CheckOutModal: React.FC<Props> = ({ show, hide, id }: Props) => {
             <h4 style={{ marginRight: '270px' }}>Details</h4>
             <div>
               <h4>
-                <CaretDownOutlined />
+                <CaretDownOutlined
+                  className={detailShow ? '' : 'rotate_button'}
+                />
               </h4>
             </div>
           </Row>
